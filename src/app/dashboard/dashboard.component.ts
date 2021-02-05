@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -8,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 export class DashboardComponent implements OnInit {
     username: string;
 
-    constructor() {}
+    constructor(public router: Router) {}
 
     ngOnInit(): void {
         this.username = localStorage.getItem('username');
+    }
+
+    logout(): void {
+        localStorage.clear();
+        this.router.navigate(['login']);
     }
 }
