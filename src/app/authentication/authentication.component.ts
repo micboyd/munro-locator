@@ -10,6 +10,7 @@ import { LoginData } from './loginData';
 })
 export class AuthenticationComponent implements OnInit {
     loginForm: FormGroup;
+    currentUser: LoginData;
 
     constructor(
         private router: Router,
@@ -27,8 +28,8 @@ export class AuthenticationComponent implements OnInit {
     onSubmit(): void {
         this.authService.userAuthentication(this.loginForm.value).subscribe(
             (data: LoginData) => {
-                console.log('success');
-                this.storeLoginData(data.token, data.username);
+                this.currentUser = data;
+                this.storeLoginData(this.currentUser);
             },
             (error: any) => {
                 console.log(error);
@@ -36,9 +37,11 @@ export class AuthenticationComponent implements OnInit {
         );
     }
 
-    storeLoginData(token: string, username: string): void {
-        localStorage.setItem('token', token);
-        localStorage.setItem('username', username);
+    storeLoginData(currentUser): void {
+        console.log(currentUser);
+        localStorage.setItem('token', currentUser.token);
+        localStorage.setItem('userid', currentUser.userid);
+        localStorage.setItem('username', currentUser.username);
         this.router.navigate(['dashboard']);
     }
 }

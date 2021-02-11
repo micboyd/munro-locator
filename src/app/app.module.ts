@@ -1,4 +1,6 @@
+import { DashboardService } from './dashboard/dashboard.service';
 import { AuthGuardService } from './authentication/authguard.service';
+
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -20,7 +22,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
         ReactiveFormsModule,
         HttpClientModule,
     ],
-    providers: [BackendConfig, AuthGuardService],
+    providers: [BackendConfig, AuthGuardService, DashboardService],
     bootstrap: [AppComponent],
 })
 export class AppModule {}
