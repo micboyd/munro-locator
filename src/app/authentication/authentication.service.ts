@@ -23,7 +23,7 @@ export class AuthenticationService {
     userAuthentication(payload: User): Observable<any> {
         const body = JSON.stringify(payload);
         return this.http.post(
-            `${this.backendConfig.environment.local}/api/user/login`,
+            `${this.backendConfig.environment.production}/api/user/login`,
             body,
             { headers: this.headers }
         );

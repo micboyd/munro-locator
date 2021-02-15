@@ -12,13 +12,13 @@ export class DashboardService {
 
     getCompleteMunros(userId: string): Observable<any> {
         return this.http.get(
-            `${this.backendConfig.environment.local}/api/munros/complete/${userId}`
+            `${this.backendConfig.environment.production}/api/munros/complete/${userId}`
         );
     }
 
     getIncompleteMunros(userId: string): Observable<any> {
         return this.http.get(
-            `${this.backendConfig.environment.local}/api/munros/incomplete/${userId}`
+            `${this.backendConfig.environment.production}/api/munros/incomplete/${userId}`
         );
     }
 }
