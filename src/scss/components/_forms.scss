@@ -1,0 +1,37 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+.input {
+    margin-bottom: $spacing-2;
+
+    &:last-of-type {
+        margin-bottom: $spacing-3;
+    }
+
+    &__group {
+        padding-bottom: $spacing-3;
+        position: relative;
+
+
+        label {
+            padding: $spacing-1;
+            background: $white;
+            position: absolute;
+            top: -1.8rem;
+            left: 2rem;
+        }
+    }
+
+    &__field {
+        background: transparent;
+        color: $off-black;
+        font-size: $size-8;
+        font-family: $font-family;
+        letter-spacing: $letter-spacing-6;
+        font-weight: $font-weight-regular;
+        width: 100%;
+        border: 1px solid $border-black;
+        border-radius: 5px;
+        padding: $spacing-2;
+    }
+}

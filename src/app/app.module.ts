@@ -12,9 +12,10 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 
 import { BackendConfig } from './config/backend-environment';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { StyleguideComponent } from './styleguide/styleguide.component';
 
 @NgModule({
-    declarations: [AppComponent, AuthenticationComponent, DashboardComponent],
+    declarations: [AppComponent, AuthenticationComponent, DashboardComponent, StyleguideComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,

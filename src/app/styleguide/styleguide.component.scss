@@ -1,0 +1,9 @@
+@import '../../scss/abstracts/variables';
+
+.styleguide {
+    &__columns {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: $spacing-9;
+    }
+}

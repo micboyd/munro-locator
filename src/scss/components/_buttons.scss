@@ -1,0 +1,44 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+.button {
+    color: $black;
+    border: 1px solid $border-black;
+    font-size: $size-8;
+    letter-spacing: $letter-spacing-7;
+    padding: $spacing-1 $spacing-5;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: 0.5s;
+    line-height: 1.5;
+    cursor: pointer;
+    @include flex-centered;
+
+    i.right {
+        margin-left: $spacing-2;
+    }
+
+    i.left {
+        margin-right: $spacing-2;
+    }
+
+    &--purple {
+        background: $purple;
+        border: 1px solid $purple;
+        color: $white;
+
+        &:hover {
+            background: $light-purple;
+        }
+    }
+
+    &--green {
+        background: $green;
+        border: 1px solid $green;
+        color: $white;
+
+        &:hover {
+            background: $light-green;
+        }
+    }
+}

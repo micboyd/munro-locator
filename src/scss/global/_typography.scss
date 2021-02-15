@@ -1,0 +1,94 @@
+@import '../abstracts/variables';
+
+body {
+    font-family: $font-family;
+}
+
+.header {
+    margin: 0 0 $spacing-1 0;
+    color: $black;
+
+    &--one {
+        font-size: $size-1;
+        letter-spacing: $letter-spacing-1;
+        font-weight: $font-weight-light;
+    }
+
+    &--two {
+        font-size: $size-2;
+        letter-spacing: $letter-spacing-2;
+        font-weight: $font-weight-extra-bold;
+    }
+
+    &--three {
+        font-size: $size-3;
+        letter-spacing: 0;
+        font-weight: $font-weight-regular;
+    }
+
+    &--four {
+        font-size: $size-4;
+        letter-spacing: $letter-spacing-3;
+        font-weight: $font-weight-regular;
+    }
+
+    &--five {
+        font-size: $size-5;
+        letter-spacing: 0;
+        font-weight: $font-weight-regular;
+    }
+
+    &--six {
+        font-size: $size-6;
+        letter-spacing: $letter-spacing-3;
+        font-weight: $font-weight-medium;
+    }
+}
+
+.subheader {
+    margin: 0 0 $spacing-1 0;
+    color: $off-black;
+
+    &--one {
+        font-size: $size-7;
+        letter-spacing: $letter-spacing-5;
+        font-weight: $font-weight-regular;
+    }
+
+    &--two {
+        font-size: $size-8;
+        letter-spacing: $letter-spacing-6;
+        font-weight: $font-weight-medium;
+    }
+}
+
+p {
+    margin: 0 0 $spacing-1 0;
+    color: $off-black;
+    font-size: $size-7;
+    letter-spacing: $letter-spacing-4;
+    font-weight: $font-weight-regular;
+
+
+    &.small {
+        font-size: $size-8;
+        letter-spacing: $letter-spacing-6;
+    }
+}
+
+.caption {
+    margin: 0 0 $spacing-1 0;
+    color: $off-black;
+    font-size: $size-9;
+    letter-spacing: $letter-spacing-8;
+    font-weight: $font-weight-regular;
+}
+
+.overline {
+    margin: 0 0 $spacing-1 0;
+    color: $off-black;
+    font-size: $size-9;
+    letter-spacing: $letter-spacing-9;
+    font-weight: $font-weight-medium;
+    text-transform: uppercase;
+}
