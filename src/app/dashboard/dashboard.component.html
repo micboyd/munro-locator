@@ -1,2 +1,10 @@
 <p>Welcome, {{ username }}!</p>
 <p><a (click)="logout()" href="#">Logout</a></p>
+<div class="munros">
+    <ul>
+        <li *ngFor="let item of completeMunros">{{ item.name }}</li>
+    </ul>
+    <ul>
+        <li *ngFor="let item of incompleteMunros">{{ item.name }}</li>
+    </ul>
+</div>

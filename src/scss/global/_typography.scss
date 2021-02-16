@@ -62,7 +62,7 @@ body {
     }
 }
 
-p {
+p, ul, ol, a {
     margin: 0 0 $spacing-1 0;
     color: $off-black;
     font-size: $size-7;
@@ -91,4 +91,12 @@ p {
     letter-spacing: $letter-spacing-9;
     font-weight: $font-weight-medium;
     text-transform: uppercase;
+}
+
+.error-text {
+    color: $error-red;
+}
+
+.text-align-center {
+    text-align: center;
 }

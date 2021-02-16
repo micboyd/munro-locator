@@ -50,10 +50,6 @@ export class DashboardComponent implements OnInit {
         );
     }
 
-    updateMunroStatus(event, item): void {
-        console.log(event.target.checked, item);
-    }
-
     logout(): void {
         localStorage.clear();
         this.router.navigate(['login']);

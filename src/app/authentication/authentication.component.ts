@@ -11,6 +11,9 @@ import { LoginData } from './loginData';
 export class AuthenticationComponent implements OnInit {
     loginForm: FormGroup;
     currentUser: LoginData;
+    loading: boolean;
+    serverError = false;
+    errorMessage: string;
 
     constructor(
         private router: Router,
@@ -26,13 +29,17 @@ export class AuthenticationComponent implements OnInit {
     }
 
     onSubmit(): void {
+        this.loading = true;
         this.authService.userAuthentication(this.loginForm.value).subscribe(
             (data: LoginData) => {
                 this.currentUser = data;
                 this.storeLoginData(this.currentUser);
+                this.loading = false;
             },
             (error: any) => {
-                console.log(error);
+                this.serverError = true;
+                this.errorMessage = error.error;
+                this.loading = false;
             }
         );
     }
