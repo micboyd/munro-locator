@@ -20,14 +20,30 @@
     }
 
     &__left {
-        background: $blue;
+        background: url('../../assets/glencoe.jpg') center center no-repeat;
+        background-size: cover;
+        position: relative;
     }
 
     &__form {
         max-width: 40rem;
     }
 
+    &__overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba($black, 0.4);
+    }
+
     &__intro {
         color: $white;
+        z-index: 1;
+
+        i {
+            margin-bottom: $spacing-2;
+        }
     }
 }
