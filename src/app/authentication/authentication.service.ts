@@ -16,7 +16,6 @@ export class AuthenticationService {
 
     constructor(
         private http: HttpClient,
-        private router: Router,
         private backendConfig: BackendConfig
     ) {}
 

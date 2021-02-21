@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from './authentication.service';
 import { LoginData } from './loginData';
+
 @Component({
     selector: 'app-authentication',
     templateUrl: './authentication.component.html',
@@ -25,7 +26,17 @@ export class AuthenticationComponent implements OnInit {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required],
+        }, {
+            updateOn: 'submit'
         });
+    }
+
+    backendErrorHandling(errorObject): void {
+        this.loading = false;
+        this.serverError = true;
+        console.log(errorObject);
+        this.errorMessage = errorObject.error;
+
     }
 
     onSubmit(): void {
@@ -37,9 +48,7 @@ export class AuthenticationComponent implements OnInit {
                 this.loading = false;
             },
             (error: any) => {
-                this.serverError = true;
-                this.errorMessage = error.error;
-                this.loading = false;
+                this.backendErrorHandling(error);
             }
         );
     }

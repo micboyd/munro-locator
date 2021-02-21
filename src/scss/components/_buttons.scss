@@ -3,6 +3,7 @@
 
 .button {
     color: $black;
+    text-align: center;
     border: 1px solid $border-black;
     font-size: $size-8;
     letter-spacing: $letter-spacing-7;
@@ -12,7 +13,10 @@
     transition: 0.5s;
     line-height: 1.5;
     cursor: pointer;
-    @include flex-centered;
+
+    &--full {
+        width: 100%;
+    }
 
     i.right {
         margin-left: $spacing-2;

@@ -1,26 +1,39 @@
-<section class="authentication">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <p class="small text-align-center error-text" *ngIf="serverError">{{ errorMessage }}</p>
-        <input
-            autocomplete="false"
-            class="input input__field"
-            type="text"
-            formControlName="email"
-            placeholder="Email Address" />
-        <input
-            autocomplete="false"
-            class="input input__field"
-            type="password"
-            formControlName="password"
-            placeholder="Password" />
-        <button
-            class="button button--green"
-            [disabled]="loginForm.invalid"
-            type="submit">
-            <span *ngIf="!loading">Login</span>
-            <span *ngIf="loading">
-                <i class="fas fa-circle-notch fa-spin"></i>
-            </span>
-        </button>
-    </form>
-</section>
+<div class="authentication">
+    <div class="authentication__left">
+        <div class="authentication__intro">
+            <h3 class="header header--three text-align-center">
+                <i class="far fa-mountain"></i>
+            </h3>
+            <h3 class="header header--three">Munro Tracker</h3>
+        </div>
+    </div>
+    <div class="authentication__right">
+        <form class="authentication__form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <h4 class="header header--four margin-bottom-3">Login</h4>
+            <p class="small text-align-center margin-bottom-3 error-text" *ngIf="serverError">{{ errorMessage }}</p>
+            <input
+                autocomplete="false"
+                class="input input__field"
+                type="text"
+                formControlName="email"
+                placeholder="Email Address"
+                />
+            <input
+                autocomplete="false"
+                class="input input__field"
+                type="password"
+                formControlName="password"
+                placeholder="Password"
+                />
+            <button
+                class="button button--green button--full"
+                type="submit">
+                <span *ngIf="!loading">Login</span>
+                <span *ngIf="loading">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                </span>
+            </button>
+        </form>
+    </div>
+</div>
+

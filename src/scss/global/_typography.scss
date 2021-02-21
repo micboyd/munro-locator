@@ -2,11 +2,12 @@
 
 body {
     font-family: $font-family;
+    color: $off-black;
+    line-height: 1;
 }
 
 .header {
     margin: 0 0 $spacing-1 0;
-    color: $black;
 
     &--one {
         font-size: $size-1;
@@ -43,11 +44,14 @@ body {
         letter-spacing: $letter-spacing-3;
         font-weight: $font-weight-medium;
     }
+
+    &--green {
+        color: $green;
+    }
 }
 
 .subheader {
     margin: 0 0 $spacing-1 0;
-    color: $off-black;
 
     &--one {
         font-size: $size-7;
@@ -64,7 +68,6 @@ body {
 
 p, ul, ol, a {
     margin: 0 0 $spacing-1 0;
-    color: $off-black;
     font-size: $size-7;
     letter-spacing: $letter-spacing-4;
     font-weight: $font-weight-regular;
@@ -78,7 +81,6 @@ p, ul, ol, a {
 
 .caption {
     margin: 0 0 $spacing-1 0;
-    color: $off-black;
     font-size: $size-9;
     letter-spacing: $letter-spacing-8;
     font-weight: $font-weight-regular;
@@ -86,7 +88,6 @@ p, ul, ol, a {
 
 .overline {
     margin: 0 0 $spacing-1 0;
-    color: $off-black;
     font-size: $size-9;
     letter-spacing: $letter-spacing-9;
     font-weight: $font-weight-medium;
