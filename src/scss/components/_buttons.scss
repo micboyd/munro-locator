@@ -45,4 +45,10 @@
             background: $light-green;
         }
     }
+
+    &:disabled {
+        cursor: not-allowed;
+        background: $grey;
+        border: 1px solid $grey;
+    }
 }

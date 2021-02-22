@@ -28,6 +28,7 @@
                 />
             <button
                 class="button button--green button--full"
+                [disabled]="loginForm.invalid"
                 type="submit">
                 <span *ngIf="!loading">Login</span>
                 <span *ngIf="loading">

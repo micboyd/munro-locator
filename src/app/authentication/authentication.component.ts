@@ -26,17 +26,13 @@ export class AuthenticationComponent implements OnInit {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required],
-        }, {
-            updateOn: 'submit'
         });
     }
 
-    backendErrorHandling(errorObject): void {
+    backendErrorHandling(errorObject: any): void {
         this.loading = false;
         this.serverError = true;
-        console.log(errorObject);
         this.errorMessage = errorObject.error;
-
     }
 
     onSubmit(): void {
@@ -53,8 +49,7 @@ export class AuthenticationComponent implements OnInit {
         );
     }
 
-    storeLoginData(currentUser): void {
-        console.log(currentUser);
+    storeLoginData(currentUser: LoginData): void {
         localStorage.setItem('token', currentUser.token);
         localStorage.setItem('userid', currentUser.userid);
         localStorage.setItem('username', currentUser.username);

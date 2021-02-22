@@ -4,6 +4,10 @@
 .input {
     margin-bottom: $spacing-2;
 
+    &.ng-invalid.ng-touched {
+        border-color: $error-red;
+    }
+
     &:last-of-type {
         margin-bottom: $spacing-3;
     }
@@ -33,9 +37,5 @@
         border: 1px solid $border-black;
         border-radius: 5px;
         padding: $spacing-2;
-
-        &--error {
-            border-color: $error-red;
-        }
     }
 }
