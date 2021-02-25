@@ -1,3 +1,5 @@
+@import './variables';
+
 @mixin flex-centered {
     display: inline-flex;
     align-items: center;
@@ -7,4 +9,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+// Responsive typography
+
+@mixin responsive-font-size($size, $percentage) {
+    font-size: $size;
+
+    @media screen and (max-width: $breakpoint-large) {
+        font-size: calc(#{$size} - #{$percentage});
+    }
 }

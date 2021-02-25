@@ -21,6 +21,7 @@
         "@angular/router": "~10.1.5",
         "@auth0/angular-jwt": "^5.0.2",
         "angular-jwt": "^0.1.11",
+        "rfs": "^9.0.3",
         "rxjs": "~6.6.0",
         "tslib": "^2.0.0",
         "zone.js": "~0.10.2"

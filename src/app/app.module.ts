@@ -14,6 +14,8 @@ import { BackendConfig } from './config/backend-environment';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StyleguideComponent } from './styleguide/styleguide.component';
 import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
+import { MainComponent } from './dashboard/main/main.component';
+import { StatisticsComponent } from './dashboard/main/statistics/statistics.component';
 
 @NgModule({
     declarations: [
@@ -22,6 +24,8 @@ import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
         DashboardComponent,
         StyleguideComponent,
         SidebarComponent,
+        MainComponent,
+        StatisticsComponent,
     ],
     imports: [
         BrowserModule,

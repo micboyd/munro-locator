@@ -46,6 +46,18 @@
         }
     }
 
+    &--blue {
+        background: $blue;
+        border: 1px solid $blue;
+        color: $white;
+    }
+
+    &--white {
+        background: $white;
+        border: 1px solid $white;
+        color: $off-black;
+    }
+
     &:disabled {
         cursor: not-allowed;
         background: $grey;

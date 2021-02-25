@@ -1,1 +1,22 @@
-<div class="sidebar"></div>
+<div class="sidebar">
+    <div class="sidebar__user">
+        <img class="sidebar__profile" src="./assets/profile.jpg">
+        <p class="header header--six">Michael Boyd</p>
+        <p class="overline no-margin">Admin</p>
+    </div>
+    <div class="sidebar__navigation">
+        <ul>
+            <li>
+                <a (click)="linkActive()" [ngClass]="{'active' : completeActive}" [routerLink]="">Complete</a>
+            </li>
+            <li>
+                <a (click)="linkActive()" [ngClass]="{'active' : !completeActive}" [routerLink]="">Incomplete</a>
+            </li>
+        </ul>
+    </div>
+    <div class="sidebar__logout">
+        <a class="button button--white button--full no-margin" href="">
+            Logout
+        </a>
+    </div>
+</div>

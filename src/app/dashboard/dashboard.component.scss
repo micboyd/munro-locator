@@ -1,4 +1,9 @@
+@import '../../scss/abstracts/variables';
+
 .dashboard {
     display: grid;
-    grid-template-columns: 1fr 4fr;
+
+    @media screen and (min-width: $breakpoint-large) {
+        grid-template-columns: 1fr 4fr;
+    }
 }
