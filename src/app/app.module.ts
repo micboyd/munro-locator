@@ -13,9 +13,16 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { BackendConfig } from './config/backend-environment';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StyleguideComponent } from './styleguide/styleguide.component';
+import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
 
 @NgModule({
-    declarations: [AppComponent, AuthenticationComponent, DashboardComponent, StyleguideComponent],
+    declarations: [
+        AppComponent,
+        AuthenticationComponent,
+        DashboardComponent,
+        StyleguideComponent,
+        SidebarComponent,
+    ],
     imports: [
         BrowserModule,
         AppRoutingModule,

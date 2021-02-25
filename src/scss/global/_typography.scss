@@ -66,12 +66,14 @@ body {
     }
 }
 
-p, ul, ol, a {
+p,
+ul,
+ol,
+a {
     margin: 0 0 $spacing-1 0;
     font-size: $size-7;
     letter-spacing: $letter-spacing-4;
     font-weight: $font-weight-regular;
-
 
     &.small {
         font-size: $size-8;

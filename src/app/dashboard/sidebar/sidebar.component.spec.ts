@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StyleguideComponent } from './styleguide.component';
+import { SidebarComponent } from './sidebar.component';
 
-describe('StyleguideComponent', () => {
-    let component: StyleguideComponent;
-    let fixture: ComponentFixture<StyleguideComponent>;
+describe('SidebarComponent', () => {
+    let component: SidebarComponent;
+    let fixture: ComponentFixture<SidebarComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [StyleguideComponent],
+            declarations: [SidebarComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(StyleguideComponent);
+        fixture = TestBed.createComponent(SidebarComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
