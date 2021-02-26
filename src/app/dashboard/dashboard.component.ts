@@ -33,7 +33,6 @@ export class DashboardComponent implements OnInit {
     getCurrentUser(): void {
         this.dashboardService.getUserDetails(this.userid).subscribe((data: User) => {
             this.currentUser = data;
-            console.log(data);
         },
         (error) => {
             console.log(error);
