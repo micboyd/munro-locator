@@ -52,7 +52,6 @@ export class AuthenticationComponent implements OnInit {
     storeLoginData(currentUser: LoginData): void {
         localStorage.setItem('token', currentUser.token);
         localStorage.setItem('userid', currentUser.userid);
-        localStorage.setItem('username', currentUser.username);
         this.router.navigate(['dashboard']);
     }
 }

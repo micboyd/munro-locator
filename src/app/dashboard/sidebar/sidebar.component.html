@@ -1,8 +1,8 @@
 <div class="sidebar">
-    <div class="sidebar__user">
-        <img class="sidebar__profile" src="./assets/profile.jpg">
-        <p class="header header--six">Michael Boyd</p>
-        <p class="overline no-margin">Admin</p>
+    <div *ngIf="currentUser" class="sidebar__user">
+        <img class="sidebar__profile" src="https://via.placeholder.com/150">
+        <p class="header header--six">{{ currentUser.firstname }} {{ currentUser.surname }}</p>
+        <p class="overline no-margin">{{ currentUser.isAdmin ? 'Admin' : 'Munro Bagger' }}</p>
     </div>
     <div class="sidebar__navigation">
         <ul>
@@ -15,7 +15,7 @@
         </ul>
     </div>
     <div class="sidebar__logout">
-        <a class="button button--white button--full no-margin" href="">
+        <a class="button button--white button--full no-margin" (click)="logout()">
             Logout
         </a>
     </div>

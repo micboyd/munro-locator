@@ -2,7 +2,7 @@
 <p><a (click)="logout()" href="#">Logout</a></p> -->
 <div class="dashboard">
     <div>
-        <app-sidebar></app-sidebar>
+        <app-sidebar [currentUser]="currentUser"></app-sidebar>
     </div>
     <div>
         <app-main></app-main>

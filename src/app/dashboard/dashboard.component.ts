@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DashboardService } from './dashboard.service';
 import { Munro } from './munro';
+import { User } from './../../models/user';
+
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
@@ -10,6 +12,7 @@ import { Munro } from './munro';
 export class DashboardComponent implements OnInit {
     username: string;
     userid: string;
+    currentUser: User;
     completeMunros: Munro[];
     incompleteMunros: Munro[];
     isLoading = false;
@@ -22,8 +25,19 @@ export class DashboardComponent implements OnInit {
     ngOnInit(): void {
         this.username = localStorage.getItem('username');
         this.userid = localStorage.getItem('userid');
+        this.getCurrentUser();
         this.getCompleteMunros();
         this.getIncompleteMunros();
+    }
+
+    getCurrentUser(): void {
+        this.dashboardService.getUserDetails(this.userid).subscribe((data: User) => {
+            this.currentUser = data;
+            console.log(data);
+        },
+        (error) => {
+            console.log(error);
+        });
     }
 
     getCompleteMunros(): void {
