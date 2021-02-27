@@ -31,12 +31,14 @@ export class DashboardComponent implements OnInit {
     }
 
     getCurrentUser(): void {
-        this.dashboardService.getUserDetails(this.userid).subscribe((data: User) => {
-            this.currentUser = data;
-        },
-        (error) => {
-            console.log(error);
-        });
+        this.dashboardService.getUserDetails(this.userid).subscribe(
+            (data: User) => {
+                this.currentUser = data;
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
     }
 
     getCompleteMunros(): void {

@@ -5,6 +5,10 @@
         <app-sidebar [currentUser]="currentUser"></app-sidebar>
     </div>
     <div>
-        <app-main></app-main>
+        <app-main
+            [completeMunros]="completeMunros"
+            [incompleteMunros]="incompleteMunros"
+        >
+        </app-main>
     </div>
 </div>
