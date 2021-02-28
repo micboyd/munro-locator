@@ -10,12 +10,12 @@ import { User } from './../../models/user';
     styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-    username: string;
     userid: string;
     currentUser: User;
     completeMunros: Munro[];
     incompleteMunros: Munro[];
-    isLoading = false;
+    completeIsLoading = false;
+    incompleteIsLoading = false;
 
     constructor(
         private router: Router,
@@ -23,7 +23,6 @@ export class DashboardComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.username = localStorage.getItem('username');
         this.userid = localStorage.getItem('userid');
         this.getCurrentUser();
         this.getCompleteMunros();
@@ -42,10 +41,11 @@ export class DashboardComponent implements OnInit {
     }
 
     getCompleteMunros(): void {
+        this.completeIsLoading = true;
         this.dashboardService.getCompleteMunros(this.userid).subscribe(
             (data: Munro[]) => {
                 this.completeMunros = data;
-                this.isLoading = false;
+                this.completeIsLoading = false;
             },
             (error) => {
                 console.log(error);
@@ -54,10 +54,11 @@ export class DashboardComponent implements OnInit {
     }
 
     getIncompleteMunros(): void {
+        this.incompleteIsLoading = true;
         this.dashboardService.getIncompleteMunros(this.userid).subscribe(
             (data: Munro[]) => {
                 this.incompleteMunros = data;
-                this.isLoading = false;
+                this.incompleteIsLoading = false;
             },
             (error) => {
                 console.log(error);

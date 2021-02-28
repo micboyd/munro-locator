@@ -41,6 +41,7 @@ export class AuthenticationComponent implements OnInit {
             (data: LoginData) => {
                 this.currentUser = data;
                 this.storeLoginData(this.currentUser);
+                this.router.navigate(['dashboard']);
                 this.loading = false;
             },
             (error: any) => {
@@ -52,6 +53,5 @@ export class AuthenticationComponent implements OnInit {
     storeLoginData(currentUser: LoginData): void {
         localStorage.setItem('token', currentUser.token);
         localStorage.setItem('userid', currentUser.userid);
-        this.router.navigate(['dashboard']);
     }
 }
