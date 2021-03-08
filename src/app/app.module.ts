@@ -16,6 +16,7 @@ import { StyleguideComponent } from './styleguide/styleguide.component';
 import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
 import { MainComponent } from './dashboard/main/main.component';
 import { StatisticsComponent } from './dashboard/main/statistics/statistics.component';
+import { MunrosComponent } from './dashboard/main/munros/munros.component';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { StatisticsComponent } from './dashboard/main/statistics/statistics.comp
         SidebarComponent,
         MainComponent,
         StatisticsComponent,
+        MunrosComponent,
     ],
     imports: [
         BrowserModule,

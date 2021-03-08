@@ -7,6 +7,7 @@
     <div>
         <app-main
             *ngIf="!completeIsLoading && !incompleteIsLoading"
+            [currentUser]="currentUser"
             [completeMunros]="completeMunros"
             [incompleteMunros]="incompleteMunros"
         >

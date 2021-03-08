@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
     incompleteMunros: Munro[];
     completeIsLoading = false;
     incompleteIsLoading = false;
+    currentUserIsLoading = false;
 
     constructor(
         private router: Router,
@@ -30,9 +31,11 @@ export class DashboardComponent implements OnInit {
     }
 
     getCurrentUser(): void {
+        this.currentUserIsLoading = true;
         this.dashboardService.getUserDetails(this.userid).subscribe(
             (data: User) => {
                 this.currentUser = data;
+                this.currentUserIsLoading = false;
             },
             (error) => {
                 console.log(error);

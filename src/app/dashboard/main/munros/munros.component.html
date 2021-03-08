@@ -1,0 +1,7 @@
+<div class="munros">
+    <div *ngFor="let item of munrosToDisplay" class="munros__card">
+        <h2 class="header header--five">{{ item.name }}</h2>
+        <p><string>Height:</string> {{ item.height }}</p>
+        <input type="checkbox" (change)="markStatus($event, item._id)">
+    </div>
+</div>
