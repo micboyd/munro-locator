@@ -16,27 +16,26 @@ export class DashboardService {
 
     getUserDetails(userId: string): Observable<any> {
         return this.http.get(
-            `${this.backendConfig.environment.local}/api/user/details/${userId}`
+            `${this.backendConfig.environment.production}/api/user/details/${userId}`
         );
     }
 
     getCompleteMunros(userId: string): Observable<any> {
         return this.http.get(
-            `${this.backendConfig.environment.local}/api/munros/complete/${userId}`
+            `${this.backendConfig.environment.production}/api/munros/complete/${userId}`
         );
     }
 
     getIncompleteMunros(userId: string): Observable<any> {
         return this.http.get(
-            `${this.backendConfig.environment.local}/api/munros/incomplete/${userId}`
+            `${this.backendConfig.environment.production}/api/munros/incomplete/${userId}`
         );
     }
 
     markMunroStatus(userId: string, complete: boolean, payload: any): Observable<any> {
         const body = JSON.stringify(payload);
-        console.log(userId, body);
         return this.http.put(
-            `${this.backendConfig.environment.local}/api/munros/${complete ? 'mark-complete' : 'mark-incomplete'}/${userId}`,
+            `${this.backendConfig.environment.production}/api/munros/${complete ? 'mark-complete' : 'mark-incomplete'}/${userId}`,
             body,
             { headers: this.headers }
         );

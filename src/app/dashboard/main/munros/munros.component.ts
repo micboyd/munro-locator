@@ -18,20 +18,20 @@ export class MunrosComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    // markStatus(event: any, munroId: any): void {
-    //     const status = event.target.checked;
+    markStatus(event: any, munroId: any): void {
+        const status = event.target.checked;
 
-    //     const payload = {
-    //         _id: munroId
-    //     };
+        const payload = {
+            munros: [munroId]
+        };
 
-    //     this.dashboardService.markMunroStatus(this.currentUser._id, status, payload).subscribe(
-    //         (data) => {
-    //             console.log('great success');
-    //         },
-    //         (error: any) => {
-    //             console.log(error);
-    //         }
-    //     );
-    // }
+        this.dashboardService.markMunroStatus(this.currentUser._id, status, payload).subscribe(
+            (data) => {
+                console.log('great success');
+            },
+            (error: any) => {
+                console.log(error);
+            }
+        );
+    }
 }
