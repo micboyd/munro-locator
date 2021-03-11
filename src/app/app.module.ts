@@ -1,4 +1,3 @@
-import { DashboardService } from './dashboard/dashboard.service';
 import { AuthGuardService } from './authentication/authguard.service';
 
 import { HttpClientModule } from '@angular/common/http';
@@ -13,21 +12,12 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { BackendConfig } from './config/backend-environment';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StyleguideComponent } from './styleguide/styleguide.component';
-import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
-import { MainComponent } from './dashboard/main/main.component';
-import { StatisticsComponent } from './dashboard/main/statistics/statistics.component';
-import { MunrosComponent } from './dashboard/main/munros/munros.component';
-
 @NgModule({
     declarations: [
         AppComponent,
         AuthenticationComponent,
         DashboardComponent,
         StyleguideComponent,
-        SidebarComponent,
-        MainComponent,
-        StatisticsComponent,
-        MunrosComponent,
     ],
     imports: [
         BrowserModule,
@@ -36,7 +26,7 @@ import { MunrosComponent } from './dashboard/main/munros/munros.component';
         ReactiveFormsModule,
         HttpClientModule,
     ],
-    providers: [BackendConfig, AuthGuardService, DashboardService],
+    providers: [BackendConfig, AuthGuardService],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

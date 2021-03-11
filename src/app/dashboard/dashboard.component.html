@@ -1,16 +1,1 @@
-<!-- <p>Welcome, {{ username }}!</p>
-<p><a (click)="logout()" href="#">Logout</a></p> -->
-<div class="dashboard">
-    <div>
-        <app-sidebar [currentUser]="currentUser"></app-sidebar>
-    </div>
-    <div>
-        <app-main
-            *ngIf="!completeIsLoading && !incompleteIsLoading"
-            [currentUser]="currentUser"
-            [completeMunros]="completeMunros"
-            [incompleteMunros]="incompleteMunros"
-        >
-        </app-main>
-    </div>
-</div>
+<p>dashboard works!</p>
