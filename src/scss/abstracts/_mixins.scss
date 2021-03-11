@@ -16,7 +16,7 @@
 @mixin responsive-font-size($size, $percentage) {
     font-size: $size;
 
-    @media screen and (max-width: $breakpoint-large) {
+    @media screen and (max-width: $breakpoint-extra-large) {
         font-size: calc(#{$size} - #{$percentage});
     }
 }

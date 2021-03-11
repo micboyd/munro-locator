@@ -41,7 +41,7 @@ export class AuthenticationComponent implements OnInit {
             (data: LoginData) => {
                 this.currentUser = data;
                 this.storeLoginData(this.currentUser);
-                this.router.navigate(['dashboard']);
+                this.router.navigate(['dashboard/complete']);
                 this.loading = false;
             },
             (error: any) => {

@@ -1,0 +1,5 @@
+<div class="munros" *ngIf="completeMunrosLoaded">
+    <div class="card" *ngFor="let item of completeMunros">
+        <p>{{ item.name }}</p>
+    </div>
+</div>

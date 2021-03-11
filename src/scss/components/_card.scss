@@ -1,0 +1,8 @@
+@import '../abstracts/variables';
+
+.card {
+    border: 1px solid $grey;
+    border-radius: $regular-border-radius;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+    padding: $spacing-3;
+}

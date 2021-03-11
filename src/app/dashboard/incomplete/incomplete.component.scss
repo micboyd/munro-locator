@@ -1,0 +1,10 @@
+@import '../../../scss/abstracts/variables';
+
+.munros {
+    display: grid;
+    grid-gap: $spacing-3;
+
+    @media screen and (min-width: $breakpoint-extra-large) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

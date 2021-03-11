@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BackendConfig } from './../config/backend-environment';
-import { Router } from '@angular/router';
 import { User } from './../../models/user';
 
 @Injectable({

@@ -1,0 +1,60 @@
+@import '../../../scss/abstracts/variables';
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    background: $grey;
+    width: 100%;
+
+    @media screen and (min-width: $breakpoint-extra-large) {
+        position: fixed;
+        width: 20%;
+    }
+
+    &__user {
+        padding: $spacing-5;
+
+        img {
+            max-height: 15rem;
+            max-width: 15rem;
+        }
+    }
+
+    &__profile {
+        border-radius: 100%;
+        margin-bottom: $spacing-3;
+    }
+
+    &__navigation {
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+
+            li {
+                padding: 0;
+
+                a {
+                    display: block;
+                    margin: 0;
+                    padding: $spacing-2;
+                    border-right: 5px solid $grey;
+
+                    &.active {
+                        border-right: 5px solid $purple;
+                    }
+                }
+            }
+        }
+    }
+
+    &__logout {
+        padding: $spacing-3;
+        margin-top: auto;
+    }
+
+    @media screen and (min-width: $breakpoint-extra-large) {
+        height: 100vh;
+    }
+}

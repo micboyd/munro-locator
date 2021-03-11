@@ -1,0 +1,17 @@
+@import '../../scss/abstracts/variables';
+
+.dashboard {
+    display: grid;
+
+    @media screen and (min-width: $breakpoint-extra-large) {
+        grid-template-columns: 1fr 4fr;
+    }
+
+    &__left {
+
+    }
+
+    &__right {
+        padding: $spacing-5;
+    }
+}

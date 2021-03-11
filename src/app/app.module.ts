@@ -12,12 +12,19 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { BackendConfig } from './config/backend-environment';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StyleguideComponent } from './styleguide/styleguide.component';
+import { CompleteComponent } from './dashboard/complete/complete.component';
+import { IncompleteComponent } from './dashboard/incomplete/incomplete.component';
+import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
+
 @NgModule({
     declarations: [
         AppComponent,
         AuthenticationComponent,
         DashboardComponent,
         StyleguideComponent,
+        CompleteComponent,
+        IncompleteComponent,
+        SidebarComponent,
     ],
     imports: [
         BrowserModule,
