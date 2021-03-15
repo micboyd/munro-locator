@@ -1,6 +1,12 @@
 @import '../abstracts/variables';
 @import '../abstracts/mixins';
 
+input[type=text] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
 .input {
     margin-bottom: $spacing-2;
 
