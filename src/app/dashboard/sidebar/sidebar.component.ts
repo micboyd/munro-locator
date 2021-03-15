@@ -29,7 +29,6 @@ export class SidebarComponent implements OnInit {
             (data: User) => {
                 this.userDetails = data;
                 this.userDetailsLoaded = true;
-                console.log(data);
             },
             (error: any) => {
                 console.log(error);
@@ -41,5 +40,4 @@ export class SidebarComponent implements OnInit {
         localStorage.clear();
         this.router.navigate(['login']);
     }
-
 }

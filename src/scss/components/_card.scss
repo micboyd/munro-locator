@@ -1,8 +1,11 @@
 @import '../abstracts/variables';
 
 .card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border: 1px solid $grey;
     border-radius: $regular-border-radius;
-    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 8%), 0 0 0 1px rgb(0 0 0 / 4%);
     padding: $spacing-3;
 }

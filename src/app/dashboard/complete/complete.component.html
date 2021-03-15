@@ -1,5 +1,15 @@
+<app-loading *ngIf="!completeMunrosLoaded"></app-loading>
 <div class="munros" *ngIf="completeMunrosLoaded">
     <div class="card" *ngFor="let item of completeMunros">
-        <p>{{ item.name }}</p>
+        <div>
+            <h6 class="header header--six">{{ item.name }}</h6>
+            <p class="overline margin-bottom-2">{{ item.height }}m</p>
+        </div>
+        <a
+            class="button button--purple no-margin"
+            (click)="markStatus($event, item._id)"
+        >
+            Incomplete
+        </a>
     </div>
 </div>

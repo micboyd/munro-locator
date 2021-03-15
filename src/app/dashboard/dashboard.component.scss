@@ -2,6 +2,7 @@
 
 .dashboard {
     display: grid;
+    min-height: 100vh;
 
     @media screen and (min-width: $breakpoint-extra-large) {
         grid-template-columns: 1fr 4fr;
@@ -9,5 +10,6 @@
 
     &__right {
         padding: $spacing-5;
+        height: 100%;
     }
 }

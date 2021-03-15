@@ -30,4 +30,21 @@ export class IncompleteComponent implements OnInit {
             }
         );
     }
+
+    markStatus(event: any, munroId: any): void {
+        event.path[1].style.display = 'none';
+
+        const payload = {
+            munros: [munroId],
+        };
+
+        this.dashboardService
+            .updateMunro(true, this.currentUser, payload)
+            .subscribe(
+                (data) => {},
+                (error: any) => {
+                    console.log(error);
+                }
+            );
+    }
 }

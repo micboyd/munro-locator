@@ -15,6 +15,7 @@ import { StyleguideComponent } from './styleguide/styleguide.component';
 import { CompleteComponent } from './dashboard/complete/complete.component';
 import { IncompleteComponent } from './dashboard/incomplete/incomplete.component';
 import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
         CompleteComponent,
         IncompleteComponent,
         SidebarComponent,
+        LoadingComponent,
     ],
     imports: [
         BrowserModule,
