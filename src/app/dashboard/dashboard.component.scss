@@ -9,7 +9,11 @@
     }
 
     &__right {
-        padding: $spacing-5;
         height: 100%;
+        padding: $spacing-3;
+
+        @media screen and (min-width: $breakpoint-extra-large) {
+            padding: $spacing-5;
+        }
     }
 }
