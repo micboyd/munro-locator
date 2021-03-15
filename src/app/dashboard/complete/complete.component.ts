@@ -33,7 +33,7 @@ export class CompleteComponent implements OnInit {
     }
 
     markStatus(event: any, munroId: any): void {
-        event.path[1].style.display = 'none';
+        event.target.parentElement.style.display = 'none';
 
         const payload = {
             munros: [munroId],
