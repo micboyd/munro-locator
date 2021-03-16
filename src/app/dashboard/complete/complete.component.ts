@@ -53,7 +53,7 @@ export class CompleteComponent implements OnInit {
         this.dashboardService
             .updateMunro(false, this.currentUser, payload)
             .subscribe((data) => {
-                this.incompleteBanner(data.removedMunro);
+                this.incompleteBanner(data);
             });
     }
 }

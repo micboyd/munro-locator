@@ -7,6 +7,9 @@ import { BehaviorSubject } from 'rxjs';
     providedIn: 'root',
 })
 export class DashboardService {
+    currentUser: string;
+    totalMunros: number;
+
     headers = {
         'Content-Type': 'application/json',
     };
@@ -15,6 +18,13 @@ export class DashboardService {
         private http: HttpClient,
         private backendConfig: BackendConfig
     ) {}
+
+    getTotalMunros(): void {
+        this.currentUser = localStorage.getItem('userid');
+        this.getTotal(this.currentUser).subscribe((data) => {
+            this.totalMunros = data.count;
+        });
+    }
 
     getUserDetails(userId: string): Observable<any> {
         return this.http.get(
@@ -31,6 +41,12 @@ export class DashboardService {
     getIncompleteMunros(userId: string): Observable<any> {
         return this.http.get(
             `${this.backendConfig.environment.production}/api/munros/incomplete/${userId}`
+        );
+    }
+
+    getTotal(userId: string): Observable<any> {
+        return this.http.get(
+            `${this.backendConfig.environment.production}/api/munros/count/${userId}`
         );
     }
 
