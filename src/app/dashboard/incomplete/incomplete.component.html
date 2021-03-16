@@ -1,4 +1,8 @@
 <app-loading *ngIf="!incompleteMunrosLoaded"></app-loading>
+<div *ngIf="showBanner" class="banner banner--purple">
+    <p class="subheader subheader--one no-margin">You have marked {{ outgoingMunro.name }} as complete!</p>
+    <i (click)="closeBanner()" class="far fa-times"></i>
+</div>
 <div class="munros" *ngIf="incompleteMunrosLoaded">
     <div class="card" *ngFor="let item of incompleteMunros">
         <div>

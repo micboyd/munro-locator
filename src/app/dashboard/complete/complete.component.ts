@@ -9,8 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompleteComponent implements OnInit {
     completeMunros: Munro[];
-    completeMunrosLoaded = false;
+    outgoingMunro: Munro;
     currentUser: string;
+    completeMunrosLoaded = false;
+    showBanner = false;
 
     constructor(private dashboardService: DashboardService) {}
 
@@ -32,6 +34,15 @@ export class CompleteComponent implements OnInit {
         );
     }
 
+    incompleteBanner(munro: Munro): void {
+        this.showBanner = true;
+        this.outgoingMunro = munro;
+    }
+
+    closeBanner(): void {
+        this.showBanner = false;
+    }
+
     markStatus(event: any, munroId: any): void {
         event.target.parentElement.style.display = 'none';
 
@@ -41,11 +52,8 @@ export class CompleteComponent implements OnInit {
 
         this.dashboardService
             .updateMunro(false, this.currentUser, payload)
-            .subscribe(
-                (data) => {},
-                (error: any) => {
-                    console.log(error);
-                }
-            );
+            .subscribe((data) => {
+                this.incompleteBanner(data.removedMunro);
+            });
     }
 }

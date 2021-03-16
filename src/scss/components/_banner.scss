@@ -1,0 +1,23 @@
+@import '../abstracts/variables';
+
+.banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-3;
+    text-align: center;
+    padding: $spacing-3;
+    color: $white;
+
+    &--green {
+        background: $green;
+    }
+
+    &--purple {
+        background: $purple;
+    }
+
+    i {
+        font-size: 2rem;
+    }
+}
