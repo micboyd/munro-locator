@@ -61,7 +61,7 @@
     &:disabled {
         cursor: not-allowed;
         color: $white;
-        background: darken($grey, 10);
-        border: 1px solid $grey;
+        background: $disabled-grey;
+        border: 1px solid $disabled-grey;
     }
 }
