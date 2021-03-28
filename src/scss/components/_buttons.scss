@@ -12,7 +12,6 @@
     text-decoration: none;
     transition: 0.5s;
     line-height: 1.5;
-    border-radius: 5px;
     cursor: pointer;
 
     &--full {
@@ -61,8 +60,8 @@
 
     &:disabled {
         cursor: not-allowed;
-        color: $off-black;
-        background: $grey;
+        color: $white;
+        background: darken($grey, 10);
         border: 1px solid $grey;
     }
 }

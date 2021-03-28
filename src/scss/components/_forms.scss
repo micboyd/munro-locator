@@ -32,6 +32,7 @@ input {
     }
 
     &__field {
+        outline: 1px solid transparent;
         background: transparent;
         color: $off-black;
         font-size: $size-8;
@@ -40,7 +41,10 @@ input {
         font-weight: $font-weight-regular;
         width: 100%;
         border: 1px solid $border-black;
-        border-radius: 5px;
         padding: $spacing-2;
+        
+        &:focus {
+            border: 1px solid $purple;
+        }
     }
 }
