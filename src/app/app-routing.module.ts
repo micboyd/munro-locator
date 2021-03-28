@@ -3,8 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './authentication/authguard.service';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { IncompleteComponent } from './dashboard/incomplete/incomplete.component';
-import { CompleteComponent } from './dashboard/complete/complete.component';
 import { StyleguideComponent } from './styleguide/styleguide.component';
 
 const routes: Routes = [
@@ -20,21 +18,16 @@ const routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent,
-        children: [
-            {
-                path: 'complete',
-                component: CompleteComponent,
-            },
-            {
-                path: 'incomplete',
-                component: IncompleteComponent,
-            },
-        ],
+        canActivate: [AuthGuard],
     },
     {
         path: '',
         redirectTo: '/login',
         pathMatch: 'full',
+    },
+    {
+        path: '**', 
+        redirectTo: '/login'
     },
 ];
 
