@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StyleguideComponent } from './styleguide/styleguide.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { StyleguideComponent } from './styleguide/styleguide.component';
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        GoogleMapsModule
     ],
     providers: [BackendConfig, AuthGuardService],
     bootstrap: [AppComponent],

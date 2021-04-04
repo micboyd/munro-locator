@@ -1,1 +1,16 @@
-<p>dashboard works</p>
+<div class="dashboard">
+    <div class="dashboard__left">
+        <div *ngIf="completedMunrosLoaded && incompleteMunrosLoaded">
+            <app-munro *ngFor="let item of selectedMunros" [munroInformation]="item"></app-munro>
+        </div>
+    </div>
+    <div class="dashboard__right">
+        <google-map
+        height="100%"
+        width="100%"
+        [zoom]="zoom"
+        [center]="center"
+        [options]="options"
+      ></google-map>
+    </div>
+</div>
