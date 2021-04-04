@@ -12,6 +12,7 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StyleguideComponent } from './styleguide/styleguide.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { UserDetailsComponent } from './dashboard/user-details/user-details.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
         AuthenticationComponent,
         DashboardComponent,
         StyleguideComponent,
+        UserDetailsComponent,
     ],
     imports: [
         BrowserModule,

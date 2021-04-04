@@ -19,22 +19,15 @@ export class DashboardComponent implements OnInit {
         scrollwheel: false,
         disableDefaultUI: true,
     }
-
     currentUser = localStorage.getItem('userid');
-
     userDetails: User;
-
     completedMunros: Munro[];
     incompleteMunros: Munro[];
-
     selectedMunros: Munro[];
-
     completedMunrosLoaded = false;
     incompleteMunrosLoaded = false;
-
     totalMunros: number;
     totalMunrosLoaded = false;
-
     showIncomplete = false;
 
     constructor(private dashboardService: DashboardService) { }
