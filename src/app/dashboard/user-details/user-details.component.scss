@@ -1,1 +1,9 @@
 @import '../../../scss/abstracts/variables';
+
+.user-details {
+    &__account {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

@@ -11,11 +11,7 @@
 
     p {
         &:last-of-type {
-            margin-bottom: $spacing-2;
-
-            @media screen and (min-width: $breakpoint-extra-large) {
-                margin-bottom: 0;
-            }
+            margin-bottom: 0;
         }
     }
 

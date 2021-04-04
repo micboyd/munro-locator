@@ -32,8 +32,7 @@ $font-weight-extra-bold: 600;
 // Colour Pallete
 $white: #fff;
 $base-black: #000;
-$black: rgba($base-black, 0.87);
-$off-black: rgba($base-black, 0.6);
+$black: rgba($base-black, 0.6);
 $border-black: rgba($base-black, 0.2);
 $purple: #6200ee;
 $light-purple: rgba($purple, 0.7);
@@ -61,7 +60,7 @@ $spacing-12: 9.6rem;
 // Breakpoints
 $breakpoint-small: 576px;
 $breakpoint-medium: 768px;
-$breakpoint-extra-large: 992px;
+$breakpoint-large: 992px;
 $breakpoint-extra-large: 1200px;
 
 // Standard Border Radius

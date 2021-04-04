@@ -2,33 +2,55 @@
 
 .dashboard {
     display: grid;
+    position: relative;
 
     @media screen and (min-width: $breakpoint-extra-large) {
         grid-template-columns: 1fr 3fr;
         min-height: 100vh;
     }
 
+
     &__left,
     &__right {
-
-        height: 50vh;
-
         @media screen and (min-width: $breakpoint-extra-large) {
-            height: 100%;
+            height: 100vh;
         }
     }
 
     &__left {
-        padding: $spacing-5;
+        height: 75vh;
+        padding: $spacing-3;
         overflow: scroll;
+
+        @media screen and (min-width: $breakpoint-extra-large) {
+            padding: $spacing-5;
+            height: 100vh;
+        }
     }
 
     &__right {
+        height: 75vh;
+
         @media screen and (min-width: $breakpoint-extra-large) {
             position: fixed;
             right: 0;
-            height: 100%;
+            height: 100vh;
             width: 75%;
         }
+    }
+
+    &__tabs {
+        padding: $spacing-3 0;
+        text-align: center;
+    }
+
+    &__logout {
+        border-top: 1px solid $disabled-grey;
+        position: absolute;
+        background: white;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        padding: $spacing-3;
     }
 }

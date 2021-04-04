@@ -14,6 +14,25 @@
     line-height: 1.5;
     cursor: pointer;
 
+    &__tab {
+        width: 50%;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+
+        @media screen and (min-width: $breakpoint-extra-large) {
+            width: auto;
+        }
+ 
+        &--active {
+            border-bottom: 2px solid $purple;
+        }
+
+        &:focus {
+            outline: 0;
+        }
+    }
+
     &--full {
         width: 100%;
     }
@@ -55,7 +74,7 @@
     &--white {
         background: $white;
         border: 1px solid $white;
-        color: $off-black;
+        color: $black;
     }
 
     &:disabled {
@@ -63,5 +82,9 @@
         color: $white;
         background: $disabled-grey;
         border: 1px solid $disabled-grey;
+    }
+
+    &--large {
+        padding: $spacing-2;
     }
 }
