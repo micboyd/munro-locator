@@ -4,7 +4,7 @@
             <app-user-details></app-user-details>
             <button (click)="munroToggle()">toggle</button>
         </div>
-        <div class="dashboard__munro-list" *ngIf="completedMunrosLoaded && incompleteMunrosLoaded">
+        <div *ngIf="completedMunrosLoaded && incompleteMunrosLoaded">
             <p *ngFor="let item of selectedMunros"> {{ item.name }} </p>
         </div>
     </div>
