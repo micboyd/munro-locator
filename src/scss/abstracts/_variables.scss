@@ -36,9 +36,8 @@ $black: rgba($base-black, 0.6);
 $border-black: rgba($base-black, 0.2);
 $purple: #6200ee;
 $light-purple: rgba($purple, 0.7);
-$green: #03dac4;
-$blue: #0000a0;
-$light-green: rgba($green, 0.7);
+$green: #1A936F;
+$blue: #009FB7;
 $error-red: #b00020;
 $grey: #f5f5f5;
 $disabled-grey: gainsboro;
@@ -62,6 +61,7 @@ $breakpoint-small: 576px;
 $breakpoint-medium: 768px;
 $breakpoint-large: 992px;
 $breakpoint-extra-large: 1200px;
+$breakpoint-largest: 1400px;
 
 // Standard Border Radius
 $regular-border-radius: 5px;

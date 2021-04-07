@@ -13,6 +13,7 @@
     transition: 0.5s;
     line-height: 1.5;
     cursor: pointer;
+    font-weight: 400;
 
     &__tab {
         width: 50%;
@@ -21,6 +22,7 @@
         border-bottom: 2px solid transparent;
 
         @media screen and (min-width: $breakpoint-extra-large) {
+            border-bottom: 2px solid transparent;
             width: auto;
         }
  
@@ -60,9 +62,7 @@
         border: 1px solid $green;
         color: $white;
 
-        &:hover {
-            background: $light-green;
-        }
+        
     }
 
     &--blue {

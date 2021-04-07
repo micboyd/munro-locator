@@ -1,43 +1,61 @@
 <div class="dashboard">
-    <div class="dashboard__left hide-scrollbar">
+    <div
+        class="dashboard__left hide-scrollbar"
+        *ngIf="completedMunrosLoaded && incompleteMunrosLoaded">
         <div class="dashboard__user">
-            <app-user-details *ngIf="currentUserLoaded" [userDetails]="userDetails"></app-user-details>
+            <app-user-details
+                *ngIf="currentUserLoaded"
+                [userDetails]="userDetails"
+            ></app-user-details>
         </div>
-        <div *ngIf="completedMunrosLoaded && incompleteMunrosLoaded">
-            <div class="dashboard__tabs">
-                <button 
-                    class="button button__tab" 
-                    (click)="munroToggle(false)"
-                    [ngClass]="{'button__tab--active' : !this.showIncomplete}">
-                        Complete
-                </button>
-                <button 
-                    class="button button__tab" 
-                    (click)="munroToggle(true)"
-                    [ngClass]="{'button__tab--active' : this.showIncomplete}">
-                        Incomplete
-                </button>
+
+        <div class="dashboard__tabs">
+            <button
+                class="button button__tab"
+                (click)="munroToggle(false)"
+                [ngClass]="{ 'button__tab--active': !this.showIncomplete }">
+                Complete
+            </button>
+            <button
+                class="button button__tab"
+                (click)="munroToggle(true)"
+                [ngClass]="{ 'button__tab--active': this.showIncomplete }">
+                Incomplete
+            </button>
+        </div>
+
+        <div class="dashboard__munros">
+            <div *ngIf="selectedMunros.length === 0" class="dashboard__error">
+                <p class="overline">No munros</p>
             </div>
             <div class="card" *ngFor="let item of selectedMunros">
-                <div>
-                    <h3 class="header header--five no-margin">{{ item.name }}</h3>
-                    <p class="no-margin">{{ item.height }}m</p>
+                <div class="card__content">
+                    <h3 class="header header--five no-margin">
+                        {{ item.name }}
+                    </h3>
+                    <p>{{ item.height }}m</p>
                 </div>
-                <button class="button button--green" (click)="addMarker(item.latlng_lat, item.latlng_lng)">Locate</button>
-
+                <button
+                    class="button button--blue"
+                    (click)="addMarker(item.latlng_lat, item.latlng_lng)">
+                    Locate
+                </button>
             </div>
         </div>
     </div>
     <div class="dashboard__right">
-        <google-map id="map" height="100%" width="100%" [zoom]="zoom" [center]="center" [options]="options">
-
-                <map-marker
+        <google-map
+            id="map"
+            height="100%"
+            width="100%"
+            [zoom]="zoom"
+            [center]="center"
+            [options]="options">
+            <map-marker
                 *ngFor="let marker of markers"
                 [position]="marker.position"
-                [options]="marker.options"
-          >
-          </map-marker>
-
+                [options]="marker.options">
+            </map-marker>
         </google-map>
     </div>
 </div>

@@ -2,6 +2,10 @@
     box-sizing: border-box;
 }
 
+html,body {
+    height:100%;
+}
+
 html {
     -webkit-text-size-adjust: none;
     font-size: 62.5%;

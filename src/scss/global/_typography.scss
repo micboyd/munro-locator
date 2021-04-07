@@ -7,6 +7,12 @@ body {
     color: $black;
 }
 
+html, html a {
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    -webkit-font-smoothing: antialiased;
+    -webkit-filter: blur(0.000001px);
+}
+
 .header {
     margin: 0 0 $spacing-1 0;
 
