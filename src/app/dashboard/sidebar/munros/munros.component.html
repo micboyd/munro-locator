@@ -1,14 +1,32 @@
 <div class="munros">
-
     <div class="munros__tabs">
-        <button class="button button__tab">Complete</button>
-        <button class="button button__tab button__tab--active">Incomplete</button>
+        <button
+            (click)="tabSelection(true)"
+            class="button button__tab"
+            [ngClass]="{ 'button__tab--active': showIncomplete }">
+            Incomplete
+        </button>
+        <button
+            (click)="tabSelection(false)"
+            class="button button__tab"
+            [ngClass]="{ 'button__tab--active': !showIncomplete }">
+            Complete
+        </button>
     </div>
 
-    <div class="munros__complete"></div>
-
-    <div *ngIf="incompleteMunrosLoaded" class="munros__incomplete">
-        <app-munro *ngFor="let item of incompleteMunros" [munroInformation]="item"></app-munro>
+    <div *ngIf="completeMunrosLoaded && !showIncomplete">
+        <p class="munros__error overline" *ngIf="completeMunros.length <= 0">No Munros</p>
+        <app-munro
+            *ngFor="let item of completeMunros"
+            [munroInformation]="item">
+        </app-munro>
     </div>
 
+    <div *ngIf="incompleteMunrosLoaded && showIncomplete">
+        <p class="munros__error overline" *ngIf="incompleteMunros.length <= 0">No Munros</p>
+        <app-munro
+            *ngFor="let item of incompleteMunros"
+            [munroInformation]="item">
+        </app-munro>
+    </div>
 </div>

@@ -13,11 +13,21 @@ export class MunrosComponent implements OnInit {
     incompleteMunros: Munro[];
     incompleteMunrosLoaded = false;
 
+    showIncomplete = true;
+
     constructor(private dashboardService: DashboardService) {}
 
     ngOnInit(): void {
         this.getCompleteMunros();
         this.getIncompleteMunros();
+    }
+
+    tabSelection(selection: boolean): void {
+        if (selection) {
+            this.showIncomplete = true;
+        } else {
+            this.showIncomplete = false;
+        }
     }
 
     getCompleteMunros(): void {

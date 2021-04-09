@@ -5,4 +5,9 @@
         text-align: center;
         padding: $spacing-3 0;
     }
+
+    &__error {
+        text-align: center;
+        padding: $spacing-5 0;
+    }
 }
