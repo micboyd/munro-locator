@@ -1,0 +1,14 @@
+<div class="munros">
+
+    <div class="munros__tabs">
+        <button class="button button__tab">Complete</button>
+        <button class="button button__tab button__tab--active">Incomplete</button>
+    </div>
+
+    <div class="munros__complete"></div>
+
+    <div *ngIf="incompleteMunrosLoaded" class="munros__incomplete">
+        <app-munro *ngFor="let item of incompleteMunros" [munroInformation]="item"></app-munro>
+    </div>
+
+</div>

@@ -2,13 +2,14 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BackendConfig } from './../config/backend-environment';
-import { BehaviorSubject } from 'rxjs';
+
 @Injectable({
     providedIn: 'root',
 })
 export class DashboardService {
-    currentUser: string;
-    totalMunros: number;
+
+
+    currentUser: string = localStorage.getItem('userid');
 
     headers = {
         'Content-Type': 'application/json',
@@ -19,37 +20,28 @@ export class DashboardService {
         private backendConfig: BackendConfig
     ) {}
 
-    getTotalMunros(): void {
-        this.currentUser = localStorage.getItem('userid');
-        this.getTotal(this.currentUser).subscribe((data) => {
-            this.totalMunros = data.count;
-        });
-    }
-
+    // Get the details of the logged in user
     getUserDetails(userId: string): Observable<any> {
         return this.http.get(
             `${this.backendConfig.environment.production}/api/user/details/${userId}`
         );
     }
 
+    // Get the users complete munros
     getCompletedMunros(userId: string): Observable<any> {
         return this.http.get(
             `${this.backendConfig.environment.production}/api/munros/complete/${userId}`
         );
     }
 
+    // Get the users incomplete munros
     getIncompleteMunros(userId: string): Observable<any> {
         return this.http.get(
             `${this.backendConfig.environment.production}/api/munros/incomplete/${userId}`
         );
     }
 
-    getTotal(userId: string): Observable<any> {
-        return this.http.get(
-            `${this.backendConfig.environment.production}/api/munros/count/${userId}`
-        );
-    }
-
+    // Change the status of a munro (complete or incomplete)
     updateMunro(
         complete: boolean,
         userId: string,

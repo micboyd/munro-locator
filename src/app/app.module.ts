@@ -12,7 +12,11 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StyleguideComponent } from './styleguide/styleguide.component';
 import { GoogleMapsModule } from '@angular/google-maps';
-import { UserDetailsComponent } from './dashboard/user-details/user-details.component';
+import { MapComponent } from './dashboard/map/map.component';
+import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
+import { MunrosComponent } from './dashboard/sidebar/munros/munros.component';
+import { UserComponent } from './dashboard/sidebar/user/user.component';
+import { MunroComponent } from './dashboard/sidebar/munros/munro/munro.component';
 
 @NgModule({
     declarations: [
@@ -20,7 +24,11 @@ import { UserDetailsComponent } from './dashboard/user-details/user-details.comp
         AuthenticationComponent,
         DashboardComponent,
         StyleguideComponent,
-        UserDetailsComponent,
+        MapComponent,
+        SidebarComponent,
+        MunrosComponent,
+        UserComponent,
+        MunroComponent
     ],
     imports: [
         BrowserModule,

@@ -1,61 +1,8 @@
 <div class="dashboard">
-    <div
-        class="dashboard__left hide-scrollbar"
-        *ngIf="completedMunrosLoaded && incompleteMunrosLoaded">
-        <div class="dashboard__user">
-            <app-user-details
-                *ngIf="currentUserLoaded"
-                [userDetails]="userDetails"
-            ></app-user-details>
-        </div>
-
-        <div class="dashboard__tabs">
-            <button
-                class="button button__tab"
-                (click)="munroToggle(false)"
-                [ngClass]="{ 'button__tab--active': !this.showIncomplete }">
-                Complete
-            </button>
-            <button
-                class="button button__tab"
-                (click)="munroToggle(true)"
-                [ngClass]="{ 'button__tab--active': this.showIncomplete }">
-                Incomplete
-            </button>
-        </div>
-
-        <div class="dashboard__munros">
-            <div *ngIf="selectedMunros.length === 0" class="dashboard__error">
-                <p class="overline">No munros</p>
-            </div>
-            <div class="card" *ngFor="let item of selectedMunros">
-                <div class="card__content">
-                    <h3 class="header header--five no-margin">
-                        {{ item.name }}
-                    </h3>
-                    <p>{{ item.height }}m</p>
-                </div>
-                <button
-                    class="button button--blue"
-                    (click)="addMarker(item.latlng_lat, item.latlng_lng)">
-                    Locate
-                </button>
-            </div>
-        </div>
+    <div class="dashboard__left hide-scrollbar">
+        <app-sidebar></app-sidebar>
     </div>
     <div class="dashboard__right">
-        <google-map
-            id="map"
-            height="100%"
-            width="100%"
-            [zoom]="zoom"
-            [center]="center"
-            [options]="options">
-            <map-marker
-                *ngFor="let marker of markers"
-                [position]="marker.position"
-                [options]="marker.options">
-            </map-marker>
-        </google-map>
+        <app-map></app-map>
     </div>
 </div>
