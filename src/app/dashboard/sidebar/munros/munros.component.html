@@ -15,7 +15,7 @@
     </div>
 
     <div *ngIf="completeMunrosLoaded && !showIncomplete">
-        <p class="munros__error overline" *ngIf="completeMunros.length <= 0">No Munros</p>
+        <p class="munros__error overline" *ngIf="completeMunros.length === 0">No Munros</p>
         <app-munro
             *ngFor="let item of completeMunros"
             [munroInformation]="item">
@@ -23,7 +23,7 @@
     </div>
 
     <div *ngIf="incompleteMunrosLoaded && showIncomplete">
-        <p class="munros__error overline" *ngIf="incompleteMunros.length <= 0">No Munros</p>
+        <p class="munros__error overline" *ngIf="incompleteMunros.length === 0">No Munros</p>
         <app-munro
             *ngFor="let item of incompleteMunros"
             [munroInformation]="item">
