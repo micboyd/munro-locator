@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap } from '@angular/google-maps';
+import { DashboardService } from '../dashboard.service';
 
 @Component({
     selector: 'app-map',
@@ -19,7 +20,13 @@ export class MapComponent implements OnInit {
     showMarker = false;
     markers = [];
 
-    constructor() {}
+    constructor(private dashboardService: DashboardService) {
+        this.dashboardService.munroLocation.subscribe(
+            (data) => {
+                this.addMarker(data.lat, data.lng);
+            }
+        );
+    }
 
     ngOnInit(): void {
         this.center = {
@@ -29,7 +36,7 @@ export class MapComponent implements OnInit {
     }
 
     addMarker(lat: number, lng: number) {
-        const element = document.querySelector("#map")
+        const element = document.querySelector("#map");
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         this.markers = [];

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BackendConfig } from './../config/backend-environment';
 
@@ -10,6 +10,8 @@ export class DashboardService {
 
 
     currentUser: string = localStorage.getItem('userid');
+
+    munroLocation = new EventEmitter<any>();
 
     headers = {
         'Content-Type': 'application/json',

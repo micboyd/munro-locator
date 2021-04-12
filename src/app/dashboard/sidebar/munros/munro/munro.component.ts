@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { DashboardService } from 'src/app/dashboard/dashboard.service';
 import { Munro } from 'src/models/munro';
 import { Status } from 'src/models/status';
 
@@ -13,6 +14,10 @@ export class MunroComponent implements OnInit {
 
     @Output() munroStatus = new EventEmitter<Status>();
 
+    constructor(private dashboardService: DashboardService) {}
+
+    ngOnInit(): void {}
+
     updateMunroStatus(): void {
         const response = {
             id: this.munroInformation._id,
@@ -22,7 +27,12 @@ export class MunroComponent implements OnInit {
         this.munroStatus.emit(response);
     }
 
-    constructor() {}
+    locateMunro(lat: number, lng: number): void {
+        let coordinates = {
+            lat: lat,
+            lng: lng
+        }
 
-    ngOnInit(): void {}
+        this.dashboardService.munroLocation.emit(coordinates);
+    }
 }
