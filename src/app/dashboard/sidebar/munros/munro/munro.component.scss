@@ -1,9 +1,41 @@
 @import '../../../../../scss/abstracts/variables';
 
 .munro {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
     border: 1px solid $grey;
     border-radius: $regular-border-radius;
     box-shadow: 0 1px 4px rgb(0 0 0 / 8%), 0 0 0 1px rgb(0 0 0 / 4%);
     padding: $spacing-3;
     margin-bottom: $spacing-3;
+
+    @media screen and (min-width: $breakpoint-extra-large) {
+        flex-direction: row;
+    }
+
+    button {
+        margin-top: $spacing-3;
+
+        @media screen and (min-width: $breakpoint-extra-large) {
+            margin-top: 0;
+        }
+    }
+
+    .fa-trash-alt {
+        font-size: 1.4rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &___left {
+        padding-right: $spacing-4;
+    }
+
+    &__right {
+        display: flex;
+        align-items: center;
+    }
 }

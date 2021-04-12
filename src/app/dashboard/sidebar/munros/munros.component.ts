@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Munro } from 'src/models/munro';
 import { DashboardService } from '../../dashboard.service';
+import { Munro } from 'src/models/munro';
+import { Status } from 'src/models/status';
 
 @Component({
     selector: 'app-munros',
@@ -48,17 +49,20 @@ export class MunrosComponent implements OnInit {
             });
     }
 
-    updateMunroStatus(update: boolean, munroId: any) {
+    updateMunroStatus(event: Status) {
         const payload = {
-            munros: [munroId],
+            munros: [event.id],
         };
 
         this.dashboardService
-            .updateMunro(update, this.dashboardService.currentUser, payload)
+            .updateMunro(event.isIncomplete, this.dashboardService.currentUser, payload)
             .subscribe(
                 (data) => {
                     this.getIncompleteMunros();
                     this.getCompleteMunros();
+                },
+                (error) => {
+                    console.log(error);
                 }
             );
     }

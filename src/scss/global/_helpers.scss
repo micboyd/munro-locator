@@ -10,13 +10,17 @@
     margin-bottom: $spacing-3;
 }
 
+.margin-top-3 {
+    margin-top: $spacing-3;
+}
+
 .hide-scrollbar {
     /*FireFox*/
     scrollbar-width: none;
     /*IE10+*/
     -ms-overflow-style: -ms-autohiding-scrollbar;
   }
-  
+
   .hide-scrollbar::-webkit-scrollbar {
     /*Chrome, Safari, Edge*/
     display: none;

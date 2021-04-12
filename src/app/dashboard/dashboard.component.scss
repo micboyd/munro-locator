@@ -10,7 +10,7 @@
     }
 
     @media screen and (min-width: $breakpoint-largest) {
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: 1.5fr 2fr;
     }
 
     &__left,
@@ -42,7 +42,7 @@
         }
 
         @media screen and (min-width: $breakpoint-largest) {
-            width: 66.6666666%;
+            width: 57.15%;
         }
     }
 }

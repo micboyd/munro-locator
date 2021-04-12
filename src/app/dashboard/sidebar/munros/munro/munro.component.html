@@ -1,4 +1,16 @@
 <div class="munro">
-    <h3 class="header header--five no-margin">{{ munroInformation.name }}</h3>
-    <p>{{ munroInformation.height }}m</p>
+    <div class="munro__left">
+        <h3 class="header header--five no-margin">{{ munroInformation.name }}</h3>
+        <p>Height: <strong>{{ munroInformation.height }}m</strong></p>
+        <p><i class="fas fa-map-pin"></i> {{ munroInformation.region }}</p>
+    </div>
+    <div class="munro__right">
+        <button
+            (click)="updateMunroStatus()"
+            class="pill overline"
+            [ngClass]="isIncomplete == true ? 'pill--green' : 'pill--red'">
+            mark as {{ isIncomplete ? 'complete ' : 'incomplete ' }}
+            <i class="fas {{ isIncomplete ? 'fa-check-circle' : 'fa-times-circle' }}"></i>
+        </button>
+    </div>
 </div>

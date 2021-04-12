@@ -43,7 +43,7 @@ export class DashboardService {
 
     // Change the status of a munro (complete or incomplete)
     updateMunro(
-        complete: boolean,
+        incomplete: boolean,
         userId: string,
         payload: any
     ): Observable<any> {
@@ -51,7 +51,7 @@ export class DashboardService {
 
         return this.http.put(
             `${this.backendConfig.environment.production}/api/munros/${
-                complete ? 'mark-complete' : 'mark-incomplete'
+                incomplete ? 'mark-complete' : 'mark-incomplete'
             }/${userId}`,
             body,
             { headers: this.headers }

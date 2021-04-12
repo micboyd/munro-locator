@@ -1,0 +1,19 @@
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
+.pill {
+    border: 0;
+    padding: $spacing-1 $spacing-2;
+    border-radius: 1.5rem;
+    color: $white;
+    white-space: nowrap;
+
+
+    &--green {
+        background: $green;
+    }
+
+    &--red {
+        background: $error-red;
+    }
+}
