@@ -3,16 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root',
 })
 export class MunroService {
+	private apiUrl = 'https://munro-api-780f51427c56.herokuapp.com/api/munros';
 
-  private apiUrl = 'http://localhost:4200/filtered_munros.json';  // Example API endpoint
+	constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-    // Method to fetch data
-    getMunros(): Observable<any> {
-        return this.http.get(this.apiUrl);
-    }
+	getMunros(): Observable<any> {
+		return this.http.get(this.apiUrl);
+	}
 }
