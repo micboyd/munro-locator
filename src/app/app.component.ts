@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
 
 	ngOnInit() {
 		this.munroService.getMunros().subscribe(data => {
+            console.log(data);
 			this._munros = data.map((munroData: IMunro) => new Munro(munroData));
 		});
 
