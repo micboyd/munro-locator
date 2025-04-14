@@ -1,0 +1,19 @@
+@if (closestMunro) {
+    <div class="flex flex-col h-screen">
+        <div class="flex-1 overflow-y-auto bg-gray-100 p-4">
+            <h1 class="font-dmSans text-4xl">{{ closestMunro.name }}</h1>
+        </div>
+        @if (closestMunro) {
+            <div class="flex-1">
+                <app-map [selectedMunro]="closestMunro"></app-map>
+            </div>
+        }
+    </div>
+}
+@else {
+    <div class="h-screen flex items-center justify-center">
+        <button class="font-dmSans text-sm bg-black text-white py-2 px-4 rounded cursor-pointer" (click)="getClosestMunro()">
+            Find my nearest Munro
+        </button>
+    </div>
+}

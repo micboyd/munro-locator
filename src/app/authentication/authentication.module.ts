@@ -1,11 +1,13 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { AuthenticationComponent } from './authentication.component';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-	declarations: [],
-	imports: [BrowserModule],
-	providers: [provideHttpClient()],
-	bootstrap: [],
+  declarations: [AuthenticationComponent],
+  imports: [CommonModule, ReactiveFormsModule],
+  exports: [AuthenticationComponent]
 })
-export class AppModule {}
+export class AuthenticationModule {
+
+}

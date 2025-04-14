@@ -1,5 +1,5 @@
-import { ICoordinate } from './interfaces/ICoordinate';
-import { IMunro } from './interfaces/IMunro';
+import { ICoordinate } from '../interfaces/ICoordinate';
+import { IMunro } from '../interfaces/IMunro';
 
 export class Munro {
 	private _name: string;

@@ -1,0 +1,19 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+	<div>
+		<input class="px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="username" type="text"/>
+	</div>
+
+	<div>
+		<input class="px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" formControlName="password" type="password"/>
+	</div>
+
+	<button type="submit">Login</button>
+
+    @if(loginErrorMessage) {
+        <div class="text-red-500">
+            {{ loginErrorMessage }}
+        </div>
+    }
+
+</form>

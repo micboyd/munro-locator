@@ -2,7 +2,7 @@ import * as L from 'leaflet';
 
 import { Component, Input, OnInit } from '@angular/core';
 
-import { Munro } from '../Munro';
+import { Munro } from '../models/Munro';
 
 @Component({
 	selector: 'app-map',
