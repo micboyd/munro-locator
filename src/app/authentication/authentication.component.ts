@@ -17,21 +17,25 @@ export class AuthenticationComponent implements OnInit {
 	});
 
 	loginErrorMessage: string = '';
+    loginLoading: boolean = false;
 
 	constructor(private authenticationService: AuthenticationService, private router: Router) {}
 
 	ngOnInit() {}
 
 	onSubmit() {
+        this.loginLoading = true;
 		this.authenticationService
 			.login(new LoginRequest(this.loginForm.value.username, this.loginForm.value.password))
 			.subscribe({
 				next: loginData => {
 					this.authenticationService.currentUser = loginData;
 					this.router.navigate(['/dashboard']);
+                    this.loginLoading = false;
 				},
 				error: () => {
-					this.loginErrorMessage = 'Invalid credentials. Please try again.';
+					this.loginErrorMessage = 'Incorrect username or password. Please try again.';
+                    this.loginLoading = false;
 				},
 			});
 	}
