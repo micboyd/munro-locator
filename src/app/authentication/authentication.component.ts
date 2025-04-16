@@ -11,15 +11,19 @@ import { Router } from '@angular/router';
 	standalone: false,
 })
 export class AuthenticationComponent implements OnInit {
-	loginForm = new FormGroup({
-		username: new FormControl(''),
-		password: new FormControl(''),
-	});
-
+	loginForm: FormGroup;
 	loginErrorMessage: string = '';
     loginLoading: boolean = false;
 
-	constructor(private authenticationService: AuthenticationService, private router: Router) {}
+	constructor(
+        private authenticationService: AuthenticationService,
+        private router: Router
+    ) {
+        this.loginForm = new FormGroup({
+            username: new FormControl(''),
+            password: new FormControl(''),
+        });
+    }
 
 	ngOnInit() {}
 
