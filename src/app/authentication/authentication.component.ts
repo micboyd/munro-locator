@@ -39,6 +39,7 @@ export class AuthenticationComponent implements OnInit {
 			.subscribe({
 				next: loginData => {
 					this.authenticationService.setDetails(loginData);
+					this.router.navigate(['/dashboard']);
 					this.loginLoading = false;
 				},
 				error: () => {
