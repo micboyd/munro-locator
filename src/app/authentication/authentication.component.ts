@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthenticationService } from '../services/authentication.service';
 import { LoginRequest } from '../models/LoginRequest';
@@ -20,9 +20,17 @@ export class AuthenticationComponent implements OnInit {
         private router: Router
     ) {
         this.loginForm = new FormGroup({
-            username: new FormControl(''),
-            password: new FormControl(''),
+            username: new FormControl('', [Validators.email, Validators.required]),
+            password: new FormControl('', [Validators.required]),
         });
+    }
+
+    get canSubmit() {
+        return this.loginForm.valid && !this.loginLoading;
+    }
+
+    get formInvalid() {
+        return this.loginForm.invalid && this.loginForm.touched;
     }
 
 	ngOnInit() {}
@@ -43,4 +51,9 @@ export class AuthenticationComponent implements OnInit {
 				},
 			});
 	}
+
+    isControlValid(controlName: string): boolean {
+        const control = this.loginForm.get(controlName);
+        return control.valid && control.untouched ? true : false;
+      }
 }

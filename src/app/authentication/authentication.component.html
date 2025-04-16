@@ -1,26 +1,30 @@
-<section class="tracking-normal text-base antialiased w-screen h-screen flex flex-col md:flex-row">
+<section class="tracking-normal text-sm antialiased w-screen h-screen flex flex-col md:flex-row">
 	<!-- Left Side (Form) -->
 	<div class="w-full md:w-1/2 text-gray-800 antialiased h-screen flex items-center justify-center">
 		<form class="w-4/5 sm:w-2/3 md:w-1/3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-
-            <div class="mb-6">
-                <h2 class="mb-2 tracking-wider uppercase text-sm font-semibold">Manage your Munros</h2>
-                <div class="w-[60px] h-[3px] bg-purple-400"></div>
-            </div>
+			<div class="mb-6">
+				<h2 class="mb-2 tracking-wider uppercase text-sm font-semibold">Manage your Munros</h2>
+				<div class="w-[60px] h-[3px] bg-purple-400"></div>
+			</div>
 
 			<h1 class="mb-4 font-semibold text-3xl">Login to Dashboard</h1>
 
 			<div class="mb-4">
 				<div>
 					<input
-						class="w-full p-2 font-light mb-2 border border-gray-300"
-						placeholder="username"
+						class="w-full p-3 font-light mb-2 border border-gray-300"
+                        [ngClass]="{'border-red-800': isControlValid('username')}"
+						placeholder="username (email)"
 						formControlName="username"
 						type="text" />
-				</div>
+                        @if (isControlValid('username')) {
+                            <label>You must enter a valid email address</label>
+                        }
+                </div>
 				<div>
 					<input
-						class="w-full p-2 font-light border border-gray-300"
+						class="w-full p-3 font-light border border-gray-300"
+                        [ngClass]="{'border-red-800': isControlValid('password')}"
 						placeholder="password"
 						formControlName="password"
 						type="password" />
@@ -41,10 +45,13 @@
 				</ul>
 			</div>
 
-			<button class="font-extralight tracking-wider text-sm bg-gray-800 text-white px-4 py-2 transition cursor-pointer" type="submit">
-                {{ loginLoading ? 'Logging in...' : 'Login' }}
+			<button
+                [disabled]="!canSubmit"
+                [ngClass]="{ 'border-red-500': !canSubmit }"
+				class="font-extralight tracking-wider text-sm bg-gray-800 text-white px-4 py-2 transition cursor-pointer"
+				type="submit">
+				{{ loginLoading ? 'Logging in...' : 'Login' }}
 			</button>
-
 		</form>
 	</div>
 
