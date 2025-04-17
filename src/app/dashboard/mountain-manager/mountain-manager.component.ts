@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MunroService } from '../../services/munros.service';
-import { Munro } from '../../models/Munro';
+import { MunroService } from '../../shared/services/munros.service';
+import { Munro } from '../../shared/models/Munro';
 
 @Component({
 	selector: 'app-mountain-manager',

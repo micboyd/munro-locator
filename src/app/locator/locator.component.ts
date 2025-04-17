@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ICoordinate } from '../interfaces/ICoordinate';
-import { IMunro } from '../interfaces/IMunro';
-import { Munro } from '../models/Munro';
-import { MunroService } from '../services/munros.service';
+import { ICoordinate } from '../shared/interfaces/ICoordinate';
+import { MunroService } from '../shared/services/munros.service';
+import { Munro } from '../shared/models/Munro';
 
 @Component({
 	selector: 'app-root',

@@ -2,9 +2,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-import { AuthenticationService } from '../services/authentication.service';
-import { LoginRequest } from '../models/LoginRequest';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../shared/services/authentication.service';
+import { LoginRequest } from '../shared/models/LoginRequest';
 
 @Component({
 	selector: 'app-authentication',

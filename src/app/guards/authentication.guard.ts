@@ -1,7 +1,7 @@
 // auth.guard.ts
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthenticationService } from '../services/authentication.service';
+import { AuthenticationService } from '../shared/services/authentication.service';
 
 @Injectable({
 	providedIn: 'root',
