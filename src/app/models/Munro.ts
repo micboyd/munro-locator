@@ -1,37 +1,35 @@
 import { ICoordinate } from '../interfaces/ICoordinate';
 import { IMunro } from '../interfaces/IMunro';
 
-export class Munro {
-	private _name: string;
-	private _height: number;
-	private _latitude: number;
-	private _longitude: number;
-	private _hillbagging: string;
+export class Munro implements IMunro {
+	id: string;
+	hill_id: number;
+	hill_list: string;
+	hill_name: string;
+	meaning: string;
+	height: number;
+	height_drop: number;
+	latitude: number;
+	longitude: number;
+	os_ref: number;
+	region_name: string;
 
-	constructor(munro: IMunro) {
-		this._name = munro.name;
-		this._height = munro.height;
-		this._latitude = munro.latitude;
-		this._longitude = munro.longitude;
-		this._hillbagging = munro.hillbagging;
-	}
-
-	get name(): string {
-		return this._name;
-	}
-
-	get height(): number {
-		return this._height;
-	}
-
-	get hillbagging(): string {
-		return this._hillbagging;
+	constructor(munro: Munro) {
+		this.id = munro.id;
+		this.hill_id = munro.hill_id;
+		this.hill_list = munro.hill_list;
+		this.hill_name = munro.hill_name;
+		this.meaning = munro.meaning;
+		this.height = munro.height;
+		this.height_drop = munro.height_drop;
+		this.latitude = munro.latitude;
+		this.longitude = munro.longitude;
+		this.os_ref = munro.os_ref;
+		this.region_name = munro.region_name;
 	}
 
 	get coordinates(): ICoordinate {
-		return {
-			latitude: this._latitude,
-			longitude: this._longitude,
-		};
+		return { latitude: this.latitude, longitude: this.longitude };
 	}
 }
+

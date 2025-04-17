@@ -1,0 +1,41 @@
+<h1 class="mb-4 font-semibold text-4xl">Mountain Manager</h1>
+
+@if(!munrosLoading) {
+<div class="flex">
+	<div class="w-[50%] grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+		@for (item of allMunros; track item.id) {
+		<div
+			class="relative max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300">
+			<!-- Completed Pill -->
+			<div class="absolute top-3 left-3 z-10">
+				<span class="px-3 py-1 text-sm font-semibold text-white bg-green-700 rounded-full">Completed</span>
+			</div>
+
+			<!-- Checkbox -->
+			<!-- <div class="absolute top-3 right-3 z-10">
+				<label class="inline-flex items-center">
+					<input
+						type="checkbox"
+						class="form-checkbox h-5 w-5 text-pink-500 rounded border-gray-300 focus:ring-pink-500" />
+				</label>
+			</div> -->
+
+			<img
+				class="w-full h-56 object-cover"
+				src="https://i.imghippo.com/files/tn9640iuI.jpg"
+				alt="Listing image" />
+			<div class="p-4">
+				<div class="flex justify-between items-start mb-2">
+					<div>
+						<h2 class="text-lg font-semibold text-gray-900">{{ item.hill_name }}</h2>
+						<p class="text-sm text-gray-500">{{ item.height }}m</p>
+					</div>
+				</div>
+				<p class="text-sm text-gray-600 mb-4">Region: {{ item.region_name }}</p>
+			</div>
+		</div>
+		}
+	</div>
+</div>
+}
+

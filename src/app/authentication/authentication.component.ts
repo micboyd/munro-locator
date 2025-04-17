@@ -1,6 +1,6 @@
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { faCoffee, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthenticationService } from '../services/authentication.service';
 import { LoginRequest } from '../models/LoginRequest';
@@ -15,7 +15,7 @@ export class AuthenticationComponent implements OnInit {
 	loginForm: FormGroup;
 	loginErrorMessage: string = '';
 	loginLoading: boolean = false;
-    faSpinner = faSpinner;
+	faSpinner = faSpinner;
 
 	constructor(private authenticationService: AuthenticationService, private router: Router) {
 		this.loginForm = new FormGroup({
@@ -32,7 +32,9 @@ export class AuthenticationComponent implements OnInit {
 		return this.loginForm.invalid && this.loginForm.touched;
 	}
 
-	ngOnInit() {}
+	ngOnInit() {
+		localStorage.clear();
+	}
 
 	onSubmit() {
 		this.loginLoading = true;
@@ -41,7 +43,7 @@ export class AuthenticationComponent implements OnInit {
 			.subscribe({
 				next: loginData => {
 					this.authenticationService.setDetails(loginData);
-					this.router.navigate(['/dashboard']);
+					this.router.navigate(['/dashboard/mountain-manager']);
 					this.loginLoading = false;
 				},
 				error: () => {

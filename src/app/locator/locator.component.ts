@@ -24,8 +24,8 @@ export class LocatorComponent implements OnInit {
 
 	ngOnInit() {
 		this.munroService.getMunros().subscribe(data => {
-            console.log(data);
-			this._munros = data.map((munroData: IMunro) => new Munro(munroData));
+			console.log(data);
+			this._munros = data.map((munroData: Munro) => new Munro(munroData));
 		});
 
 		this.getCurrentLocation();
@@ -121,3 +121,4 @@ export class LocatorComponent implements OnInit {
 		return earthRadius * c;
 	}
 }
+
