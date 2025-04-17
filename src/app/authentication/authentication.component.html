@@ -13,24 +13,24 @@
 				<div>
 					<input
 						class="w-full p-3 font-light mb-2 border border-gray-300"
-                        [ngClass]="{'border-red-800': isInvalid('username')}"
+						[ngClass]="{ 'border-red-800': isInvalid('username') }"
 						placeholder="username (email)"
 						formControlName="username"
 						type="text" />
-                        @if (isInvalid('username')) {
-                            <p class="text-red-800 mb-4">You must enter a valid email address</p>
-                        }
-                </div>
+					@if (isInvalid('username')) {
+					<p class="text-red-800 mb-4">You must enter a valid email address</p>
+					}
+				</div>
 				<div>
 					<input
 						class="w-full p-3 font-light border border-gray-300"
-                        [ngClass]="{'border-red-800': isInvalid('password')}"
+						[ngClass]="{ 'border-red-800': isInvalid('password') }"
 						placeholder="password"
 						formControlName="password"
 						type="password" />
-                        @if (isInvalid('password')) {
-                            <p class="text-red-800 mt-2 mb-4">You must enter a password</p>
-                        }
+					@if (isInvalid('password')) {
+					<p class="text-red-800 mt-2 mb-4">You must enter a password</p>
+					}
 				</div>
 			</div>
 
@@ -49,16 +49,19 @@
 			</div>
 
 			<button
-                [disabled]="!canSubmit"
-                [ngClass]="{ 'border-red-500': !canSubmit }"
+				[disabled]="!canSubmit"
+				[ngClass]="{ 'border-red-500': !canSubmit }"
 				class="tracking-wider uppercase text-sm font-semibold bg-gray-800 text-white px-6 py-4 transition cursor-pointer"
 				type="submit">
-				{{ loginLoading ? 'Logging in...' : 'Login' }}
+				@if(loginLoading) {
+				<fa-icon [icon]="faSpinner" animation="spin"></fa-icon>
+				} @else {
+				<span>Login</span>
+				}
 			</button>
 		</form>
 	</div>
 
-	<!-- Right Side (Grey Background) - Hidden on Mobile -->
 	<div
 		class="hidden md:flex w-1/2 bg-[url(https://i.imghippo.com/files/tn9640iuI.jpg)] bg-cover bg-center h-screen"></div>
 </section>

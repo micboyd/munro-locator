@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { faCoffee, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import { AuthenticationService } from '../services/authentication.service';
 import { LoginRequest } from '../models/LoginRequest';
@@ -14,6 +15,7 @@ export class AuthenticationComponent implements OnInit {
 	loginForm: FormGroup;
 	loginErrorMessage: string = '';
 	loginLoading: boolean = false;
+    faSpinner = faSpinner;
 
 	constructor(private authenticationService: AuthenticationService, private router: Router) {
 		this.loginForm = new FormGroup({
