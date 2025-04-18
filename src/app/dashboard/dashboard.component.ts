@@ -9,9 +9,9 @@ import { AuthenticationService } from '../shared/services/authentication.service
 export class DashboardComponent implements OnInit {
 	constructor(private authenticationService: AuthenticationService) {}
 
-	get currentLoggedInUser() {
-		return this.authenticationService.fullName;
-	}
+	// get currentLoggedInUser() {
+	// 	return this.authenticationService.fullName;
+	// }
 
 	ngOnInit() {}
 }

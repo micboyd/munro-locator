@@ -1,5 +1,5 @@
 export interface IMunro {
-	id: string;
+	_id: string;
 	hill_id: number;
 	hill_list: string;
 	hill_name: string;

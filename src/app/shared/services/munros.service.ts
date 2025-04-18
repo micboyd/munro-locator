@@ -15,5 +15,13 @@ export class MunroService {
 	getMunros(): Observable<Array<Munro>> {
 		return this.http.get<Array<Munro>>(this.apiUrl);
 	}
+
+	updatedUserCompletedMunros(userId: string, completedMunros: Array<string>): Observable<Array<string>> {
+		return this.http.put<Array<string>>(this.apiUrl + `/${userId}/completed`, completedMunros);
+	}
+
+	getUserCompletedMunros(userId: string): Observable<Array<string>> {
+		return this.http.get<Array<string>>(this.apiUrl + `/${userId}/completed`);
+	}
 }
 

@@ -11,8 +11,8 @@ export class SidebarComponent implements OnInit {
 
 	ngOnInit() {}
 
-	get fullname(): string {
-		return this.authenticationService.fullName;
-	}
+	// get fullname(): string {
+	// 	return this.authenticationService.fullName;
+	// }
 }
 

@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginResponse } from '../models/LoginResponse';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { jwtDecode } from 'jwt-decode';
-import { IJWTPayload } from '../shared/interfaces/IJWTPayload';
 import { LoginRequest } from '../models/LoginRequest';
+import { IJWTPayload } from '../interfaces/IJWTPayload';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,17 +15,12 @@ export class AuthenticationService {
 
 	constructor(private http: HttpClient) {}
 
-	get fullName(): string {
-		return localStorage.getItem('fullName');
-	}
-
-	get username(): string {
-		return localStorage.getItem('username');
-	}
-
 	setDetails(loginDetails: LoginResponse) {
+		localStorage.setItem('id', loginDetails.user.id);
 		localStorage.setItem('token', loginDetails.token);
 		localStorage.setItem('fullName', `${loginDetails.user.firstname} ${loginDetails.user.lastname}`);
+		localStorage.setItem('firstName', loginDetails.user.firstname);
+		localStorage.setItem('lastName', loginDetails.user.lastname);
 		localStorage.setItem('username', loginDetails.user.username);
 	}
 

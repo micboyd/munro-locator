@@ -1,14 +1,27 @@
-<section class="flex w-screen h-screen">
-    <div class="w-1/10">
-        <app-sidebar></app-sidebar>
-    </div>
-    <div class="w-9/10 overflow-auto">
-        <div class="p-16 pb-0">
-            <h2 class="mb-2 tracking-wider uppercase text-lg font-semibold">Hill Management System</h2>
-            <div class="w-[60px] h-[3px] bg-purple-400"></div>
-        </div>        
-        <div class="p-16">
-            <router-outlet></router-outlet>
-        </div>
-    </div>
-</section>
+<!-- Sidebar (fixed to left, modern dark theme) -->
+<div class="fixed top-0 left-0 h-screen w-64 bg-[#0D1B2A] text-white border-r border-[#1B263B] shadow-md z-20">
+	<div class="p-6 overflow-y-auto h-full">
+		<!-- Profile Section -->
+		<div class="flex items-center space-x-4 mb-8">
+			<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-white text-xl"></div>
+			<div>
+				<p class="font-medium">Michael Boyd</p>
+				<a class="text-sm text-[#8DA9C4] hover:underline" href="#">View profile</a>
+			</div>
+		</div>
+
+		<!-- Navigation -->
+		<h2 class="text-lg font-semibold text-[#E0E1DD] mb-6">Menu</h2>
+		<nav class="space-y-2">
+			<a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition">
+				<span class="text-sm font-medium">Mountain Manager</span>
+			</a>
+			<a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition">
+				<span class="text-sm font-medium">Logout</span>
+			</a>
+		</nav>
+	</div>
+</div>
+
+<router-outlet></router-outlet>
+

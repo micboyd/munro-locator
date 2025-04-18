@@ -1,5 +1,4 @@
 <section class="w-screen h-screen flex flex-col md:flex-row">
-
 	<div class="w-full md:w-1/2 text-gray-800 h-screen flex items-center justify-center">
 		<form class="w-4/5 sm:w-2/3 md:w-1/3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 			<div class="mb-6">
@@ -18,7 +17,7 @@
 						formControlName="username"
 						type="text" />
 					@if (isInvalid('username')) {
-					<p class="text-red-800 mb-4">You must enter a valid email address</p>
+					<p class="text-red-800 mb-4">You must enter a valid email address.</p>
 					}
 				</div>
 				<div>
@@ -29,14 +28,14 @@
 						formControlName="password"
 						type="password" />
 					@if (isInvalid('password')) {
-					<p class="text-red-800 mt-2 mb-4">You must enter a password</p>
+					<p class="text-red-800 mt-2 mb-4">You must enter a password.</p>
 					}
 				</div>
 			</div>
 
 			@if(loginErrorMessage) {
 			<div class="mb-4">
-				<p class="text-red-500">{{ loginErrorMessage }}</p>
+				<p class="text-red-800">{{ loginErrorMessage }}</p>
 			</div>
 			}
 
@@ -50,7 +49,7 @@
 
 			<button
 				[disabled]="!canSubmit"
-				[ngClass]="{ 'border-red-500': !canSubmit }"
+				[ngClass]="{ 'border-red-800': !canSubmit }"
 				class="tracking-wider uppercase text-sm font-semibold bg-gray-800 text-white px-6 py-4 transition cursor-pointer"
 				type="submit">
 				@if(loginLoading) {
@@ -62,5 +61,7 @@
 		</form>
 	</div>
 
-	<div class="hidden md:flex w-1/2 bg-[url(https://i.imghippo.com/files/tn9640iuI.jpg)] bg-cover bg-center h-screen"></div>
+	<div
+		class="hidden md:flex w-1/2 bg-[url(https://i.imghippo.com/files/tn9640iuI.jpg)] bg-cover bg-center h-screen"></div>
 </section>
+

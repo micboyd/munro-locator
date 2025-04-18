@@ -1,9 +1,10 @@
 export interface ILoginResponse {
-    token: string;
-    user: {
-        id: number;
-        username: string;
-        firstname: string;
-        lastname: string;
-    };
+	token: string;
+	user: {
+		id: string;
+		username: string;
+		firstname: string;
+		lastname: string;
+	};
 }
+

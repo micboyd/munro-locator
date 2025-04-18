@@ -2,7 +2,7 @@ import { ICoordinate } from '../interfaces/ICoordinate';
 import { IMunro } from '../interfaces/IMunro';
 
 export class Munro implements IMunro {
-	id: string;
+	_id: string;
 	hill_id: number;
 	hill_list: string;
 	hill_name: string;
@@ -14,8 +14,10 @@ export class Munro implements IMunro {
 	os_ref: number;
 	region_name: string;
 
+	private _complete: boolean;
+
 	constructor(munro: Munro) {
-		this.id = munro.id;
+		this._id = munro._id;
 		this.hill_id = munro.hill_id;
 		this.hill_list = munro.hill_list;
 		this.hill_name = munro.hill_name;
@@ -30,6 +32,14 @@ export class Munro implements IMunro {
 
 	get coordinates(): ICoordinate {
 		return { latitude: this.latitude, longitude: this.longitude };
+	}
+
+	get completed(): boolean {
+		return this._complete;
+	}
+
+	set completed(value: boolean) {
+		this._complete = value;
 	}
 }
 

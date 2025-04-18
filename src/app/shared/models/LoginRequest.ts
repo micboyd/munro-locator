@@ -1,4 +1,4 @@
-import { ILoginRequest } from '../shared/interfaces/ILoginRequest';
+import { ILoginRequest } from '../interfaces/ILoginRequest';
 
 export class LoginRequest implements ILoginRequest {
 	username: string;
