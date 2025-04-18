@@ -1,0 +1,53 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+	<div class="mb-4">
+		<div>
+			<input
+				class="w-full p-3 font-light mb-2 border border-gray-300"
+				[ngClass]="{ 'border-red-800': isInvalid('username') }"
+				placeholder="username (email)"
+				formControlName="username"
+				type="text" />
+			@if (isInvalid('username')) {
+			<p class="text-red-800 mb-4">You must enter a valid email address.</p>
+			}
+		</div>
+		<div>
+			<input
+				class="w-full p-3 font-light border border-gray-300"
+				[ngClass]="{ 'border-red-800': isInvalid('password') }"
+				placeholder="password"
+				formControlName="password"
+				type="password" />
+			@if (isInvalid('password')) {
+			<p class="text-red-800 mt-2 mb-4">You must enter a password.</p>
+			}
+		</div>
+	</div>
+
+	@if(loginErrorMessage) {
+	<div class="mb-4">
+		<p class="text-red-800">{{ loginErrorMessage }}</p>
+	</div>
+	}
+
+	<div class="mb-4">
+		<ul class="flex">
+			<li class="mr-2">
+				<a href="#" class="text-blue-500">Forgot password?</a>
+			</li>
+		</ul>
+	</div>
+
+	<button
+		[disabled]="!canSubmit"
+		[ngClass]="{ 'border-red-800': !canSubmit }"
+		class="tracking-wider uppercase text-sm font-semibold bg-gray-800 text-white px-6 py-4 transition cursor-pointer"
+		type="submit">
+		@if(loginLoading) {
+		<fa-icon [icon]="faSpinner" animation="spin"></fa-icon>
+		} @else {
+		<span>Login</span>
+		}
+	</button>
+</form>
+

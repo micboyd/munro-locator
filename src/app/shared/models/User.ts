@@ -7,14 +7,16 @@ export class User implements IUser {
 	username: string;
 	firstname: string;
 	lastname: string;
+	password: string;
 	completedMunros: Array<string>;
 
-	constructor(munro: IUser) {
-		this.id = munro.id;
-		this.username = munro.username;
-		this.firstname = munro.firstname;
-		this.lastname = munro.lastname;
-		this.completedMunros = munro.completedMunros;
+	constructor(user: IUser) {
+		this.id = user.id;
+		this.username = user.username;
+		this.firstname = user.firstname;
+		this.lastname = user.lastname;
+		this.password = user.password;
+		this.completedMunros = user.completedMunros;
 	}
 }
 

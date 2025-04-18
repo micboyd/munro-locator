@@ -6,6 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 import { LoginRequest } from '../models/LoginRequest';
 import { IJWTPayload } from '../interfaces/IJWTPayload';
 import { environment } from '../../../environments/environment';
+import { User } from '../models/User';
 
 @Injectable({
 	providedIn: 'root',
@@ -26,6 +27,10 @@ export class AuthenticationService {
 
 	login(payload: LoginRequest): Observable<LoginResponse> {
 		return this.http.post<LoginResponse>(`${this._apiUrl}/login`, payload);
+	}
+
+	register(payload: User): Observable<User> {
+		return this.http.post<User>(`${this._apiUrl}/register`, payload);
 	}
 
 	clearDetails() {

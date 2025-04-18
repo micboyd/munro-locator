@@ -33,8 +33,7 @@
 						<div class="w-1/2 bg-white overflow-auto">
 							<div class="space-y-4">
 								<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-									@if(!munrosLoading) { @for (item of displayMunros; track item.hill_id) { @defer (on
-									viewport) {
+									@if(!munrosLoading) { @for (item of displayMunros; track item.hill_id) {
 									<div
 										class="relative rounded-2xl overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300 min-h-[300px]">
 										@if (item.completed) {
@@ -67,16 +66,14 @@
 											<p class="text-sm text-gray-600 mb-4">Region: {{ item.region_name }}</p>
 										</div>
 									</div>
-									} @placeholder {
-									<div></div>
-									} } }
+									} }
 								</div>
 							</div>
 						</div>
 
 						<!-- Right side: fixed full height -->
 						<div class="w-1/2 bg-white flex flex-col h-full">
-							<app-map class="h-full"></app-map>
+							<app-map [munros]="displayMunros" class="h-full"></app-map>
 						</div>
 					</div>
 				</div>

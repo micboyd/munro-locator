@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Munro } from '../models/Munro';
 import { environment } from '../../../environments/environment.development';
 
@@ -9,6 +9,11 @@ import { environment } from '../../../environments/environment.development';
 })
 export class MunroService {
 	private apiUrl = `${environment.baseApiUrl}/munros`;
+
+	private completedMunrosUpdateSubject = new Subject<void>();
+
+	// Observable for listening
+	completedMunrosUpdated$ = this.completedMunrosUpdateSubject.asObservable();
 
 	constructor(private http: HttpClient) {}
 
@@ -22,6 +27,11 @@ export class MunroService {
 
 	getUserCompletedMunros(userId: string): Observable<Array<string>> {
 		return this.http.get<Array<string>>(this.apiUrl + `/${userId}/completed`);
+	}
+
+	// Method to trigger the action
+	updateCompletedMunros() {
+		this.completedMunrosUpdateSubject.next(); // or next(true) if using a boolean
 	}
 }
 

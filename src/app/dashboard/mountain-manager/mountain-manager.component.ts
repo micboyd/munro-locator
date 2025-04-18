@@ -53,8 +53,11 @@ export class MountainManagerComponent implements OnInit {
 	}
 
 	munroCompletedUpdated(munro: Munro, completed: boolean) {
+		this.munroService.updateCompletedMunros();
 		munro.completed = completed;
+
 		this.syncMunroLists();
+		this._allMunros = [...this._allMunros];
 		this.updatedUserCompleted();
 	}
 
@@ -93,8 +96,8 @@ export class MountainManagerComponent implements OnInit {
 	}
 
 	private syncMunroLists() {
-		this._uncompletedMunros = this._allMunros.filter(item => !item.completed);
-		this._completedMunros = this._allMunros.filter(item => item.completed);
+		this._completedMunros = [...this._allMunros.filter(item => item.completed)];
+		this._uncompletedMunros = [...this._allMunros.filter(item => !item.completed)];
 	}
 }
 

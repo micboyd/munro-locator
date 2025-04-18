@@ -1,11 +1,25 @@
-<nav class="h-lvh bg-sky-900">
-	<div class="py-16 px-0">
-		<div class="flex items-center justify-center mb-4">
-			<div
-				class="w-32 h-32 rounded-full bg-cover bg-center bg-no-repeat"
-				style="background-image: url('https://i.imghippo.com/files/tn9640iuI.jpg')"></div>
+<!-- Sidebar (fixed to left, modern dark theme) -->
+<div class="fixed top-0 left-0 h-screen w-64 bg-[#0D1B2A] text-white border-r border-[#1B263B] shadow-md z-20">
+	<div class="p-6 overflow-y-auto h-full">
+		<!-- Profile Section -->
+		<div class="flex items-center space-x-4 mb-8">
+			<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-white text-xl"></div>
+			<div>
+				<p class="font-medium">{{ currentUser }}</p>
+				<a class="text-sm text-[#8DA9C4] hover:underline" href="#">View profile</a>
+			</div>
 		</div>
-		<h3 class="text-center text-white font-semibold text-2xl uppercase">Michael Boyd</h3>
+
+		<!-- Navigation -->
+		<h2 class="text-lg font-semibold text-[#E0E1DD] mb-6">Menu</h2>
+		<nav class="space-y-2">
+			<a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition">
+				<span class="text-sm font-medium">Mountain Manager</span>
+			</a>
+			<a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition">
+				<span class="text-sm font-medium">Logout</span>
+			</a>
+		</nav>
 	</div>
-</nav>
+</div>
 
