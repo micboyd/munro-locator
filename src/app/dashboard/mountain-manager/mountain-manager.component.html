@@ -5,7 +5,7 @@
 		<div class="bg-white flex-1">
 			<section class="flex-1 h-full">
 				<div class="h-screen p-12 w-full flex flex-col">
-                    @if(!munrosLoading)  {
+					@if(!munrosLoading) {
 					<!-- Title section -->
 					<div class="mb-4">
 						<h1 class="mb-4 font-semibold text-4xl">Munro Manager</h1>
@@ -53,7 +53,7 @@
 
 										<img
 											class="w-full h-56 object-cover"
-											[src]="'http://localhost:3000' + item.image_url"
+											[src]="item.image_url"
 											alt="Listing image" />
 										<div class="p-4">
 											<div class="flex justify-between items-start mb-2">
@@ -68,15 +68,18 @@
 
 											<!-- File upload section -->
 											<div class="mt-4">
-												<label for="uploadImage" class="block text-sm font-medium text-gray-700">Upload Image</label>
+												<label
+													for="uploadImage"
+													class="block text-sm font-medium text-gray-700">
+													Upload Image
+												</label>
 												<input
 													type="file"
 													id="uploadImage"
 													name="image"
 													accept="image/*"
 													class="mt-2 block w-full text-sm text-gray-800 file:border file:border-gray-300 file:bg-gray-50 file:px-4 file:py-2 file:rounded-md file:text-sm file:font-semibold hover:file:bg-gray-100"
-													(change)="onImageSelect($event, item)"
-												/>
+													(change)="onImageSelect($event, item)" />
 											</div>
 										</div>
 									</div>
@@ -90,11 +93,12 @@
 							<app-map [munros]="displayMunros" class="h-full"></app-map>
 						</div>
 					</div>
-                    } @else {
-                    <app-loading-indicator></app-loading-indicator>
-                    }
+					} @else {
+					<app-loading-indicator></app-loading-indicator>
+					}
 				</div>
 			</section>
 		</div>
 	</section>
 </div>
+
