@@ -40,15 +40,11 @@ export class MapComponent implements OnInit, OnChanges {
 	}
 
 	private addMunroMarkers(): void {
-		if (!this.map) {
-			return; // Map not ready yet
-		}
+		if (!this.map) return;
 
-		// Remove existing markers
-		this.markers.forEach(marker => this.map?.removeLayer(marker));
+		this.markers.forEach(marker => this.map!.removeLayer(marker));
 		this.markers = [];
 
-		// Add new markers
 		this.munros.forEach(munro => {
 			const color = munro.completed ? '#006400' : '#e91e63';
 
@@ -77,3 +73,4 @@ export class MapComponent implements OnInit, OnChanges {
 		});
 	}
 }
+
