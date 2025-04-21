@@ -44,7 +44,7 @@
 		class="tracking-wider uppercase text-sm font-semibold bg-gray-800 text-white px-6 py-4 transition cursor-pointer"
 		type="submit">
 		@if(loginLoading) {
-		<fa-icon [icon]="faSpinner" animation="spin"></fa-icon>
+            <app-loading-indicator></app-loading-indicator>
 		} @else {
 		<span>Login</span>
 		}

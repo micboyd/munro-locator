@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
+import { IJWTPayload } from '../interfaces/IJWTPayload';
 import { Injectable } from '@angular/core';
+import { LoginRequest } from '../models/LoginRequest';
 import { LoginResponse } from '../models/LoginResponse';
 import { Observable } from 'rxjs';
-import { jwtDecode } from 'jwt-decode';
-import { LoginRequest } from '../models/LoginRequest';
-import { IJWTPayload } from '../interfaces/IJWTPayload';
-import { environment } from '../../../environments/environment';
 import { User } from '../models/User';
+import { environment } from '../../../environments/environment';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
 	providedIn: 'root',
@@ -29,8 +29,8 @@ export class AuthenticationService {
 		return this.http.post<LoginResponse>(`${this._apiUrl}/login`, payload);
 	}
 
-	register(payload: User): Observable<User> {
-		return this.http.post<User>(`${this._apiUrl}/register`, payload);
+	register(payload: User): Observable<string> {
+		return this.http.post<string>(`${this._apiUrl}/register`, payload);
 	}
 
 	clearDetails() {

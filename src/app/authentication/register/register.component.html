@@ -52,13 +52,19 @@
 	</div>
 	}
 
+    @if(loginGenericMessage) {
+        <div class="mb-4">
+            <p class="text-grey-800">{{ loginGenericMessage }}</p>
+        </div>
+    }
+
 	<button
 		[disabled]="!canSubmit"
 		[ngClass]="{ 'border-red-800': !canSubmit }"
 		class="tracking-wider uppercase text-sm font-semibold bg-gray-800 text-white px-6 py-4 transition cursor-pointer"
 		type="submit">
 		@if(registerLoading) {
-		<fa-icon [icon]="faSpinner" animation="spin"></fa-icon>
+            <app-loading-indicator></app-loading-indicator>
 		} @else {
 		<span>Sign Up</span>
 		}

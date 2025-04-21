@@ -1,8 +1,8 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { AuthenticationService } from '../../shared/services/authentication.service';
 import { Router } from '@angular/router';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { User } from '../../shared/models/User';
 
 @Component({
@@ -12,9 +12,9 @@ import { User } from '../../shared/models/User';
 })
 export class RegisterComponent implements OnInit {
 	registerForm: FormGroup;
+    loginGenericMessage: string = '';
 	loginErrorMessage: string = '';
 	registerLoading: boolean = false;
-	faSpinner = faSpinner;
 
 	constructor(private authenticationService: AuthenticationService, private router: Router) {
 		this.registerForm = new FormGroup({
@@ -50,11 +50,11 @@ export class RegisterComponent implements OnInit {
 			)
 			.subscribe({
 				next: loginData => {
-					this.router.navigate(['/login']);
+					this.loginErrorMessage = loginData;
 					this.registerLoading = false;
 				},
-				error: () => {
-					this.loginErrorMessage = 'Incorrect username or password. Please try again.';
+				error: (err) => {
+					this.loginErrorMessage = err.msg;
 					this.registerLoading = false;
 				},
 			});

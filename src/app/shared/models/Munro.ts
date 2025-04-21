@@ -13,6 +13,7 @@ export class Munro implements IMunro {
 	longitude: number;
 	os_ref: number;
 	region_name: string;
+    image_url: string;
 
 	private _complete: boolean;
 
@@ -28,6 +29,7 @@ export class Munro implements IMunro {
 		this.longitude = munro.longitude;
 		this.os_ref = munro.os_ref;
 		this.region_name = munro.region_name;
+        this.image_url = munro.image_url;
 	}
 
 	get coordinates(): ICoordinate {

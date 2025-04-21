@@ -1,7 +1,8 @@
 import * as L from 'leaflet';
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+
 import { Munro } from '../../models/Munro';
-import { MunroService } from '../../services/munros.service';
 
 @Component({
 	selector: 'app-map',
@@ -15,7 +16,7 @@ export class MapComponent implements OnInit, OnChanges {
 	private map: L.Map | undefined;
 	private markers: L.Marker[] = [];
 
-	constructor(private munroService: MunroService) {}
+	constructor() {}
 
 	ngOnInit(): void {
 		this.initMap();
@@ -23,7 +24,7 @@ export class MapComponent implements OnInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['munros']) {
+		if (changes['munros'] && this.map) {
 			this.addMunroMarkers();
 		}
 	}
@@ -31,7 +32,7 @@ export class MapComponent implements OnInit, OnChanges {
 	private initMap(): void {
 		this.map = L.map('map', {
 			center: [56.8493796, -4.5336288],
-			zoom: 9,
+			zoom: 8,
 			zoomControl: false,
 		});
 
@@ -39,7 +40,11 @@ export class MapComponent implements OnInit, OnChanges {
 	}
 
 	private addMunroMarkers(): void {
-		// Clear old markers
+		if (!this.map) {
+			return; // Map not ready yet
+		}
+
+		// Remove existing markers
 		this.markers.forEach(marker => this.map?.removeLayer(marker));
 		this.markers = [];
 
@@ -48,8 +53,10 @@ export class MapComponent implements OnInit, OnChanges {
 			const color = munro.completed ? '#006400' : '#e91e63';
 
 			if (munro.latitude && munro.longitude) {
-				const marker = L.marker([munro.latitude, munro.longitude], { icon: this.createSvgCircleIcon(color) })
-					.addTo(this.map!)
+				const marker = L.marker([munro.latitude, munro.longitude], {
+					icon: this.createSvgCircleIcon(color),
+				})
+					.addTo(this.map)
 					.bindPopup(`<strong>${munro.hill_name}</strong>`);
 				this.markers.push(marker);
 			}
@@ -58,10 +65,9 @@ export class MapComponent implements OnInit, OnChanges {
 
 	private createSvgCircleIcon(fillColor: string): L.DivIcon {
 		const svg = `
-          <svg width="30" height="30" viewBox="0 0 20 20">
+        <svg width="20" height="20" viewBox="0 0 20 20">
             <circle cx="10" cy="10" r="6" fill="${fillColor}" stroke="#fff" stroke-width="2"/>
-          </svg>
-        `;
+        </svg>`;
 
 		return L.divIcon({
 			className: '',
@@ -71,4 +77,3 @@ export class MapComponent implements OnInit, OnChanges {
 		});
 	}
 }
-

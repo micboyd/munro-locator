@@ -1,0 +1,19 @@
+<div class="tab-headers">
+    @for(tab of tabs; track tab.title; let i = $index) {
+        <div
+        class="tab-header"
+        [class.active]="i === selectedIndex"
+        (click)="selectTab(i)"
+    >
+        {{ tab.title }}
+      </div>
+
+    <div class="tab-content">
+        @if(tabs[selectedIndex]) {
+            <ng-container>
+                <ng-container *ngTemplateOutlet="tabs[selectedIndex].content"></ng-container>
+              </ng-container>
+        }
+    </div>
+    }
+</div>

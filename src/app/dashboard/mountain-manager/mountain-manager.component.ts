@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MunroService } from '../../shared/services/munros.service';
+
+import { HttpClient } from '@angular/common/http';
 import { Munro } from '../../shared/models/Munro';
+import { MunroService } from '../../shared/services/munros.service';
 import { UserService } from '../../shared/services/user.service';
 import { combineLatest } from 'rxjs';
 
@@ -10,7 +12,7 @@ import { combineLatest } from 'rxjs';
 	standalone: false,
 })
 export class MountainManagerComponent implements OnInit {
-	constructor(private munroService: MunroService, private userService: UserService) {}
+	constructor(private munroService: MunroService, private userService: UserService, private http: HttpClient) {}
 
 	munrosLoading: boolean = false;
 	activeTab = 0;
@@ -69,6 +71,25 @@ export class MountainManagerComponent implements OnInit {
 			)
 			.subscribe();
 	}
+
+    onImageSelect(event: any, munro: Munro) {
+        const file = event.target.files[0];
+
+        if (file) {
+          const formData = new FormData();
+          formData.append('image', file, file.name);
+
+          // Send the form data (with the image file) to your API to upload the image
+          this.http.post(`http://localhost:3000/api/munros/${munro._id}/image`, formData)
+            .subscribe(response => {
+              console.log('Image uploaded successfully:', response);
+              // Update the munro with the new image URL if needed
+              munro.image_url = response['image_url'];  // Adjust according to API response
+            }, error => {
+              console.error('Error uploading image:', error);
+            });
+        }
+      }
 
 	get displayMunros(): Array<Munro> {
 		switch (this.activeTab) {

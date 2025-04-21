@@ -10,5 +10,6 @@ export interface IMunro {
 	longitude: number;
 	os_ref: number;
 	region_name: string;
+    image_url: string;
 }
 
