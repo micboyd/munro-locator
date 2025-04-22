@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { Munro } from '../../shared/models/Munro';
 import { MunroService } from '../../shared/services/munros.service';
 import { UserService } from '../../shared/services/user.service';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({

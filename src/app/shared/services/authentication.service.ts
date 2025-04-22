@@ -5,7 +5,7 @@ import { LoginRequest } from '../models/LoginRequest';
 import { LoginResponse } from '../models/LoginResponse';
 import { Observable } from 'rxjs';
 import { User } from '../models/User';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
