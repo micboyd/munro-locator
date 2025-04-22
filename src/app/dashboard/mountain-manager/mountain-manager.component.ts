@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { combineLatest, debounceTime } from 'rxjs';
 
+import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Munro } from '../../shared/models/Munro';
 import { MunroService } from '../../shared/services/munros.service';
 import { UserService } from '../../shared/services/user.service';
-import { combineLatest, debounceTime } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-mountain-manager',
@@ -14,6 +15,9 @@ import { FormControl } from '@angular/forms';
 	standalone: false,
 })
 export class MountainManagerComponent implements OnInit {
+
+      private _apiUrl = `${environment.baseApiUrl}/munros`;
+
 	constructor(private munroService: MunroService, private userService: UserService, private http: HttpClient) {}
 
 	get displayMunros(): Array<Munro> {
@@ -145,7 +149,7 @@ export class MountainManagerComponent implements OnInit {
 			formData.append('image', file, file.name);
 
 			// Send the form data (with the image file) to your API to upload the image
-			this.http.post(`http://localhost:3000/api/munros/${munro._id}/image`, formData).subscribe(
+			this.http.post(`${this._apiUrl}/${munro._id}/image`, formData).subscribe(
 				response => {
 					console.log('Image uploaded successfully:', response);
 					// Update the munro with the new image URL if needed
