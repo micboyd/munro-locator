@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '../shared/services/authentication.service';
 
 @Component({
 	selector: 'app-dashboard',
@@ -7,11 +6,7 @@ import { AuthenticationService } from '../shared/services/authentication.service
 	standalone: false,
 })
 export class DashboardComponent implements OnInit {
-	constructor(private authenticationService: AuthenticationService) {}
-
-	// get currentLoggedInUser() {
-	// 	return this.authenticationService.fullName;
-	// }
+	constructor() {}
 
 	ngOnInit() {}
 }

@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MountainManagerComponent } from './dashboard/mountain-manager/mountain-manager.component';
 import { NgModule } from '@angular/core';
 import { ProfileComponent } from './dashboard/profile/profile.component';
+import { LocatorComponent } from './dashboard/locator/locator.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -15,9 +16,10 @@ const routes: Routes = [
 		component: DashboardComponent,
 		canActivate: [AuthGuard],
 		children: [
-            { path: 'mountain-manager', component: MountainManagerComponent, canActivate: [AuthGuard] },
-            { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] }
-        ],
+			{ path: 'mountain-manager', component: MountainManagerComponent, canActivate: [AuthGuard] },
+			{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+			{ path: 'locator', component: LocatorComponent, canActivate: [AuthGuard] },
+		],
 	},
 	{ path: '**', redirectTo: '/login' },
 ];

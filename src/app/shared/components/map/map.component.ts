@@ -11,7 +11,8 @@ import { Munro } from '../../models/Munro';
 	standalone: false,
 })
 export class MapComponent implements OnInit, OnChanges {
-	@Input() munros: Munro[] = [];
+	@Input() munros: Munro[];
+	@Input() singleMunro: Munro;
 
 	private map: L.Map | undefined;
 	private markers: L.Marker[] = [];
@@ -45,18 +46,31 @@ export class MapComponent implements OnInit, OnChanges {
 		this.markers.forEach(marker => this.map!.removeLayer(marker));
 		this.markers = [];
 
-		this.munros.forEach(munro => {
-			const color = munro.completed ? '#006400' : '#e91e63';
+		if (this.munros) {
+			this.munros.forEach(munro => {
+				const color = munro.completed ? '#006400' : '#e91e63';
 
-			if (munro.latitude && munro.longitude) {
-				const marker = L.marker([munro.latitude, munro.longitude], {
+				if (munro.latitude && munro.longitude) {
+					const marker = L.marker([munro.latitude, munro.longitude], {
+						icon: this.createSvgCircleIcon(color),
+					})
+						.addTo(this.map)
+						.bindPopup(`<strong>${munro.hill_name}</strong>`);
+					this.markers.push(marker);
+				}
+			});
+		} else {
+			const color = this.singleMunro.completed ? '#006400' : '#e91e63';
+
+			if (this.singleMunro.latitude && this.singleMunro.longitude) {
+				const marker = L.marker([this.singleMunro.latitude, this.singleMunro.longitude], {
 					icon: this.createSvgCircleIcon(color),
 				})
 					.addTo(this.map)
-					.bindPopup(`<strong>${munro.hill_name}</strong>`);
+					.bindPopup(`<strong>${this.singleMunro.hill_name}</strong>`);
 				this.markers.push(marker);
 			}
-		});
+		}
 	}
 
 	private createSvgCircleIcon(fillColor: string): L.DivIcon {

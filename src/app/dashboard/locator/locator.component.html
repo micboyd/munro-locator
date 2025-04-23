@@ -1,0 +1,24 @@
+<div class="ml-64 flex-1 h-screen">
+	<section class="h-full w-full flex flex-col">
+		<!-- Your existing content structure here -->
+		<div class="bg-white flex-1">
+			<section class="flex-1 h-full">
+				<div class="h-screen p-12 w-full flex flex-col">
+					@if (closestMunro) {
+					<h1 class="text-4xl">{{ closestMunro.hill_name }}</h1>
+					<div class="h-full">
+						<app-map [singleMunro]="closestMunro"></app-map>
+					</div>
+					} @else {
+					<button
+						class="text-sm bg-black text-white py-2 px-4 rounded cursor-pointer"
+						(click)="getClosestMunro()">
+						Find my nearest Munro
+					</button>
+					}
+				</div>
+			</section>
+		</div>
+	</section>
+</div>
+

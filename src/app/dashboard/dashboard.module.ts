@@ -8,9 +8,10 @@ import { ProfileComponent } from './profile/profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { LocatorComponent } from './locator/locator.component';
 
 @NgModule({
-	declarations: [DashboardComponent, SidebarComponent, MountainManagerComponent, ProfileComponent],
+	declarations: [DashboardComponent, SidebarComponent, MountainManagerComponent, ProfileComponent, LocatorComponent],
 	imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, AppRoutingModule, SharedModule],
 	exports: [DashboardComponent],
 })
