@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { AuthUser } from '../../shared/models/AuthUser';
 import { AuthenticationService } from '../../shared/services/authentication.service';
 import { Router } from '@angular/router';
-import { User } from '../../shared/models/User';
 
 @Component({
 	selector: 'app-register',
@@ -41,12 +41,12 @@ export class RegisterComponent implements OnInit {
 		this.registerLoading = true;
 		this.authenticationService
 			.register(
-				new User({
+				new AuthUser({
 					firstname: this.registerForm.value.firstname,
 					lastname: this.registerForm.value.lastname,
 					username: this.registerForm.value.username,
 					password: this.registerForm.value.password,
-				} as User),
+				}),
 			)
 			.subscribe({
 				next: loginData => {

@@ -1,3 +1,4 @@
+import { AuthUser } from '../models/AuthUser';
 import { HttpClient } from '@angular/common/http';
 import { IJWTPayload } from '../interfaces/IJWTPayload';
 import { Injectable } from '@angular/core';
@@ -29,7 +30,7 @@ export class AuthenticationService {
 		return this.http.post<LoginResponse>(`${this._apiUrl}/login`, payload);
 	}
 
-	register(payload: User): Observable<string> {
+	register(payload: AuthUser): Observable<string> {
 		return this.http.post<string>(`${this._apiUrl}/register`, payload);
 	}
 

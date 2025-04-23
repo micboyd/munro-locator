@@ -1,9 +1,6 @@
-export interface IUser {
-	id?: string;
-	username: string;
-	firstname: string;
-	lastname: string;
-	password: string;
-	completedMunros: Array<string>;
-}
+import { IBaseUser } from "./IBaseUser";
 
+export interface IUser extends IBaseUser {
+    profileImage: string;
+    role?: string;
+}
