@@ -13,7 +13,7 @@ export class UserService {
 	userLoading: Subject<boolean> = new Subject<boolean>();
 
 	private _currentUser = new BehaviorSubject<User | null>(null);
-	currentUser$ = this._currentUser.asObservable(); // Exposed Observable
+	currentUser$ = this._currentUser.asObservable();
 
 	private _apiUrl = `${environment.baseApiUrl}/user/`;
 
