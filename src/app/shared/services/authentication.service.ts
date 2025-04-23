@@ -18,12 +18,8 @@ export class AuthenticationService {
 	constructor(private http: HttpClient) {}
 
 	setDetails(loginDetails: LoginResponse) {
-		localStorage.setItem('id', loginDetails.user.id);
+		localStorage.setItem('id', loginDetails.id);
 		localStorage.setItem('token', loginDetails.token);
-		localStorage.setItem('fullName', `${loginDetails.user.firstname} ${loginDetails.user.lastname}`);
-		localStorage.setItem('firstName', loginDetails.user.firstname);
-		localStorage.setItem('lastName', loginDetails.user.lastname);
-		localStorage.setItem('username', loginDetails.user.username);
 	}
 
 	login(payload: LoginRequest): Observable<LoginResponse> {

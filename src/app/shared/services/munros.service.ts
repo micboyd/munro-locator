@@ -1,8 +1,10 @@
 import { Observable, Subject } from 'rxjs';
 
+import { CompletedMunro } from '../models/CompletedMunro';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Munro } from '../models/Munro';
+import { UserService } from './user.service';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -11,28 +13,24 @@ import { environment } from '../../../environments/environment';
 export class MunroService {
 	private apiUrl = `${environment.baseApiUrl}/munros`;
 
-	private completedMunrosUpdateSubject = new Subject<void>();
-
-	// Observable for listening
-	completedMunrosUpdated$ = this.completedMunrosUpdateSubject.asObservable();
-
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient, private userService: UserService) {}
 
 	getMunros(): Observable<Array<Munro>> {
 		return this.http.get<Array<Munro>>(this.apiUrl);
 	}
 
-	updatedUserCompletedMunros(userId: string, completedMunros: Array<string>): Observable<Array<string>> {
-		return this.http.put<Array<string>>(this.apiUrl + `/${userId}/completed`, completedMunros);
+	updatedUserCompletedMunros(munro: CompletedMunro): Observable<CompletedMunro> {
+        const userId = this.userService.userId;
+        return this.http.put<CompletedMunro>(this.apiUrl + `/${userId}/completed`, munro);
 	}
 
-	getUserCompletedMunros(userId: string): Observable<Array<string>> {
-		return this.http.get<Array<string>>(this.apiUrl + `/${userId}/completed`);
-	}
+    removeCompletedMunro(munroId: string): Observable<any> {
+        const userId = this.userService.userId;
+        return this.http.delete(this.apiUrl + `/${userId}/completed/${munroId}`);
+      }
 
-	// Method to trigger the action
-	updateCompletedMunros() {
-		this.completedMunrosUpdateSubject.next(); // or next(true) if using a boolean
+	getUserCompletedMunros(userId: string): Observable<Array<CompletedMunro>> {
+		return this.http.get<Array<CompletedMunro>>(this.apiUrl + `/${userId}/completed`);
 	}
 }
 

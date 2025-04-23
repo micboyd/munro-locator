@@ -2,21 +2,27 @@
 <div class="fixed top-0 left-0 h-screen w-64 bg-[#0D1B2A] text-white border-r border-[#1B263B] shadow-md z-20">
 	<div class="p-6 overflow-y-auto h-full">
 		<!-- Profile Section -->
-		<div class="flex items-center space-x-4 mb-8">
-			<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-white text-xl"></div>
-			<div>
-				<p class="font-medium">{{ currentUser }}</p>
-				<a class="text-sm text-[#8DA9C4] hover:underline" href="#">View profile</a>
-			</div>
-		</div>
+
+        @if(currentUser) {
+            <div class="flex items-center space-x-4 mb-8">
+                <div
+                    class="w-12 h-12 rounded-full bg-cover bg-center"
+                    [ngStyle]="{ 'background-image': 'url(' + currentUser.profileImage + ')' }">
+                </div>
+                <div>
+                    <p class="font-medium">{{ currentUser.fullName }}</p>
+                    <a class="text-sm text-[#8DA9C4] hover:underline" href="#" routerLink="profile">View profile</a>
+                </div>
+            </div>
+        }
 
 		<!-- Navigation -->
 		<h2 class="text-lg font-semibold text-[#E0E1DD] mb-6">Menu</h2>
 		<nav class="space-y-2">
-			<a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition">
+			<a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition" routerLink="mountain-manager">
 				<span class="text-sm font-medium">Mountain Manager</span>
 			</a>
-			<a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition">
+			<a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition" routerLink="/login">
 				<span class="text-sm font-medium">Logout</span>
 			</a>
 		</nav>

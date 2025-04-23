@@ -1,15 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { DashboardComponent } from './dashboard.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
 import { AppRoutingModule } from '../app-routing.module';
+import { CommonModule } from '@angular/common';
+import { DashboardComponent } from './dashboard.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MountainManagerComponent } from './mountain-manager/mountain-manager.component';
+import { NgModule } from '@angular/core';
+import { ProfileComponent } from './profile/profile.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
-	declarations: [DashboardComponent, SidebarComponent, MountainManagerComponent],
+	declarations: [DashboardComponent, SidebarComponent, MountainManagerComponent, ProfileComponent],
 	imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, AppRoutingModule, SharedModule],
 	exports: [DashboardComponent],
 })

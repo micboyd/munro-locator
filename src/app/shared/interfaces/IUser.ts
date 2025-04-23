@@ -1,6 +1,9 @@
+import { CompletedMunro } from "../models/CompletedMunro";
 import { IBaseUser } from "./IBaseUser";
 
 export interface IUser extends IBaseUser {
+    fullName: string;
     profileImage: string;
-    role?: string;
+    bio: string;
+    completedMunros: CompletedMunro[]
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { combineLatest, debounceTime } from 'rxjs';
 
+import { CompletedMunro } from '../../shared/models/CompletedMunro';
 import { FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Munro } from '../../shared/models/Munro';
@@ -15,10 +16,23 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 	standalone: false,
 })
 export class MountainManagerComponent implements OnInit {
-
-      private _apiUrl = `${environment.baseApiUrl}/munros`;
+	private _apiUrl = `${environment.baseApiUrl}/munros`;
 
 	constructor(private munroService: MunroService, private userService: UserService, private http: HttpClient) {}
+
+	munrosLoading: boolean = false;
+	activeTab = 0;
+
+	private _allMunros: Array<Munro> = [];
+	private _completedMunros: Array<Munro> = [];
+	private _uncompletedMunros: Array<Munro> = [];
+	private _userCompletedMunros: Array<CompletedMunro> = [];
+
+	faSearch = faSearch;
+	searchControl = new FormControl('');
+	searchQuery: string = '';
+
+	tabs = [];
 
 	get displayMunros(): Array<Munro> {
 		const baseList = (() => {
@@ -41,57 +55,28 @@ export class MountainManagerComponent implements OnInit {
 		);
 	}
 
-	get allMunros(): Array<Munro> {
-		return this._allMunros;
-	}
-
-	get completedMunros(): Array<Munro> {
-		return this._completedMunros;
-	}
-
-	get uncompletedMunros(): Array<Munro> {
-		return this._uncompletedMunros;
-	}
-
-	munrosLoading: boolean = false;
-	activeTab = 0;
-
-	private _allMunros: Array<Munro> = [];
-	private _completedMunros: Array<Munro> = [];
-	private _uncompletedMunros: Array<Munro> = [];
-
-	faSearch = faSearch;
-	searchControl = new FormControl(''); // ← reactive form control for search
-	searchQuery: string = '';
-
-	tabs = [];
-
 	ngOnInit() {
 		this.munrosLoading = true;
-
 		this.getAllMunrosAndSync();
 	}
 
 	getAllMunrosAndSync() {
-		this.searchControl.valueChanges
-			.pipe(debounceTime(300)) // optional debounce
-			.subscribe(value => {
-				this.searchQuery = value?.trim().toLowerCase() || '';
-				this.updateTabs(); // ← recalculate filtered counts
-			});
+		this.searchControl.valueChanges.pipe(debounceTime(300)).subscribe(value => {
+			this.searchQuery = value?.trim().toLowerCase() || '';
+			this.updateTabs();
+		});
 
 		combineLatest([
 			this.munroService.getMunros(),
 			this.munroService.getUserCompletedMunros(this.userService.userId),
-		]).subscribe(([allMunros, completedMunroIds]) => {
-			const completedIds = Array.isArray(completedMunroIds) ? completedMunroIds : [];
+		]).subscribe(([allMunros, completedMunros]) => {
+			this._allMunros = allMunros;
 
-			this._allMunros = allMunros.map((munroData: Munro) => {
-				const munro = new Munro(munroData);
-				if (completedIds.includes(munro._id)) {
-					munro.completed = true;
-				}
-				return munro;
+			const completedIds: string[] = completedMunros.map(munro => munro.munroId);
+			const completedIdSet = new Set(completedIds);
+
+			this._allMunros.forEach(munro => {
+				munro.completed = completedIdSet.has(munro._id);
 			});
 
 			this.syncMunroLists();
@@ -109,36 +94,31 @@ export class MountainManagerComponent implements OnInit {
 			munro.region_name?.toLowerCase().includes(query);
 
 		this.tabs = [
-			{
-				label: 'All',
-				count: () => this._allMunros.filter(filterFn).length,
-			},
-			{
-				label: 'Complete',
-				count: () => this._completedMunros.filter(filterFn).length,
-			},
-			{
-				label: 'Incomplete',
-				count: () => this._uncompletedMunros.filter(filterFn).length,
-			},
+			{ label: 'All', count: () => this._allMunros.filter(filterFn).length },
+			{ label: 'Complete', count: () => this._completedMunros.filter(filterFn).length },
+			{ label: 'Incomplete', count: () => this._uncompletedMunros.filter(filterFn).length },
 		];
 	}
+
 	munroCompletedUpdated(munro: Munro, completed: boolean) {
-		this.munroService.updateCompletedMunros();
-		munro.completed = completed;
+		if (completed) {
+			const newCompleted = new CompletedMunro();
+			newCompleted.munroId = munro._id;
 
-		this.syncMunroLists();
-		this._allMunros = [...this._allMunros];
-		this.updatedUserCompleted();
-	}
-
-	updatedUserCompleted() {
-		this.munroService
-			.updatedUserCompletedMunros(
-				this.userService.userId,
-				this._completedMunros.map(item => item._id),
-			)
-			.subscribe();
+			this.munroService.updatedUserCompletedMunros(newCompleted).subscribe(() => {
+				munro.completed = true;
+				this._userCompletedMunros.push(newCompleted);
+				this.syncMunroLists();
+				this._allMunros = [...this._allMunros];
+			});
+		} else {
+			this.munroService.removeCompletedMunro(munro._id).subscribe(() => {
+				munro.completed = false;
+				this._userCompletedMunros = this._userCompletedMunros.filter(c => c.munroId !== munro._id);
+				this.syncMunroLists();
+				this._allMunros = [...this._allMunros];
+			});
+		}
 	}
 
 	onImageSelect(event: any, munro: Munro) {
@@ -148,12 +128,10 @@ export class MountainManagerComponent implements OnInit {
 			const formData = new FormData();
 			formData.append('image', file, file.name);
 
-			// Send the form data (with the image file) to your API to upload the image
 			this.http.post(`${this._apiUrl}/${munro._id}/image`, formData).subscribe(
 				response => {
 					console.log('Image uploaded successfully:', response);
-					// Update the munro with the new image URL if needed
-					munro.image_url = response['image_url']; // Adjust according to API response
+					munro.image_url = response['image_url'];
 					this.getAllMunrosAndSync();
 				},
 				error => {
@@ -168,4 +146,3 @@ export class MountainManagerComponent implements OnInit {
 		this._uncompletedMunros = [...this._allMunros.filter(item => !item.completed)];
 	}
 }
-

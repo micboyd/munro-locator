@@ -1,5 +1,5 @@
 export interface IBaseUser {
-    id: number;
+    id: string;
     firstname: string;
     lastname: string;
     username: string;
