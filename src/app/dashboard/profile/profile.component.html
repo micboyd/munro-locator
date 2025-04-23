@@ -9,12 +9,12 @@
 					<div class="mb-4">
 						<h1 class="mb-4 font-semibold text-4xl">{{ currentUser.fullName }}</h1>
 
-						<div class="relative w-40 h-40">
+						<div class="relative w-40 h-40 mb-4">
 							<!-- Profile Image -->
 							<img
 								[src]="currentUser.profileImage"
 								alt="Profile"
-								class="w-full h-full object-cover rounded-full border-4 border-white shadow-lg transition-transform hover:scale-105" />
+								class="w-full h-full object-cover rounded-full" />
 
 							<!-- Hidden file input -->
 							<input
@@ -28,10 +28,47 @@
 							<!-- Upload button styled as a circle -->
 							<label
 								for="uploadImage"
-								class="absolute bottom-3 right-3 w-10 h-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors duration-200 cursor-pointer flex items-center justify-center"
+								class="absolute bottom-2 right-2 w-10 h-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors duration-200 cursor-pointer flex items-center justify-center"
 								aria-label="Edit profile picture">
 								<fa-icon [icon]="faPen" class="text-gray-600 text-sm"></fa-icon>
 							</label>
+						</div>
+
+						<div class="mb-4">
+							<form [formGroup]="userForm" (ngSubmit)="updateUser()">
+								<div>
+									<input
+										class="w-full p-3 font-light mb-2 border border-gray-300"
+										placeholder="firstname"
+										formControlName="firstname"
+										type="text" />
+								</div>
+								<div>
+									<input
+										class="w-full p-3 font-light mb-2 border border-gray-300"
+										placeholder="lastname"
+										formControlName="lastname"
+										type="text" />
+								</div>
+								<div>
+									<textarea
+										class="w-full p-3 font-light mb-2 border border-gray-300"
+										placeholder="bio"
+										formControlName="bio"
+										type="text"></textarea>
+								</div>
+								<div>
+									<button
+										class="tracking-wider uppercase text-sm font-semibold bg-gray-800 text-white px-6 py-4 transition cursor-pointer"
+										type="submit">
+										@if(profileLoading) {
+										<app-loading-indicator [spinner]="true"></app-loading-indicator>
+										} @else {
+										<span>Save</span>
+										}
+									</button>
+								</div>
+							</form>
 						</div>
 					</div>
 					} @else {
@@ -42,3 +79,4 @@
 		</div>
 	</section>
 </div>
+

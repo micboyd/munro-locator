@@ -23,7 +23,6 @@ export class LocatorComponent implements OnInit {
 
 	ngOnInit() {
 		this.munroService.getMunros().subscribe(data => {
-			console.log(data);
 			this._munros = data.map((munroData: Munro) => new Munro(munroData));
 		});
 

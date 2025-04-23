@@ -130,7 +130,6 @@ export class MountainManagerComponent implements OnInit {
 
 			this.http.post(`${this._apiUrl}/${munro._id}/image`, formData).subscribe(
 				response => {
-					console.log('Image uploaded successfully:', response);
 					munro.image_url = response['image_url'];
 					this.getAllMunrosAndSync();
 				},
@@ -146,3 +145,4 @@ export class MountainManagerComponent implements OnInit {
 		this._uncompletedMunros = [...this._allMunros.filter(item => !item.completed)];
 	}
 }
+
