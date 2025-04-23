@@ -1,1 +1,7 @@
-<fa-icon class="text-xl" [icon]="faSpinner" animation="spin"></fa-icon>
+@if(spinner) {
+<fa-icon [icon]="faSpinner" animation="spin"></fa-icon>
+} @else {
+<div class="progress-bar w-full h-1 overflow-hidden bg-gray-200">
+	<div class="progress-bar-value w-full h-full  bg-[#0D1B2A]"></div>
+</div>
+}
