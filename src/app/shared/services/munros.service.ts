@@ -23,36 +23,37 @@ export class MunroService {
     get allMunros(): Array<Munro> {
         return this._allMunros;
     }
-    
+
     set allMunros(value: Array<Munro>) {
         this._allMunros = value;
     }
-    
+
     get completedMunros(): Array<Munro> {
         return this._completedMunros;
     }
-    
+
     set completedMunros(value: Array<Munro>) {
         this._completedMunros = value;
     }
-    
+
     get uncompletedMunros(): Array<Munro> {
         return this._uncompletedMunros;
     }
-    
+
     set uncompletedMunros(value: Array<Munro>) {
         this._uncompletedMunros = value;
     }
-    
+
     get userCompletedMunros(): Array<CompletedMunro> {
         return this._userCompletedMunros;
     }
-    
+
     set userCompletedMunros(value: Array<CompletedMunro>) {
         this._userCompletedMunros = value;
     }
 
-	getMunros(): Observable<Array<Munro>> {
+
+    getMunros(): Observable<Array<Munro>> {
 		return this.http.get<Array<Munro>>(this.apiUrl);
 	}
 

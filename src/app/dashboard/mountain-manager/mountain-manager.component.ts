@@ -1,14 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { combineLatest, debounceTime } from "rxjs";
+import { faEdit, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import { CompletedMunro } from "../../shared/models/CompletedMunro";
 import { FormControl } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 import { Munro } from "../../shared/models/Munro";
 import { MunroService } from "../../shared/services/munros.service";
+import { Router } from "@angular/router";
 import { UserService } from "../../shared/services/user.service";
 import { environment } from "../../../environments/environment";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
 	selector: 'app-mountain-manager',
@@ -21,12 +22,14 @@ export class MountainManagerComponent implements OnInit {
 	constructor(
 		private munroService: MunroService,
 		private userService: UserService,
-		private http: HttpClient
+		private http: HttpClient,
+        private router: Router
 	) {}
 
 	munrosLoading: boolean = false;
 	activeTab = 0;
 
+    faEdit = faEdit;
 	faSearch = faSearch;
 	searchControl = new FormControl('');
 	searchQuery: string = '';
@@ -140,6 +143,10 @@ export class MountainManagerComponent implements OnInit {
 			);
 		}
 	}
+
+    openMunroView(munroId: string) {
+        this.router.navigate([`${munroId}`]);
+    }
 
 	private syncMunroLists() {
 		this.munroService.completedMunros = [

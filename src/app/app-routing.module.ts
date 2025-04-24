@@ -3,10 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './shared/guards/authentication.guard';
 import { AuthenticationComponent } from './authentication/authentication.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LocatorComponent } from './dashboard/locator/locator.component';
 import { MountainManagerComponent } from './dashboard/mountain-manager/mountain-manager.component';
+import { MunroComponent } from './dashboard/mountain-manager/munro/munro.component';
 import { NgModule } from '@angular/core';
 import { ProfileComponent } from './dashboard/profile/profile.component';
-import { LocatorComponent } from './dashboard/locator/locator.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -16,7 +17,16 @@ const routes: Routes = [
 		component: DashboardComponent,
 		canActivate: [AuthGuard],
 		children: [
-			{ path: 'mountain-manager', component: MountainManagerComponent, canActivate: [AuthGuard] },
+			{
+				path: 'mountain-manager',
+				component: MountainManagerComponent,
+				canActivate: [AuthGuard],
+			},
+			{
+				path: 'mountain-manager/:id',
+				component: MunroComponent,
+				canActivate: [AuthGuard],
+			},
 			{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 			{ path: 'locator', component: LocatorComponent, canActivate: [AuthGuard] },
 		],
@@ -29,4 +39,3 @@ const routes: Routes = [
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}
-
