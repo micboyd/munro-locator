@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ICoordinate } from '../../shared/interfaces/ICoordinate';
-import { MunroService } from '../../shared/services/munros.service';
 import { Munro } from '../../shared/models/Munro';
+import { MunroService } from '../../shared/services/munros.service';
 
 @Component({
 	selector: 'app-root',
@@ -22,10 +22,7 @@ export class LocatorComponent implements OnInit {
 	constructor(private munroService: MunroService) {}
 
 	ngOnInit() {
-		this.munroService.getMunros().subscribe(data => {
-			this._munros = data.map((munroData: Munro) => new Munro(munroData));
-		});
-
+		this._munros = this.munroService.allMunros;
 		this.getCurrentLocation();
 	}
 
@@ -45,15 +42,15 @@ export class LocatorComponent implements OnInit {
 		const closestMunro = this.findClosestCoordinate(
 			this.userCurrentCoordinates,
 			this.munros.map(item => ({
-				latitude: item.coordinates.latitude,
-				longitude: item.coordinates.longitude,
+				latitude: item.latitude,
+				longitude: item.longitude,
 			})),
 		);
 
 		const closestMunroObj = this.munros.find(
 			munro =>
-				munro.coordinates.latitude === closestMunro?.latitude &&
-				munro.coordinates.longitude === closestMunro?.longitude,
+				munro.latitude === closestMunro?.latitude &&
+				munro.longitude === closestMunro?.longitude,
 		);
 
 		if (closestMunroObj) {

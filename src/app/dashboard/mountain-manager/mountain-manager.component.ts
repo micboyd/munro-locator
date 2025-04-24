@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { combineLatest, debounceTime } from 'rxjs';
+import { Component, OnInit } from "@angular/core";
+import { combineLatest, debounceTime } from "rxjs";
 
-import { CompletedMunro } from '../../shared/models/CompletedMunro';
-import { FormControl } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { Munro } from '../../shared/models/Munro';
-import { MunroService } from '../../shared/services/munros.service';
-import { UserService } from '../../shared/services/user.service';
-import { environment } from '../../../environments/environment';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { CompletedMunro } from "../../shared/models/CompletedMunro";
+import { FormControl } from "@angular/forms";
+import { HttpClient } from "@angular/common/http";
+import { Munro } from "../../shared/models/Munro";
+import { MunroService } from "../../shared/services/munros.service";
+import { UserService } from "../../shared/services/user.service";
+import { environment } from "../../../environments/environment";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
 	selector: 'app-mountain-manager',
@@ -18,31 +18,29 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 export class MountainManagerComponent implements OnInit {
 	private _apiUrl = `${environment.baseApiUrl}/munros`;
 
-	constructor(private munroService: MunroService, private userService: UserService, private http: HttpClient) {}
+	constructor(
+		private munroService: MunroService,
+		private userService: UserService,
+		private http: HttpClient
+	) {}
 
 	munrosLoading: boolean = false;
 	activeTab = 0;
 
-	private _allMunros: Array<Munro> = [];
-	private _completedMunros: Array<Munro> = [];
-	private _uncompletedMunros: Array<Munro> = [];
-	private _userCompletedMunros: Array<CompletedMunro> = [];
-
 	faSearch = faSearch;
 	searchControl = new FormControl('');
 	searchQuery: string = '';
-
 	tabs = [];
 
 	get displayMunros(): Array<Munro> {
 		const baseList = (() => {
 			switch (this.activeTab) {
 				case 1:
-					return this._completedMunros;
+					return this.munroService.completedMunros;
 				case 2:
-					return this._uncompletedMunros;
+					return this.munroService.uncompletedMunros;
 				default:
-					return this._allMunros;
+					return this.munroService.allMunros;
 			}
 		})();
 
@@ -70,13 +68,12 @@ export class MountainManagerComponent implements OnInit {
 			this.munroService.getMunros(),
 			this.munroService.getUserCompletedMunros(this.userService.userId),
 		]).subscribe(([allMunros, completedMunros]) => {
-			this._allMunros = allMunros;
+			this.munroService.allMunros = allMunros;
+			this.munroService.userCompletedMunros = completedMunros;
 
-			const completedIds: string[] = completedMunros.map(munro => munro.munroId);
-			const completedIdSet = new Set(completedIds);
-
-			this._allMunros.forEach(munro => {
-				munro.completed = completedIdSet.has(munro._id);
+			const completedIds = new Set(completedMunros.map(m => m.munroId));
+			this.munroService.allMunros.forEach(m => {
+				m.completed = completedIds.has(m._id);
 			});
 
 			this.syncMunroLists();
@@ -86,17 +83,16 @@ export class MountainManagerComponent implements OnInit {
 	}
 
 	updateTabs() {
-		const query = this.searchQuery?.toLowerCase() || '';
-
-		const filterFn = (munro: Munro) =>
+		const query = this.searchQuery.toLowerCase();
+		const filterFn = (m: Munro) =>
 			!query ||
-			munro.hill_name?.toLowerCase().includes(query) ||
-			munro.region_name?.toLowerCase().includes(query);
+			m.hill_name?.toLowerCase().includes(query) ||
+			m.region_name?.toLowerCase().includes(query);
 
 		this.tabs = [
-			{ label: 'All', count: () => this._allMunros.filter(filterFn).length },
-			{ label: 'Complete', count: () => this._completedMunros.filter(filterFn).length },
-			{ label: 'Incomplete', count: () => this._uncompletedMunros.filter(filterFn).length },
+			{ label: 'All', count: () => this.munroService.allMunros.filter(filterFn).length },
+			{ label: 'Complete', count: () => this.munroService.completedMunros.filter(filterFn).length },
+			{ label: 'Incomplete', count: () => this.munroService.uncompletedMunros.filter(filterFn).length },
 		];
 	}
 
@@ -107,16 +103,21 @@ export class MountainManagerComponent implements OnInit {
 
 			this.munroService.updatedUserCompletedMunros(newCompleted).subscribe(() => {
 				munro.completed = true;
-				this._userCompletedMunros.push(newCompleted);
+				this.munroService.userCompletedMunros = [
+					...this.munroService.userCompletedMunros,
+					newCompleted
+				];
 				this.syncMunroLists();
-				this._allMunros = [...this._allMunros];
+				this.munroService.allMunros = [...this.munroService.allMunros];
 			});
 		} else {
 			this.munroService.removeCompletedMunro(munro._id).subscribe(() => {
 				munro.completed = false;
-				this._userCompletedMunros = this._userCompletedMunros.filter(c => c.munroId !== munro._id);
+				this.munroService.userCompletedMunros = this.munroService.userCompletedMunros.filter(
+					c => c.munroId !== munro._id
+				);
 				this.syncMunroLists();
-				this._allMunros = [...this._allMunros];
+				this.munroService.allMunros = [...this.munroService.allMunros];
 			});
 		}
 	}
@@ -141,8 +142,11 @@ export class MountainManagerComponent implements OnInit {
 	}
 
 	private syncMunroLists() {
-		this._completedMunros = [...this._allMunros.filter(item => item.completed)];
-		this._uncompletedMunros = [...this._allMunros.filter(item => !item.completed)];
+		this.munroService.completedMunros = [
+			...this.munroService.allMunros.filter(m => m.completed),
+		];
+		this.munroService.uncompletedMunros = [
+			...this.munroService.allMunros.filter(m => !m.completed),
+		];
 	}
 }
-
