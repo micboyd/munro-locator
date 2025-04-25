@@ -9,10 +9,6 @@ export class User extends BaseUser implements IUser {
 	bio: string;
 	completedMunros: CompletedMunro[];
 
-	get fullName(): string {
-		return `${this.firstname} ${this.lastname}`;
-	}
-
 	constructor(init?: Partial<User>) {
 		super(init);
 		Object.assign(this, init);

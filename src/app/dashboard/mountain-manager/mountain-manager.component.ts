@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { combineLatest, debounceTime } from "rxjs";
-import { faEdit, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { Component, OnInit } from '@angular/core';
+import { combineLatest, debounceTime } from 'rxjs';
+import { faEdit, faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import { CompletedMunro } from "../../shared/models/CompletedMunro";
-import { FormControl } from "@angular/forms";
-import { HttpClient } from "@angular/common/http";
-import { Munro } from "../../shared/models/Munro";
-import { MunroService } from "../../shared/services/munros.service";
-import { Router } from "@angular/router";
-import { UserService } from "../../shared/services/user.service";
-import { environment } from "../../../environments/environment";
+import { CompletedMunro } from '../../shared/models/CompletedMunro';
+import { FormControl } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Munro } from '../../shared/models/Munro';
+import { MunroService } from '../../shared/services/munros.service';
+import { Router } from '@angular/router';
+import { UserService } from '../../shared/services/user.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
 	selector: 'app-mountain-manager',
@@ -23,13 +23,13 @@ export class MountainManagerComponent implements OnInit {
 		private munroService: MunroService,
 		private userService: UserService,
 		private http: HttpClient,
-        private router: Router
+		private router: Router,
 	) {}
 
 	munrosLoading: boolean = false;
 	activeTab = 0;
 
-    faEdit = faEdit;
+	faEdit = faEdit;
 	faSearch = faSearch;
 	searchControl = new FormControl('');
 	searchQuery: string = '';
@@ -88,9 +88,7 @@ export class MountainManagerComponent implements OnInit {
 	updateTabs() {
 		const query = this.searchQuery.toLowerCase();
 		const filterFn = (m: Munro) =>
-			!query ||
-			m.hill_name?.toLowerCase().includes(query) ||
-			m.region_name?.toLowerCase().includes(query);
+			!query || m.hill_name?.toLowerCase().includes(query) || m.region_name?.toLowerCase().includes(query);
 
 		this.tabs = [
 			{ label: 'All', count: () => this.munroService.allMunros.filter(filterFn).length },
@@ -106,10 +104,7 @@ export class MountainManagerComponent implements OnInit {
 
 			this.munroService.updatedUserCompletedMunros(newCompleted).subscribe(() => {
 				munro.completed = true;
-				this.munroService.userCompletedMunros = [
-					...this.munroService.userCompletedMunros,
-					newCompleted
-				];
+				this.munroService.userCompletedMunros = [...this.munroService.userCompletedMunros, newCompleted];
 				this.syncMunroLists();
 				this.munroService.allMunros = [...this.munroService.allMunros];
 			});
@@ -117,7 +112,7 @@ export class MountainManagerComponent implements OnInit {
 			this.munroService.removeCompletedMunro(munro._id).subscribe(() => {
 				munro.completed = false;
 				this.munroService.userCompletedMunros = this.munroService.userCompletedMunros.filter(
-					c => c.munroId !== munro._id
+					c => c.munroId !== munro._id,
 				);
 				this.syncMunroLists();
 				this.munroService.allMunros = [...this.munroService.allMunros];
@@ -144,16 +139,13 @@ export class MountainManagerComponent implements OnInit {
 		}
 	}
 
-    openMunroView(munroId: string) {
-        this.router.navigate([`${munroId}`]);
-    }
+	openMunroView(munroId: string) {
+		this.router.navigate([`${munroId}`]);
+	}
 
 	private syncMunroLists() {
-		this.munroService.completedMunros = [
-			...this.munroService.allMunros.filter(m => m.completed),
-		];
-		this.munroService.uncompletedMunros = [
-			...this.munroService.allMunros.filter(m => !m.completed),
-		];
+		this.munroService.completedMunros = [...this.munroService.allMunros.filter(m => m.completed)];
+		this.munroService.uncompletedMunros = [...this.munroService.allMunros.filter(m => !m.completed)];
 	}
 }
+

@@ -3,13 +3,13 @@
 	<div class="p-6 overflow-y-auto h-full">
 		<!-- Profile Section -->
 
-		@if(currentUser) {
+		@if(!userService.userLoading) {
 		<div class="flex items-center space-x-4 mb-8">
 			<div
 				class="w-12 h-12 rounded-full bg-cover bg-center"
-				[ngStyle]="{ 'background-image': 'url(' + currentUser.profileImage + ')' }"></div>
+				[ngStyle]="{ 'background-image': 'url(' + userService.currentUser.profileImage + ')' }"></div>
 			<div>
-				<p class="font-medium">{{ currentUser.fullName }}</p>
+				<p class="font-medium">{{ userService.fullName }}</p>
 				<a class="text-sm text-[#8DA9C4] hover:underline" href="#" routerLink="profile">View profile</a>
 			</div>
 		</div>

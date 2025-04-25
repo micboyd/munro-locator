@@ -4,6 +4,7 @@
 		<div class="bg-white flex-1">
 			<section class="flex-1 h-full">
 				<div class="h-screen p-12 w-full flex flex-col">
+					@if(!completedMunroLoading) {
 					<div class="mb-4">
 						<a
 							routerLink="/dashboard/mountain-manager"
@@ -12,9 +13,48 @@
 							Back to Munro Manager
 						</a>
 						<h1 class="mb-4 font-semibold text-4xl">Munro</h1>
+						<div>
+							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+								<div
+									class="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-white flex flex-col min-h-[300px]">
+									<!-- Complete Tag -->
+									@if (selectedMunro.completed) {
+									<div class="absolute top-3 left-3 z-10">
+										<span
+											class="px-3 py-1 text-sm font-semibold text-white bg-green-600 rounded-full">
+											Complete
+										</span>
+									</div>
+									}
+
+									<!-- Image -->
+									<img
+										class="w-full h-56 object-cover rounded-t-2xl"
+										[src]="selectedMunro.image_url"
+										alt="Munro image" />
+
+									<!-- Info Section -->
+									<div class="flex-1 p-4 flex flex-col justify-between">
+										<div>
+											<h2 class="text-lg font-semibold text-gray-900">
+												{{ selectedMunro.hill_name }}
+											</h2>
+											<p class="text-sm text-gray-500">{{ selectedMunro.height }}m</p>
+											<p class="text-sm text-gray-600 mt-2">
+												Region: {{ selectedMunro.region_name }}
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
+					} @else {
+					<app-loading-indicator></app-loading-indicator>
+					}
 				</div>
 			</section>
 		</div>
 	</section>
 </div>
+

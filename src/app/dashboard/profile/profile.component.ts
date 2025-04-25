@@ -11,22 +11,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 	standalone: false,
 })
 export class ProfileComponent implements OnInit {
-	userForm: FormGroup;
+	userForm: FormGroup = null;
 	faPen = faPen;
 
 	profileLoading: boolean = false;
 
-	constructor(private userService: UserService, private fb: FormBuilder) {}
-
-	get currentUser(): User {
-		return this.userService.currentUser;
-	}
+	constructor(public userService: UserService, private fb: FormBuilder) {}
 
 	ngOnInit(): void {
-		this.userService.currentUser$.subscribe(user => {
-			if (user) {
-				this.userForm = user.createForm(this.fb);
-			}
+		this.userService.userLoaded.subscribe(() => {
+			this.userForm = this.userService.currentUser.createForm(this.fb);
 		});
 	}
 
@@ -48,7 +42,7 @@ export class ProfileComponent implements OnInit {
 
 	updateUser() {
 		this.profileLoading = true;
-		this.userService.updateUser(this.currentUser.id, this.userForm.value).subscribe(updatedUser => {
+		this.userService.updateUser(this.userService.currentUser.id, this.userForm.value).subscribe(updatedUser => {
 			this.profileLoading = false;
 			this.userService.userChanged.next();
 		});

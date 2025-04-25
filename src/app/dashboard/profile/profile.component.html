@@ -4,15 +4,14 @@
 		<div class="bg-white flex-1">
 			<section class="flex-1 h-full">
 				<div class="h-screen p-12 w-full flex flex-col">
-					@if(currentUser) {
 					<!-- Title section -->
 					<div class="mb-4">
-						<h1 class="mb-4 font-semibold text-4xl">{{ currentUser.fullName }}</h1>
+						<h1 class="mb-4 font-semibold text-4xl">{{ userService.currentUser.firstname }}</h1>
 
 						<div class="relative w-40 h-40 mb-4">
 							<!-- Profile Image -->
 							<img
-								[src]="currentUser.profileImage"
+								[src]="userService.currentUser.profileImage"
 								alt="Profile"
 								class="w-full h-full object-cover rounded-full" />
 
@@ -23,7 +22,7 @@
 								name="image"
 								accept="image/*"
 								class="hidden"
-								(change)="onImageSelect($event, currentUser)" />
+								(change)="onImageSelect($event, userService.currentUser)" />
 
 							<!-- Upload button styled as a circle -->
 							<label
@@ -35,6 +34,7 @@
 						</div>
 
 						<div class="mb-4">
+							@if(userForm) {
 							<form [formGroup]="userForm" (ngSubmit)="updateUser()">
 								<div>
 									<input
@@ -69,11 +69,9 @@
 									</button>
 								</div>
 							</form>
+							}
 						</div>
 					</div>
-					} @else {
-					<app-loading-indicator></app-loading-indicator>
-					}
 				</div>
 			</section>
 		</div>

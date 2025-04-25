@@ -10,29 +10,36 @@ import { environment } from '../../../environments/environment';
 })
 export class UserService {
 	userChanged: Subject<void> = new Subject<void>();
-	userLoading: Subject<boolean> = new Subject<boolean>();
+	userLoaded: Subject<void> = new Subject<void>();
 
-	private _currentUser = new BehaviorSubject<User | null>(null);
-	currentUser$ = this._currentUser.asObservable();
+	private _userLoading: boolean = true;
+	private _currentUser: User;
 
 	private _apiUrl = `${environment.baseApiUrl}/user/`;
 
 	constructor(private http: HttpClient) {}
 
+	get userLoading(): boolean {
+		return this._userLoading;
+	}
+
+	set userLoading(userLoading: boolean) {
+		this._userLoading = userLoading;
+	}
 	get userId(): string {
 		return localStorage.getItem('id');
 	}
 
-	get currentUser(): User | null {
-		return this._currentUser.value;
+	get currentUser(): User {
+		return this._currentUser;
 	}
 
-	set currentUser(user: User | null) {
-		this._currentUser.next(user);
+	set currentUser(user: User) {
+		this._currentUser = user;
 	}
 
 	get fullName(): string {
-		return `${this._currentUser} + ${this._currentUser}`;
+		return `${this._currentUser.firstname} ${this._currentUser.lastname}`;
 	}
 
 	getUsers(): Observable<Array<User>> {
