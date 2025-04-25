@@ -55,7 +55,13 @@ export class MapComponent implements OnInit, OnChanges {
 						icon: this.createSvgCircleIcon(color),
 					})
 						.addTo(this.map)
-						.bindPopup(`<strong>${munro.hill_name}</strong>`);
+						.bindPopup(`
+                            <strong>
+                              <a href="#" routerLink="/mountain-manager/${munro._id}">
+                                ${munro.hill_name}
+                              </a>
+                            </strong>
+                          `);
 					this.markers.push(marker);
 				}
 			});
