@@ -1,55 +1,92 @@
-<div class="ml-64 flex-1 h-screen">
-	<section class="h-full w-full flex flex-col">
-		<!-- Your existing content structure here -->
-		<div class="bg-white flex-1">
-			<section class="flex-1 h-full">
-				<div class="h-screen p-12 w-full flex flex-col">
+<div class="ml-64 flex-1 min-h-screen bg-gray-50">
+	<section class="flex flex-col h-full w-full">
+		<div class="flex-1">
+			<section class="flex-1 w-full h-full">
+				<div class="w-full h-full p-6 sm:p-10 md:p-12 lg:p-16 flex flex-col gap-6">
 					@if(!completedMunroLoading) {
-					<div class="mb-4">
+					<!-- Back link -->
+					<div class="text-sm text-gray-600">
 						<a
 							routerLink="/dashboard/mountain-manager"
-							class="text-sm text-gray-600 hover:text-gray-900 hover:underline flex items-center gap-1 transition duration-200">
+							class="flex items-center gap-1 hover:text-gray-900 hover:underline transition duration-200">
 							<fa-icon [icon]="faChevronLeft" class="text-xs"></fa-icon>
 							Back to Munro Manager
 						</a>
-						<h1 class="mb-4 font-semibold text-4xl">Munro</h1>
-						<div>
-							<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-								<div
-									class="relative rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-white flex flex-col min-h-[300px]">
-									<!-- Complete Tag -->
-									@if (selectedMunro.completed) {
-									<div class="absolute top-3 left-3 z-10">
-										<span
-											class="px-3 py-1 text-sm font-semibold text-white bg-green-600 rounded-full">
-											Complete
-										</span>
-									</div>
-									}
+					</div>
 
-									<!-- Image -->
-									<img
-										class="w-full h-56 object-cover rounded-t-2xl"
-										[src]="selectedMunro.image_url"
-										alt="Munro image" />
-
-									<!-- Info Section -->
-									<div class="flex-1 p-4 flex flex-col justify-between">
-										<div>
-											<h2 class="text-lg font-semibold text-gray-900">
-												{{ selectedMunro.hill_name }}
-											</h2>
-											<p class="text-sm text-gray-500">{{ selectedMunro.height }}m</p>
-											<p class="text-sm text-gray-600 mt-2">
-												Region: {{ selectedMunro.region_name }}
-											</p>
-										</div>
-									</div>
-								</div>
-							</div>
+					<!-- Title and basic info -->
+					<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+						<div class="flex-1">
+							<h1 class="text-3xl sm:text-4xl font-bold text-gray-900">{{ selectedMunro.hill_name }}</h1>
+							<p class="text-sm text-gray-500">{{ selectedMunro.height }}m</p>
+							<p class="text-sm text-gray-600 mt-1">Region: {{ selectedMunro.region_name }}</p>
 						</div>
 					</div>
-					} @else {
+					@if(completedMunro) {
+					<div class="mt-10 space-y-6 text-sm text-gray-700">
+						<!-- Top-right Edit button -->
+
+                        <button *ngIf="!isEditing" (click)="startEdit()" class="text-blue-600 hover:underline">
+                            Edit
+                        </button>
+						<!-- Date Completed -->
+						<div>
+							<label class="block mb-1 text-gray-600">Date Completed</label>
+							<ng-container *ngIf="!isEditing; else editDate">
+								<p class="text-gray-800">{{ munroData.dateCompleted | date : 'longDate' }}</p>
+							</ng-container>
+							<ng-template #editDate>
+								<input
+									type="text"
+									class="bg-gray-100 border border-gray-200 rounded px-3 py-2 w-full max-w-xs text-gray-800"
+									[value]="munroData.dateCompleted | date : 'longDate'"
+									disabled />
+							</ng-template>
+						</div>
+
+						<!-- Notes -->
+						<div>
+							<label class="block mb-1 text-gray-600">Notes</label>
+							<ng-container *ngIf="!isEditing; else editNotes">
+								<p class="text-gray-800 whitespace-pre-line">{{ munroData.notes }}</p>
+							</ng-container>
+							<ng-template #editNotes>
+								<textarea
+									rows="3"
+									class="w-full max-w-xl border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+									placeholder="Add your notes..."></textarea>
+							</ng-template>
+						</div>
+
+						<!-- Summit Image -->
+						@if (munroData.summitImage) {}
+							<label class="blockb-1 text-gray-600">Summit Photo</label>
+							<div
+								class="w-full max-w-md border border-dashed border-gray-300 rounded px-4 py-6 text-center text-gray-500 cursor-pointer">
+								<img
+									[src]="munroData.summitImage"
+									alt="Summit"
+									class="w-full h-40 object-cover rounded"
+									*ngIf="!isEditing" />
+								<input *ngIf="isEditing" type="file" accept="image/*" class="w-full" />
+							</div>
+						</div>
+
+						<!-- Action Buttons -->
+						<div *ngIf="isEditing" class="flex gap-4 pt-2">
+							<button
+								(click)="saveEdit()"
+								class="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+								Save
+							</button>
+							<button
+								(click)="cancelEdit()"
+								class="px-5 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition">
+								Cancel
+							</button>
+						</div>
+					</div>
+					} } @else {
 					<app-loading-indicator></app-loading-indicator>
 					}
 				</div>
@@ -57,4 +94,3 @@
 		</div>
 	</section>
 </div>
-
