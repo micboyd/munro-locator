@@ -58,20 +58,6 @@
 							</ng-template>
 						</div>
 
-						<!-- Summit Image -->
-						@if (munroData.summitImage) {}
-							<label class="blockb-1 text-gray-600">Summit Photo</label>
-							<div
-								class="w-full max-w-md border border-dashed border-gray-300 rounded px-4 py-6 text-center text-gray-500 cursor-pointer">
-								<img
-									[src]="munroData.summitImage"
-									alt="Summit"
-									class="w-full h-40 object-cover rounded"
-									*ngIf="!isEditing" />
-								<input *ngIf="isEditing" type="file" accept="image/*" class="w-full" />
-							</div>
-						</div>
-
 						<!-- Action Buttons -->
 						<div *ngIf="isEditing" class="flex gap-4 pt-2">
 							<button
