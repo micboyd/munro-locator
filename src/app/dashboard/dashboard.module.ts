@@ -12,9 +12,18 @@ import { SharedModule } from '../shared/shared.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
-	declarations: [DashboardComponent, SidebarComponent, MountainManagerComponent, ProfileComponent, LocatorComponent, MunroComponent],
-	imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, AppRoutingModule, SharedModule],
+	declarations: [
+		DashboardComponent,
+		SidebarComponent,
+		MountainManagerComponent,
+		ProfileComponent,
+		LocatorComponent,
+		MunroComponent,
+	],
+	imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, AppRoutingModule, SharedModule, FontAwesomeModule],
 	exports: [DashboardComponent],
 })
-export class DashboardModule {}
+export class DashboardModule {
+	constructor() {}
+}
 

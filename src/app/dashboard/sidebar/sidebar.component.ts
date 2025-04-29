@@ -11,6 +11,8 @@ import { User } from '../../shared/models/User';
 export class SidebarComponent implements OnInit {
 	constructor(public userService: UserService) {}
 
+	sidebarOpen = false;
+
 	ngOnInit() {}
 }
 

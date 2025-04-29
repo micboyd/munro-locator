@@ -26,7 +26,6 @@ export class DashboardComponent {
 			([allMunros, currentUser]) => {
 				this.userService.currentUser = new User(currentUser);
 				this.userService.userLoading = false;
-				this.userService.userLoaded.next();
 
 				this.munroService.allMunros = allMunros;
 				this.munroService.munrosLoading = false;

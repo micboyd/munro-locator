@@ -4,8 +4,8 @@
 			<section class="flex-1 h-full">
 				<div class="h-screen p-12 w-full flex flex-col">
 					<div class="mb-4">
+						@if(!userService.userLoading) {
 						<h1 class="mb-4 font-semibold text-4xl">{{ userService.currentUser.firstname }}</h1>
-
 						<div class="relative w-40 h-40 mb-4">
 							<img
 								[src]="userService.currentUser.profileImage"
@@ -27,6 +27,33 @@
 								<fa-icon [icon]="faPen" class="text-gray-600 text-sm"></fa-icon>
 							</label>
 						</div>
+
+						<form [formGroup]="userForm" (ngSubmit)="updateUser()">
+							<input
+								class="w-full mb-3 p-3 font-light border border-gray-300"
+								placeholder="First Name"
+								formControlName="firstname"
+								type="text" />
+
+							<input
+								class="w-full mb-3 p-3 font-light border border-gray-300"
+								placeholder="Last Name"
+								formControlName="lastname"
+								type="text" />
+
+							<textarea
+								class="w-full mb-3 p-3 font-light border border-gray-300"
+								placeholder="Bio"
+								formControlName="bio"
+								rows="4"></textarea>
+
+							<button
+								type="submit"
+								class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+								Save
+							</button>
+						</form>
+						}
 					</div>
 				</div>
 			</section>

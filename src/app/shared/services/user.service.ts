@@ -10,7 +10,6 @@ import { environment } from '../../../environments/environment';
 })
 export class UserService {
 	userChanged: Subject<void> = new Subject<void>();
-	userLoaded: Subject<void> = new Subject<void>();
 
 	private _userLoading: boolean = true;
 	private _currentUser: User;
@@ -26,6 +25,7 @@ export class UserService {
 	set userLoading(userLoading: boolean) {
 		this._userLoading = userLoading;
 	}
+
 	get userId(): string {
 		return localStorage.getItem('id');
 	}

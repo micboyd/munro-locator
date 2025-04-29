@@ -1,41 +1,47 @@
-<!-- Sidebar (fixed to left, modern dark theme) -->
-<div class="fixed top-0 left-0 h-screen w-64 bg-[#0D1B2A] text-white border-r border-[#1B263B] shadow-md z-20">
+<!-- Toggle Button (Hamburger - mobile only) -->
+@if(!sidebarOpen) {
+<button class="md:hidden fixed top-4 left-4 z-30 p-2 bg-[#0D1B2A] text-white rounded" (click)="sidebarOpen = true">
+	<fa-icon [icon]="'bars'"></fa-icon>
+</button>
+}
+<!-- Sidebar -->
+<div
+	class="fixed top-0 left-0 z-20 h-screen bg-[#0D1B2A] text-white border-r border-[#1B263B] shadow-md transition-transform duration-300 ease-in-out w-full md:w-64"
+	[class.-translate-x-full]="!sidebarOpen"
+	[class.md:translate-x-0]="true">
 	<div class="p-6 overflow-y-auto h-full">
-		<!-- Profile Section -->
+		<!-- Close Button (mobile only) -->
+		<button class="md:hidden mb-4 text-white hover:text-[#8DA9C4]" (click)="sidebarOpen = false">✕ Close</button>
 
-		@if(!userService.userLoading) {
-		<div class="flex items-center space-x-4 mb-8">
-			<div
-				class="w-12 h-12 rounded-full bg-cover bg-center"
-				[ngStyle]="{ 'background-image': 'url(' + userService.currentUser.profileImage + ')' }"></div>
-			<div>
-				<p class="font-medium">{{ userService.fullName }}</p>
-				<a class="text-sm text-[#8DA9C4] hover:underline" href="#" routerLink="profile">View profile</a>
+		<!-- Profile Section -->
+		<ng-container *ngIf="!userService.userLoading">
+			<div class="flex items-center space-x-4 mb-8">
+				<div
+					class="w-12 h-12 rounded-full bg-cover bg-center"
+					[ngStyle]="{ 'background-image': 'url(' + userService.currentUser?.profileImage + ')' }"></div>
+				<div>
+					<p class="font-medium">{{ userService.fullName }}</p>
+					<a class="text-sm text-[#8DA9C4] hover:underline" routerLink="profile">View profile</a>
+				</div>
 			</div>
-		</div>
-		}
+		</ng-container>
 
 		<!-- Navigation -->
 		<h2 class="text-lg font-semibold text-[#E0E1DD] mb-6">Menu</h2>
-		<nav class="space-y-2">
+		<nav class="space-y-3">
 			<a
-				href="#"
-				class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition"
-				routerLink="mountain-manager">
-				<span class="text-sm font-medium">Mountain Manager</span>
+				routerLink="mountain-manager"
+				routerLinkActive="bg-[#1B263B]"
+				class="block px-4 py-3 rounded-lg text-base hover:bg-[#1B263B] transition">
+				Mountain Manager
 			</a>
 			<a
-				href="#"
-				class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition"
-				routerLink="locator">
-				<span class="text-sm font-medium">Locator</span>
+				routerLink="locator"
+				routerLinkActive="bg-[#1B263B]"
+				class="block px-4 py-3 rounded-lg text-base hover:bg-[#1B263B] transition">
+				Locator
 			</a>
-			<a
-				href="#"
-				class="flex items-center px-4 py-2 rounded-lg hover:bg-[#1B263B] transition"
-				routerLink="/login">
-				<span class="text-sm font-medium">Logout</span>
-			</a>
+			<a routerLink="/login" class="block px-4 py-3 rounded-lg text-base hover:bg-[#1B263B] transition">Logout</a>
 		</nav>
 	</div>
 </div>

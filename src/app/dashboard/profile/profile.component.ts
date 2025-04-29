@@ -14,14 +14,15 @@ export class ProfileComponent implements OnInit {
 	userForm: FormGroup = null;
 	faPen = faPen;
 
+	selectedUser: User;
+	editing = false;
 	profileLoading: boolean = false;
+	formInitilised: boolean = false;
 
 	constructor(public userService: UserService, private fb: FormBuilder) {}
 
 	ngOnInit(): void {
-		this.userService.userLoaded.subscribe(() => {
-			this.userForm = this.userService.currentUser.createForm(this.fb);
-		});
+		this.getUser();
 	}
 
 	onImageSelect(event: any, user: User) {
@@ -40,12 +41,26 @@ export class ProfileComponent implements OnInit {
 		}
 	}
 
+	getUser() {
+		this.profileLoading = true;
+		this.userService.getUser(this.userService.userId).subscribe(user => {
+			this.selectedUser = new User(user);
+			this.initForm();
+			this.profileLoading = false;
+		});
+	}
+
 	updateUser() {
 		this.profileLoading = true;
 		this.userService.updateUser(this.userService.currentUser.id, this.userForm.value).subscribe(updatedUser => {
 			this.profileLoading = false;
 			this.userService.userChanged.next();
 		});
+	}
+
+	initForm() {
+		this.userForm = this.selectedUser.createForm(this.fb);
+		this.formInitilised = true;
 	}
 }
 
