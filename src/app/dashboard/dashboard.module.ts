@@ -1,7 +1,6 @@
 import { AppRoutingModule } from '../app-routing.module';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LocatorComponent } from './locator/locator.component';
 import { MountainManagerComponent } from './mountain-manager/mountain-manager.component';
 import { MunroComponent } from './mountain-manager/munro/munro.component';
@@ -20,7 +19,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 		LocatorComponent,
 		MunroComponent,
 	],
-	imports: [CommonModule, ReactiveFormsModule, FontAwesomeModule, AppRoutingModule, SharedModule, FontAwesomeModule],
+	imports: [CommonModule, ReactiveFormsModule, AppRoutingModule, SharedModule],
 	exports: [DashboardComponent],
 })
 export class DashboardModule {

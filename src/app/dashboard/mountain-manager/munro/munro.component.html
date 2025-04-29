@@ -1,10 +1,10 @@
-<div class="ml-64 flex-1 min-h-screen bg-gray-50">
+<!-- <div class="ml-64 flex-1 min-h-screen bg-gray-50">
 	<section class="flex flex-col h-full w-full">
 		<div class="flex-1">
 			<section class="flex-1 w-full h-full">
 				<div class="w-full h-full p-6 sm:p-10 md:p-12 lg:p-16 flex flex-col gap-6">
 					@if(!completedMunroLoading) {
-					<!-- Back link -->
+
 					<div class="text-sm text-gray-600">
 						<a
 							routerLink="/dashboard/mountain-manager"
@@ -14,7 +14,6 @@
 						</a>
 					</div>
 
-					<!-- Title and basic info -->
 					<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
 						<div class="flex-1">
 							<h1 class="text-3xl sm:text-4xl font-bold text-gray-900">{{ selectedMunro.hill_name }}</h1>
@@ -24,12 +23,10 @@
 					</div>
 					@if(completedMunro) {
 					<div class="mt-10 space-y-6 text-sm text-gray-700">
-						<!-- Top-right Edit button -->
 
                         <button *ngIf="!isEditing" (click)="startEdit()" class="text-blue-600 hover:underline">
                             Edit
                         </button>
-						<!-- Date Completed -->
 						<div>
 							<label class="block mb-1 text-gray-600">Date Completed</label>
 							<ng-container *ngIf="!isEditing; else editDate">
@@ -43,8 +40,6 @@
 									disabled />
 							</ng-template>
 						</div>
-
-						<!-- Notes -->
 						<div>
 							<label class="block mb-1 text-gray-600">Notes</label>
 							<ng-container *ngIf="!isEditing; else editNotes">
@@ -57,8 +52,6 @@
 									placeholder="Add your notes..."></textarea>
 							</ng-template>
 						</div>
-
-						<!-- Action Buttons -->
 						<div *ngIf="isEditing" class="flex gap-4 pt-2">
 							<button
 								(click)="saveEdit()"
@@ -79,4 +72,5 @@
 			</section>
 		</div>
 	</section>
-</div>
+</div> -->
+
