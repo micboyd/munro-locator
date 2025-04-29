@@ -1,7 +1,7 @@
 <!-- Toggle Button (Hamburger - mobile only) -->
 @if(!sidebarOpen) {
 <button class="md:hidden fixed top-4 left-4 z-30 p-2 bg-[#0D1B2A] text-white rounded" (click)="sidebarOpen = true">
-	<fa-icon [icon]="'bars'"></fa-icon>
+	Menu
 </button>
 }
 <!-- Sidebar -->
@@ -11,7 +11,7 @@
 	[class.md:translate-x-0]="true">
 	<div class="p-6 overflow-y-auto h-full">
 		<!-- Close Button (mobile only) -->
-		<button class="md:hidden mb-4 text-white hover:text-[#8DA9C4]" (click)="sidebarOpen = false">✕ Close</button>
+		<button class="md:hidden mb-8 text-white hover:text-[#8DA9C4]" (click)="sidebarOpen = false">✕ Close</button>
 
 		<!-- Profile Section -->
 		<ng-container *ngIf="!userService.userLoading">
