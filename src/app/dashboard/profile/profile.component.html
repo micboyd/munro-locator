@@ -1,64 +1,58 @@
-<!-- <div class="ml-64 flex-1 h-screen">
-	<section class="h-full w-full flex flex-col">
-		<div class="bg-white flex-1">
-			<section class="flex-1 h-full">
-				<div class="h-screen p-12 w-full flex flex-col">
-					<div class="mb-4">
-						@if(!userService.userLoading) {
-						<h1 class="mb-4 font-semibold text-4xl">{{ userService.currentUser.firstname }}</h1>
-						<div class="relative w-40 h-40 mb-4">
-							<img
-								[src]="userService.currentUser.profileImage"
-								alt="Profile"
-								class="w-full h-full object-cover rounded-full" />
+@if(profileLoading) {
+<app-loading-indicator></app-loading-indicator>
+} @else {
+<h1 class="mb-4 font-semibold text-4xl">Welcome, {{ selectedUser.fullname }}</h1>
+<div class="relative w-40 h-40 mb-4">
+	<img [src]="userService.currentUser.profileImage" alt="Profile" class="w-full h-full object-cover rounded-full" />
 
-							<input
-								type="file"
-								id="uploadImage"
-								name="image"
-								accept="image/*"§
-								class="hidden"
-								(change)="onImageSelect($event, userService.currentUser)" />
+	<input
+		type="file"
+		id="uploadImage"
+		name="image"
+		accept="image/*"
+		class="hidden"
+		(change)="onImageSelect($event, userService.currentUser)" />
 
-							<label
-								for="uploadImage"
-								class="absolute bottom-2 right-2 w-10 h-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors duration-200 cursor-pointer flex items-center justify-center"
-								aria-label="Edit profile picture">
-								<fa-icon [icon]="faPen" class="text-gray-600 text-sm"></fa-icon>
-							</label>
-						</div>
-
-						<form [formGroup]="userForm" (ngSubmit)="updateUser()">
-							<input
-								class="w-full mb-3 p-3 font-light border border-gray-300"
-								placeholder="First Name"
-								formControlName="firstname"
-								type="text" />
-
-							<input
-								class="w-full mb-3 p-3 font-light border border-gray-300"
-								placeholder="Last Name"
-								formControlName="lastname"
-								type="text" />
-
-							<textarea
-								class="w-full mb-3 p-3 font-light border border-gray-300"
-								placeholder="Bio"
-								formControlName="bio"
-								rows="4"></textarea>
-
-							<button
-								type="submit"
-								class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-								Save
-							</button>
-						</form>
-						}
-					</div>
-				</div>
-			</section>
-		</div>
-	</section>
+	<label
+		for="uploadImage"
+		class="absolute bottom-2 right-2 w-10 h-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors duration-200 cursor-pointer flex items-center justify-center"
+		aria-label="Edit profile picture">
+		<i class="fa-solid fa-pen-to-square"></i>
+	</label>
 </div>
- -->
+
+<form [formGroup]="userForm">
+	<div class="mb-4">
+		<input
+			class="w-full p-3 font-light border border-gray-300"
+			placeholder="First Name"
+			formControlName="firstname"
+			type="text" />
+	</div>
+
+	<div class="mb-4">
+		<input
+			class="w-full p-3 font-light border border-gray-300"
+			placeholder="Last Name"
+			formControlName="lastname"
+			type="text" />
+	</div>
+
+	<div class="mb-4">
+		<textarea
+			class="w-full p-3 font-light border border-gray-300 resize-none"
+			placeholder="Bio"
+			formControlName="bio"
+			rows="4"></textarea>
+	</div>
+
+	<button
+		(click)="updateUser()"
+		class="w-full bg-blue-700 text-white p-3 rounded font-medium hover:bg-blue-800 transition"
+		type="submit"
+		[disabled]="userForm.invalid">
+		Submit
+	</button>
+</form>
+}
 

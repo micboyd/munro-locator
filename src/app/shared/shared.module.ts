@@ -3,13 +3,14 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { MapComponent } from './components/map/map.component';
 import { NgModule } from '@angular/core';
-import { TabComponent } from './components/tabs/tab/tab.component';
-import { TabGroupComponent } from './components/tabs/tab-group.component';
+import { TabItemComponent } from './components/tabs/tab-item/tab-item.component';
+import { TabsComponent } from './components/tabs/tabs.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
-	declarations: [CheckboxComponent, MapComponent, TabComponent, TabGroupComponent, LoadingIndicatorComponent],
-	imports: [FontAwesomeModule],
-	exports: [CheckboxComponent, MapComponent, TabComponent, TabGroupComponent, LoadingIndicatorComponent],
+	declarations: [CheckboxComponent, MapComponent, TabItemComponent, TabsComponent, LoadingIndicatorComponent],
+	imports: [FontAwesomeModule, CommonModule],
+	exports: [CheckboxComponent, MapComponent, TabItemComponent, TabsComponent, LoadingIndicatorComponent],
 })
 export class SharedModule {}
 

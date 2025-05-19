@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { User } from '../../shared/models/User';
 import { UserService } from '../../shared/services/user.service';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -12,7 +11,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class ProfileComponent implements OnInit {
 	userForm: FormGroup = null;
-	faPen = faPen;
 
 	selectedUser: User;
 	editing = false;
@@ -46,6 +44,7 @@ export class ProfileComponent implements OnInit {
 		this.userService.getUser(this.userService.userId).subscribe(user => {
 			this.selectedUser = new User(user);
 			this.initForm();
+			console.log(this.selectedUser);
 			this.profileLoading = false;
 		});
 	}

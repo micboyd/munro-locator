@@ -66,20 +66,28 @@ export class MunroService {
 		return this.http.get<Array<Munro>>(this.apiUrl);
 	}
 
+	getSingleMunro(munroId: string): Observable<Array<Munro>> {
+		return this.http.get<Array<Munro>>(this.apiUrl + `/${munroId}`);
+	}
+
+	getUserCompletedMunros(): Observable<Array<CompletedMunro>> {
+		return this.http.get<Array<CompletedMunro>>(this.apiUrl + `/users/${this.userService.userId}/completed`);
+	}
+
+	getUserCompletedMunroSingle(hillId: string): Observable<CompletedMunro> {
+		return this.http.get<CompletedMunro>(this.apiUrl + `/users/${this.userService.userId}/completed/${hillId}`);
+	}
+
+	addUserCompletedMunroSingle(munro: CompletedMunro): Observable<CompletedMunro> {
+		return this.http.post<CompletedMunro>(this.apiUrl + `/users/${this.userService.userId}/completed`, munro);
+	}
+
 	updatedUserCompletedMunro(munro: CompletedMunro): Observable<CompletedMunro> {
-		return this.http.put<CompletedMunro>(this.apiUrl + `/${this.userService.userId}/completed`, munro);
+		return this.http.put<CompletedMunro>(this.apiUrl + `/users/${this.userService.userId}/completed`, munro);
 	}
 
 	removeCompletedMunro(munroId: string): Observable<any> {
-		return this.http.delete(this.apiUrl + `/${this.userService.userId}/completed/${munroId}`);
-	}
-
-	getUserCompletedMunroSingle(userId: string, hillId: string): Observable<CompletedMunro> {
-		return this.http.get<CompletedMunro>(this.apiUrl + `/${this.userService.userId}/completed/${hillId}`);
-	}
-
-	getUserCompletedMunros(userId: string): Observable<Array<CompletedMunro>> {
-		return this.http.get<Array<CompletedMunro>>(this.apiUrl + `/${this.userService.userId}/completed`);
+		return this.http.delete(this.apiUrl + `/users/${this.userService.userId}/completed/${munroId}`);
 	}
 }
 

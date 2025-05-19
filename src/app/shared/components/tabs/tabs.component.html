@@ -1,0 +1,19 @@
+<div class="tab-headers flex space-x-6 border-b border-gray-200">
+	@for(tab of tabs; track tab.title) {
+	<button
+		(click)="selectTab(tab)"
+		class="relative pb-3 text-sm font-semibold transition-colors duration-200 cursor-pointer text-gray-500 hover:text-gray-700 focus:outline-none"
+		[ngClass]="{
+			'after:absolute after:inset-x-0 after:bottom-0 after:h-1 after:rounded-full after:bg-purple-600': tab.active
+		}">
+		{{ tab.title }}
+	</button>
+	}
+</div>
+
+<div class="tab-content mt-6">
+	@for(tab of tabs; track tab.title) { @if(tab.active) {
+	<ng-container *ngTemplateOutlet="tab.template"></ng-container>
+	} }
+</div>
+

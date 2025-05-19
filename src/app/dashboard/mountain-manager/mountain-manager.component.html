@@ -1,0 +1,101 @@
+@if(munrosLoading) {
+<app-loading-indicator></app-loading-indicator>
+} @else {
+
+<h1 class="mb-4 font-semibold text-4xl">Munro Manager</h1>
+<app-tabs>
+	<app-tab-item [title]="allTitle" [active]="true">
+		<ng-template>
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+				<div
+					*ngFor="let munro of allUserMunros"
+					class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
+					<div class="relative">
+						<img [src]="munro.image_url" alt="Munro image" class="w-full h-48 object-cover" />
+
+						<span
+							*ngIf="munro.completed"
+							class="absolute top-2 left-2 bg-green-600 text-white text-sm font-medium px-3 py-1 rounded-full shadow">
+							Completed
+						</span>
+					</div>
+
+					<div class="p-4">
+						<div class="flex items-center justify-between mb-2">
+							<h2 class="text-lg font-semibold text-gray-800">
+								{{ munro.hill_name }}
+							</h2>
+							<a [routerLink]="munro._id" class="ml-2 transition" title="View Munro Details">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</ng-template>
+	</app-tab-item>
+
+	<app-tab-item [title]="allCompletedTitle">
+		<ng-template>
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+				@for (munro of allCompletedUserMunros; track munro._id) {
+				<div
+					class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
+					<div class="relative">
+						<img [src]="munro.image_url" alt="Munro image" class="w-full h-48 object-cover" />
+						@if (munro.completed) {
+						<span
+							class="absolute top-2 left-2 bg-green-600 text-white text-sm font-medium px-3 py-1 rounded-full shadow">
+							Completed
+						</span>
+						}
+					</div>
+					<div class="p-4">
+						<div class="flex items-center justify-between mb-2">
+							<h2 class="text-lg font-semibold text-gray-800">
+								{{ munro.hill_name }}
+							</h2>
+							<a [routerLink]="munro._id" class="ml-2 transition" title="View Munro Details">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				}
+			</div>
+		</ng-template>
+	</app-tab-item>
+
+	<app-tab-item [title]="allIncompleteTitle">
+		<ng-template>
+			<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+				<div
+					*ngFor="let munro of allIncompleteUserMunros"
+					class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
+					<div class="relative">
+						<img [src]="munro.image_url" alt="Munro image" class="w-full h-48 object-cover" />
+
+						<span
+							*ngIf="munro.completed"
+							class="absolute top-2 left-2 bg-green-600 text-white text-sm font-medium px-3 py-1 rounded-full shadow">
+							Completed
+						</span>
+					</div>
+
+					<div class="p-4">
+						<div class="flex items-center justify-between mb-2">
+							<h2 class="text-lg font-semibold text-gray-800">
+								{{ munro.hill_name }}
+							</h2>
+							<a [routerLink]="munro._id" class="ml-2 transition" title="View Munro Details">
+								<i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</ng-template>
+	</app-tab-item>
+</app-tabs>
+}
+
