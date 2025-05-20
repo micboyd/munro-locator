@@ -6,11 +6,26 @@ import { NgModule } from '@angular/core';
 import { TabItemComponent } from './components/tabs/tab-item/tab-item.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { CommonModule } from '@angular/common';
+import { RatingComponent } from './components/rating/rating.component';
 
 @NgModule({
-	declarations: [CheckboxComponent, MapComponent, TabItemComponent, TabsComponent, LoadingIndicatorComponent],
+	declarations: [
+		CheckboxComponent,
+		MapComponent,
+		TabItemComponent,
+		TabsComponent,
+		LoadingIndicatorComponent,
+		RatingComponent,
+	],
 	imports: [FontAwesomeModule, CommonModule],
-	exports: [CheckboxComponent, MapComponent, TabItemComponent, TabsComponent, LoadingIndicatorComponent],
+	exports: [
+		CheckboxComponent,
+		MapComponent,
+		TabItemComponent,
+		TabsComponent,
+		LoadingIndicatorComponent,
+		RatingComponent,
+	],
 })
 export class SharedModule {}
 

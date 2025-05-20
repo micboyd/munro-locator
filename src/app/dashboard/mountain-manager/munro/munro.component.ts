@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ActivatedRoute } from '@angular/router';
 import { CompletedMunro } from '../../../shared/models/CompletedMunro';
 import { Munro } from '../../../shared/models/Munro';
 import { MunroService } from '../../../shared/services/munros.service';
 import { UserService } from '../../../shared/services/user.service';
+import { combineLatest, map, of, Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-munro',
@@ -13,24 +14,43 @@ import { UserService } from '../../../shared/services/user.service';
 })
 export class MunroComponent implements OnInit {
 	private _selectedMunro: Munro = null;
-	isEditing = false;
+	private _completedMunro: CompletedMunro = null;
 
-	constructor(private userService: UserService, private munroService: MunroService, private route: ActivatedRoute) {}
+	munrosLoading: boolean = true;
+	munroStatus$: Observable<{ munro: Munro; completedMunro: CompletedMunro | null }>;
+
+	constructor(private munroService: MunroService, private route: ActivatedRoute) {}
 
 	get selectedMunro(): Munro {
 		return this._selectedMunro;
 	}
 
+	get completedMunro(): CompletedMunro {
+		return this._completedMunro;
+	}
+
 	ngOnInit() {
 		const id = this.route.snapshot.paramMap.get('id');
+		this.getMunroDetails(id);
+	}
 
-		this.munroService.getSingleMunro(id).subscribe(munroDetails => {
-			console.log(munroDetails);
-		});
+	getMunroDetails(munroId: string) {
+		const munro$ = this.munroService.getSingleMunro(munroId);
+		const completedMunro$ = this.munroService.getUserCompletedMunroSingle(munroId).pipe(catchError(() => of(null)));
 
-		this.munroService.getUserCompletedMunroSingle(id).subscribe(completedMunro => {
-			console.log(completedMunro);
+		this.munroStatus$ = combineLatest([munro$, completedMunro$]).pipe(
+			map(([munro, completedMunro]) => ({ munro, completedMunro })),
+		);
+
+		this.munroStatus$.subscribe(result => {
+			this.munrosLoading = false;
+			this._selectedMunro = result.munro;
+			this._completedMunro = result.completedMunro;
 		});
+	}
+
+	onRatingChanged(newRating: number) {
+		console.log(newRating);
 	}
 }
 

@@ -66,8 +66,8 @@ export class MunroService {
 		return this.http.get<Array<Munro>>(this.apiUrl);
 	}
 
-	getSingleMunro(munroId: string): Observable<Array<Munro>> {
-		return this.http.get<Array<Munro>>(this.apiUrl + `/${munroId}`);
+	getSingleMunro(munroId: string): Observable<Munro> {
+		return this.http.get<Munro>(this.apiUrl + `/${munroId}`);
 	}
 
 	getUserCompletedMunros(): Observable<Array<CompletedMunro>> {
