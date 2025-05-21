@@ -1,4 +1,4 @@
-@if (munrosLoading) {
+@if (munroLoading) {
 <app-loading-indicator></app-loading-indicator>
 } @else {
 
@@ -17,17 +17,30 @@
 		{{ selectedMunro.hill_name }}
 	</h1>
 	<p class="text-gray-500 text-lg mb-6">{{ selectedMunro.height }}m</p>
-	@if (completedMunro) {
-	<div>
-		<span class="block text-gray-600 text-sm">
-			Rating:
-			<app-rating [rating]="completedMunro.rating" (ratingChange)="onRatingChanged($event)"></app-rating>
-		</span>
-	</div>
-	} @else {
-	<p class="text-gray-400 italic">You have not completed this Munro yet.</p>
 
-	}
+	<form [formGroup]="completedMunroForm" (ngSubmit)="saveCompletedMunro()" class="space-y-6">
+		<div>
+			<label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+			<textarea
+				id="notes"
+				formControlName="notes"
+				class="w-full p-3 font-light border border-gray-300 rounded focus:outline-none focus:border-black resize-none"
+				rows="4"
+				placeholder="Any notes about your hike..."></textarea>
+		</div>
+
+		<div>
+			<label class="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+			<app-rating [rating]="completedMunro.rating" (ratingChange)="onRatingChanged($event)"></app-rating>
+		</div>
+
+		<button
+			type="submit"
+			[disabled]="completedMunroForm.invalid"
+			class="w-full bg-black text-white py-3 rounded font-semibold hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed">
+			Save
+		</button>
+	</form>
 </div>
 }
 

@@ -3,11 +3,11 @@ import { Observable, combineLatest, map, of } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 import { CompletedMunro } from '../../../shared/models/CompletedMunro';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Munro } from '../../../shared/models/Munro';
 import { MunroService } from '../../../shared/services/munros.service';
 import { UserService } from '../../../shared/services/user.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, take } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-munro',
@@ -18,11 +18,11 @@ export class MunroComponent implements OnInit {
 	private _selectedMunro: Munro = null;
 	private _completedMunro: CompletedMunro = null;
 
-    completedMunroForm: FormGroup = null;
-	munrosLoading: boolean = true;
+	completedMunroForm: FormGroup = null;
+	munroLoading: boolean = true;
 	munroStatus$: Observable<{ munro: Munro; completedMunro: CompletedMunro | null }>;
 
-	constructor(private munroService: MunroService, private route: ActivatedRoute) {}
+	constructor(public fb: FormBuilder, private munroService: MunroService, private route: ActivatedRoute) {}
 
 	get selectedMunro(): Munro {
 		return this._selectedMunro;
@@ -30,6 +30,10 @@ export class MunroComponent implements OnInit {
 
 	get completedMunro(): CompletedMunro {
 		return this._completedMunro;
+	}
+
+	get isNewCompletedMunro(): boolean {
+		return !this._completedMunro || !this._completedMunro._id;
 	}
 
 	ngOnInit() {
@@ -46,19 +50,30 @@ export class MunroComponent implements OnInit {
 		);
 
 		this.munroStatus$.subscribe(result => {
-			this.munrosLoading = false;
-			this._selectedMunro = result.munro;
-			this._completedMunro = result.completedMunro;
+			this.munroLoading = false;
+			this._selectedMunro = new Munro(result.munro);
+			this._completedMunro = new CompletedMunro(result.completedMunro);
+			this.initForm();
 		});
 	}
 
-    // initForm() {
-	// 	this.completedMunroForm = this.completedMunro.createForm(this.fb);
-	// 	this.formInitilised = true;
-	// }
+	initForm() {
+		this.completedMunroForm = this._completedMunro.createForm(this.fb);
+		this.completedMunroForm.controls['munroId'].setValue(this.selectedMunro._id);
+		console.log(this.completedMunroForm);
+	}
 
 	onRatingChanged(newRating: number) {
-		console.log(newRating);
+		this.completedMunroForm.controls['rating'].setValue(newRating);
+	}
+
+	saveCompletedMunro() {
+		console.log(this.isNewCompletedMunro);
+		if (this.isNewCompletedMunro) {
+			this.munroService.addUserCompletedMunroSingle(this.completedMunroForm.value).pipe(take(1)).subscribe();
+		} else {
+			this.munroService.updatedUserCompletedMunro(this.completedMunroForm.value).pipe(take(1)).subscribe();
+		}
 	}
 }
 

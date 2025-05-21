@@ -83,7 +83,10 @@ export class MunroService {
 	}
 
 	updatedUserCompletedMunro(munro: CompletedMunro): Observable<CompletedMunro> {
-		return this.http.put<CompletedMunro>(this.apiUrl + `/users/${this.userService.userId}/completed`, munro);
+		return this.http.put<CompletedMunro>(
+			this.apiUrl + `/users/${this.userService.userId}/completed/${munro.munroId}`,
+			munro,
+		);
 	}
 
 	removeCompletedMunro(munroId: string): Observable<any> {

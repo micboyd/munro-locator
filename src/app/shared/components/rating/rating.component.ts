@@ -16,3 +16,4 @@ export class RatingComponent {
 		this.ratingChange.emit(this.rating);
 	}
 }
+
