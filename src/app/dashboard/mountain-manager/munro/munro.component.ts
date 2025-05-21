@@ -33,7 +33,7 @@ export class MunroComponent implements OnInit {
 	}
 
 	get isNewCompletedMunro(): boolean {
-		return !this._completedMunro || !this._completedMunro._id;
+		return !this._completedMunro.dateCompleted;
 	}
 
 	ngOnInit() {
@@ -60,7 +60,6 @@ export class MunroComponent implements OnInit {
 	initForm() {
 		this.completedMunroForm = this._completedMunro.createForm(this.fb);
 		this.completedMunroForm.controls['munroId'].setValue(this.selectedMunro._id);
-		console.log(this.completedMunroForm);
 	}
 
 	onRatingChanged(newRating: number) {
@@ -68,12 +67,23 @@ export class MunroComponent implements OnInit {
 	}
 
 	saveCompletedMunro() {
-		console.log(this.isNewCompletedMunro);
 		if (this.isNewCompletedMunro) {
-			this.munroService.addUserCompletedMunroSingle(this.completedMunroForm.value).pipe(take(1)).subscribe();
+			this.munroService
+				.addUserCompletedMunroSingle(this.completedMunroForm.value)
+				.pipe(take(1))
+				.subscribe(data => {
+					this._completedMunro = new CompletedMunro(data);
+				});
 		} else {
 			this.munroService.updatedUserCompletedMunro(this.completedMunroForm.value).pipe(take(1)).subscribe();
 		}
+	}
+
+	removeCompletedMunro() {
+		console.log(this._completedMunro);
+		this.munroService.removeCompletedMunro(this.completedMunro._id).subscribe(() => {
+			this._completedMunro = new CompletedMunro();
+		});
 	}
 }
 

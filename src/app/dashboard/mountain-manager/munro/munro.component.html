@@ -16,6 +16,13 @@
 	<h1 class="text-3xl md:text-4xl font-bold mb-2 text-gray-900 tracking-tight">
 		{{ selectedMunro.hill_name }}
 	</h1>
+
+	@if(!isNewCompletedMunro) {
+	<div class="mb-5">
+		<span class="bg-green-800 text-white text-sm font-medium px-3 py-1 rounded-full">Completed</span>
+	</div>
+	}
+
 	<p class="text-gray-500 text-lg mb-6">{{ selectedMunro.height }}m</p>
 
 	<form [formGroup]="completedMunroForm" (ngSubmit)="saveCompletedMunro()" class="space-y-6">
@@ -41,6 +48,13 @@
 			Save
 		</button>
 	</form>
+
+	<button
+		(click)="removeCompletedMunro()"
+		type="submit"
+		class="w-full bg-black text-white py-3 rounded font-semibold hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed">
+		Mark as incomplete
+	</button>
 </div>
 }
 
