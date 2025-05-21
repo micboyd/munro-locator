@@ -49,7 +49,7 @@ export class MunroComponent implements OnInit {
 			map(([munro, completedMunro]) => ({ munro, completedMunro })),
 		);
 
-		this.munroStatus$.subscribe(result => {
+		this.munroStatus$.pipe(take(1)).subscribe(result => {
 			this.munroLoading = false;
 			this._selectedMunro = new Munro(result.munro);
 			this._completedMunro = new CompletedMunro(result.completedMunro);
@@ -81,9 +81,12 @@ export class MunroComponent implements OnInit {
 
 	removeCompletedMunro() {
 		console.log(this._completedMunro);
-		this.munroService.removeCompletedMunro(this.completedMunro._id).subscribe(() => {
-			this._completedMunro = new CompletedMunro();
-		});
+		this.munroService
+			.removeCompletedMunro(this.completedMunro._id)
+			.pipe(take(1))
+			.subscribe(() => {
+				this._completedMunro = new CompletedMunro();
+			});
 	}
 }
 
