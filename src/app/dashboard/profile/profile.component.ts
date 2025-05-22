@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { User } from '../../shared/models/User';
 import { UserService } from '../../shared/services/user.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
 	selector: 'app-profile',
@@ -44,7 +44,6 @@ export class ProfileComponent implements OnInit {
 		this.userService.getUser(this.userService.userId).subscribe(user => {
 			this.selectedUser = new User(user);
 			this.initForm();
-			console.log(this.selectedUser);
 			this.profileLoading = false;
 		});
 	}

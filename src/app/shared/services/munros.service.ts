@@ -90,7 +90,6 @@ export class MunroService {
 	}
 
 	removeCompletedMunro(completedMunroId: string): Observable<any> {
-		console.log(completedMunroId);
 		return this.http.delete(this.apiUrl + `/users/${this.userService.userId}/completed/${completedMunroId}`);
 	}
 }

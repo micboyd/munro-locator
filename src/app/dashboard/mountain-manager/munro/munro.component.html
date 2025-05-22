@@ -13,10 +13,21 @@
 		<span class="font-medium">Back</span>
 	</a>
 
-	<!-- Heading -->
-	<h1 class="text-3xl md:text-4xl font-bold mb-3 text-gray-900 tracking-tight leading-tight">
-		{{ selectedMunro.hill_name }}
-	</h1>
+	<div class="flex items-center justify-between gap-4 mb-6">
+		<div>
+			<!-- Heading -->
+			<h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight leading-tight">
+				{{ selectedMunro.hill_name }}
+			</h1>
+
+			<!-- Height -->
+			<p class="text-gray-400 text-lg">{{ selectedMunro.height }}m</p>
+		</div>
+		<img
+			[src]="selectedMunro.image_url"
+			alt="{{ selectedMunro.hill_name }}"
+			class="w-20 h-20 object-cover rounded-full" />
+	</div>
 
 	<!-- Completed Badge -->
 	@if(!isNewCompletedMunro) {
@@ -26,9 +37,6 @@
 		</span>
 	</div>
 	}
-
-	<!-- Height -->
-	<p class="text-gray-400 text-lg mb-8">{{ selectedMunro.height }}m</p>
 
 	<!-- Form -->
 	<form [formGroup]="completedMunroForm" (ngSubmit)="saveCompletedMunro()" class="space-y-7">
@@ -50,7 +58,7 @@
 		<button
 			type="submit"
 			[disabled]="completedMunroForm.invalid"
-			class="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-900 transition disabled:opacity-50 disabled:cursor-not-allowed">
+			class="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-900 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
 			Save
 		</button>
 	</form>
@@ -60,7 +68,7 @@
 	<button
 		(click)="removeCompletedMunro()"
 		type="button"
-		class="w-full mt-4 border border-gray-200 bg-white text-black py-3 rounded-xl font-semibold hover:bg-gray-100 transition">
+		class="w-full mt-4 border border-gray-200 bg-white text-black py-3 rounded-xl font-semibold hover:bg-gray-100 transition cursor-pointer">
 		Mark as incomplete
 	</button>
 	}

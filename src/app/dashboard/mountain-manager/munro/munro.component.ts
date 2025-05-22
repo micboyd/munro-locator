@@ -18,6 +18,7 @@ export class MunroComponent implements OnInit {
 	private _selectedMunro: Munro = null;
 	private _completedMunro: CompletedMunro = null;
 
+    editMode: boolean = false;
 	completedMunroForm: FormGroup = null;
 	munroLoading: boolean = true;
 	munroStatus$: Observable<{ munro: Munro; completedMunro: CompletedMunro | null }>;
@@ -85,7 +86,6 @@ export class MunroComponent implements OnInit {
 	}
 
 	removeCompletedMunro() {
-		console.log(this.completedMunro._id);
 		this.munroService
 			.removeCompletedMunro(this.completedMunro._id)
 			.pipe(take(1))
