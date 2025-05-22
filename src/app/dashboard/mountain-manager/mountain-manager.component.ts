@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
 import { MunroService } from '../../shared/services/munros.service';
 import { UserMunro } from '../../shared/models/UserMunro';
+import { ILocationSetting } from '../../shared/interfaces/ILocationSetting';
 
 @Component({
 	selector: 'app-munro-list',
@@ -16,8 +17,17 @@ export class MountainManagerComponent implements OnInit {
 
 	munrosLoading: boolean = true;
 	munroStatus$: Observable<UserMunro[]>;
+	viewLocationSetting: ILocationSetting;
 
-	constructor(private munroService: MunroService) {}
+	constructor(private munroService: MunroService) {
+		this.viewLocationSetting = {
+			zoom: 8,
+			center: {
+				latitude: 56.8493796,
+				longitude: -4.5336288,
+			},
+		};
+	}
 
 	ngOnInit(): void {
 		this.getAllMunros();
@@ -67,6 +77,16 @@ export class MountainManagerComponent implements OnInit {
 			this._allUserIncompleteMunros = data.filter(value => !value.completed);
 			this.munrosLoading = false;
 		});
+	}
+
+	locateMunro(latitude: number, longitude: number) {
+		this.viewLocationSetting = {
+			zoom: 13,
+			center: {
+				latitude: latitude,
+				longitude: longitude,
+			},
+		};
 	}
 }
 

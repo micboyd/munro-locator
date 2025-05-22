@@ -28,9 +28,16 @@
 									<h2 class="text-base sm:text-lg font-semibold text-gray-800">
 										{{ munro.hill_name }}
 									</h2>
-									<a [routerLink]="munro._id" class="ml-2 transition" title="View Munro Details">
-										<i class="fa-solid fa-pen-to-square"></i>
-									</a>
+									<div>
+										<a [routerLink]="munro._id" class="ml-2 transition" title="View Munro Details">
+											<i class="fa-solid fa-pen-to-square"></i>
+										</a>
+										<button
+											(click)="locateMunro(munro.latitude, munro.longitude)"
+											class="ml-3 cursor-pointer">
+											<i class="fa-solid fa-location-crosshairs"></i>
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -60,9 +67,16 @@
 									<h2 class="text-base sm:text-lg font-semibold text-gray-800">
 										{{ munro.hill_name }}
 									</h2>
-									<a [routerLink]="munro._id" class="ml-2 transition" title="View Munro Details">
-										<i class="fa-solid fa-pen-to-square"></i>
-									</a>
+									<div>
+										<a [routerLink]="munro._id" class="ml-2 transition" title="View Munro Details">
+											<i class="fa-solid fa-pen-to-square"></i>
+										</a>
+										<button
+											(click)="locateMunro(munro.latitude, munro.longitude)"
+											class="ml-3 cursor-pointer">
+											<i class="fa-solid fa-location-crosshairs"></i>
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -89,12 +103,16 @@
 							</div>
 							<div class="p-4">
 								<div class="flex items-center justify-between mb-2">
-									<h2 class="text-base sm:text-lg font-semibold text-gray-800">
-										{{ munro.hill_name }}
-									</h2>
-									<a [routerLink]="munro._id" class="ml-2 transition" title="View Munro Details">
-										<i class="fa-solid fa-pen-to-square"></i>
-									</a>
+									<div>
+										<a [routerLink]="munro._id" class="ml-2 transition" title="View Munro Details">
+											<i class="fa-solid fa-pen-to-square"></i>
+										</a>
+										<button
+											(click)="locateMunro(munro.latitude, munro.longitude)"
+											class="ml-3 cursor-pointer">
+											<i class="fa-solid fa-location-crosshairs"></i>
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -106,8 +124,8 @@
 	<!-- Side Two: Blue background / Map -->
 	<div class="w-full lg:w-1/2 h-[40vh] lg:h-full flex items-center justify-center mt-4 lg:mt-0 lg:pl-6">
 		<app-map
-			[completeMunros]="allCompletedUserMunros"
-			[incompleteMunros]="allIncompleteUserMunros"
+			[viewLocationSetting]="viewLocationSetting"
+			[allMunros]="allUserMunros"
 			class="h-full w-full rounded-xl"></app-map>
 	</div>
 </div>

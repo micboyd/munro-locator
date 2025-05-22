@@ -1,6 +1,8 @@
 import * as L from 'leaflet';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Munro } from '../../models/Munro';
+import { UserMunro } from '../../models/UserMunro';
+import { ILocationSetting } from '../../interfaces/ILocationSetting';
 
 @Component({
 	selector: 'app-map',
@@ -9,8 +11,14 @@ import { Munro } from '../../models/Munro';
 	standalone: false,
 })
 export class MapComponent implements OnInit, OnChanges {
-	@Input() incompleteMunros: Munro[] | null = null;
-	@Input() completeMunros: Munro[] | null = null;
+	@Input() allMunros: UserMunro[] | null = null;
+	@Input() viewLocationSetting: ILocationSetting = {
+		zoom: 8,
+		center: {
+			latitude: 56.8493796,
+			longitude: -4.5336288,
+		},
+	};
 
 	private map: L.Map | undefined;
 	private markers: L.Marker[] = [];
@@ -23,16 +31,21 @@ export class MapComponent implements OnInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		// Wait for map to be initialized
 		if (this.map) {
+			if (changes['viewLocationSetting'] && changes['viewLocationSetting'].currentValue) {
+				// Get the new center and zoom
+				const setting = changes['viewLocationSetting'].currentValue as ILocationSetting;
+				this.map.setView([setting.center.latitude, setting.center.longitude], setting.zoom);
+			}
+
 			this.addMunroMarkers();
 		}
 	}
 
 	private initMap(): void {
 		this.map = L.map('map', {
-			center: [56.8493796, -4.5336288],
-			zoom: 8,
+			center: [this.viewLocationSetting.center.latitude, this.viewLocationSetting.center.longitude],
+			zoom: this.viewLocationSetting.zoom,
 			zoomControl: false,
 		});
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
@@ -46,14 +59,9 @@ export class MapComponent implements OnInit, OnChanges {
 		this.markers = [];
 
 		// Otherwise, show all complete/incomplete Munros
-		if (this.incompleteMunros) {
-			this.incompleteMunros.forEach(munro => {
-				this.addMarker(munro, '#e91e63');
-			});
-		}
-		if (this.completeMunros) {
-			this.completeMunros.forEach(munro => {
-				this.addMarker(munro, '#006400');
+		if (this.allMunros) {
+			this.allMunros.forEach(munro => {
+				this.addMarker(munro, munro.completed ? '#006400' : '#e91e63');
 			});
 		}
 	}
