@@ -70,23 +70,27 @@ export class MunroComponent implements OnInit {
 		if (this.isNewCompletedMunro) {
 			this.munroService
 				.addUserCompletedMunroSingle(this.completedMunroForm.value)
-				.pipe(take(1)).subscribe(data => {
+				.pipe(take(1))
+				.subscribe(data => {
 					this._completedMunro = new CompletedMunro(data);
 				});
 		} else {
-			this.munroService.updatedUserCompletedMunro(this.completedMunroForm.value).pipe(take(1)).subscribe(() => {
-                this.munroLoading = false;
-            });
+			this.munroService
+				.updatedUserCompletedMunro(this.completedMunroForm.value)
+				.pipe(take(1))
+				.subscribe(() => {
+					this.munroLoading = false;
+				});
 		}
 	}
 
 	removeCompletedMunro() {
-        console.log(this.completedMunro._id);
-	    this.munroService
+		console.log(this.completedMunro._id);
+		this.munroService
 			.removeCompletedMunro(this.completedMunro._id)
-			.pipe(take(1)).subscribe(() => {
+			.pipe(take(1))
+			.subscribe(() => {
 				this._completedMunro = new CompletedMunro();
 			});
 	}
 }
-

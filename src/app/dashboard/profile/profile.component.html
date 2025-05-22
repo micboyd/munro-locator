@@ -1,73 +1,71 @@
 @if(profileLoading) {
-  <app-loading-indicator></app-loading-indicator>
+<app-loading-indicator></app-loading-indicator>
 } @else {
 
 <div class="w-full max-w-xl mx-auto md:mx-0">
-  <!-- Heading -->
-  <h1 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900 tracking-tight leading-tight">
-    Welcome, {{ selectedUser.fullname }}
-  </h1>
+	<!-- Heading -->
+	<h1 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900 tracking-tight leading-tight">
+		{{ selectedUser.fullname }}
+	</h1>
 
-  <!-- Profile Image -->
-  <div class="relative w-40 h-40 mb-8">
-    <img
-      [src]="selectedUser.profileImage"
-      alt="Profile"
-      class="w-full h-full object-cover rounded-full shadow-md" />
+	<!-- Profile Image -->
+	<div class="relative w-40 h-40 mb-8">
+		<img
+			[src]="selectedUser.profileImage"
+			alt="Profile"
+			class="w-full h-full object-cover rounded-full shadow-md" />
 
-    <input
-      type="file"
-      id="uploadImage"
-      name="image"
-      accept="image/*"
-      class="hidden"
-      (change)="onImageSelect($event, userService.currentUser)" />
+		<input
+			type="file"
+			id="uploadImage"
+			name="image"
+			accept="image/*"
+			class="hidden"
+			(change)="onImageSelect($event, userService.currentUser)" />
 
-    <label
-      for="uploadImage"
-      class="absolute bottom-2 right-2 w-10 h-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition cursor-pointer flex items-center justify-center"
-      aria-label="Edit profile picture">
-      <i class="fa-solid fa-pen-to-square"></i>
-    </label>
-  </div>
+		<label
+			for="uploadImage"
+			class="absolute bottom-2 right-2 w-10 h-10 bg-white rounded-full shadow-md hover:bg-gray-100 transition cursor-pointer flex items-center justify-center"
+			aria-label="Edit profile picture">
+			<i class="fa-solid fa-pen-to-square"></i>
+		</label>
+	</div>
 
-  <!-- Form -->
-  <form [formGroup]="userForm" (ngSubmit)="updateUser()" class="space-y-7">
+	<!-- Form -->
+	<form [formGroup]="userForm" (ngSubmit)="updateUser()" class="space-y-7">
+		<div>
+			<label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+			<input
+				class="w-full p-4 text-base border border-gray-200 rounded-xl focus:outline-none focus:border-black transition disabled:bg-gray-100"
+				placeholder="First Name"
+				formControlName="firstname"
+				type="text" />
+		</div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-      <input
-        class="w-full p-4 text-base border border-gray-200 rounded-xl focus:outline-none focus:border-black transition disabled:bg-gray-100"
-        placeholder="First Name"
-        formControlName="firstname"
-        type="text" />
-    </div>
+		<div>
+			<label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+			<input
+				class="w-full p-4 text-base border border-gray-200 rounded-xl focus:outline-none focus:border-black transition disabled:bg-gray-100"
+				placeholder="Last Name"
+				formControlName="lastname"
+				type="text" />
+		</div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-      <input
-        class="w-full p-4 text-base border border-gray-200 rounded-xl focus:outline-none focus:border-black transition disabled:bg-gray-100"
-        placeholder="Last Name"
-        formControlName="lastname"
-        type="text" />
-    </div>
+		<div>
+			<label class="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+			<textarea
+				class="w-full p-4 text-base border border-gray-200 rounded-xl resize-none focus:outline-none focus:border-black transition disabled:bg-gray-100"
+				placeholder="Bio"
+				formControlName="bio"
+				rows="4"></textarea>
+		</div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Bio</label>
-      <textarea
-        class="w-full p-4 text-base border border-gray-200 rounded-xl resize-none focus:outline-none focus:border-black transition disabled:bg-gray-100"
-        placeholder="Bio"
-        formControlName="bio"
-        rows="4"></textarea>
-    </div>
-
-    <button
-      type="submit"
-      [disabled]="userForm.invalid"
-      class="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-900 transition disabled:opacity-50 disabled:cursor-not-allowed">
-      Save Changes
-    </button>
-  </form>
-
+		<button
+			type="submit"
+			[disabled]="userForm.invalid"
+			class="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-900 transition disabled:opacity-50 disabled:cursor-not-allowed">
+			Save Changes
+		</button>
+	</form>
 </div>
 }
