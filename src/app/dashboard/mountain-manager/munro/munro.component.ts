@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, combineLatest, map, of } from 'rxjs';
+import { catchError, take } from 'rxjs/operators';
 
 import { ActivatedRoute } from '@angular/router';
 import { CompletedMunro } from '../../../shared/models/CompletedMunro';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Munro } from '../../../shared/models/Munro';
 import { MunroService } from '../../../shared/services/munros.service';
 import { UserService } from '../../../shared/services/user.service';
-import { catchError, take } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-munro',
@@ -70,21 +70,21 @@ export class MunroComponent implements OnInit {
 		if (this.isNewCompletedMunro) {
 			this.munroService
 				.addUserCompletedMunroSingle(this.completedMunroForm.value)
-				.pipe(take(1))
-				.subscribe(data => {
+				.pipe(take(1)).subscribe(data => {
 					this._completedMunro = new CompletedMunro(data);
 				});
 		} else {
-			this.munroService.updatedUserCompletedMunro(this.completedMunroForm.value).pipe(take(1)).subscribe();
+			this.munroService.updatedUserCompletedMunro(this.completedMunroForm.value).pipe(take(1)).subscribe(() => {
+                this.munroLoading = false;
+            });
 		}
 	}
 
 	removeCompletedMunro() {
-		console.log(this._completedMunro);
-		this.munroService
+        console.log(this.completedMunro._id);
+	    this.munroService
 			.removeCompletedMunro(this.completedMunro._id)
-			.pipe(take(1))
-			.subscribe(() => {
+			.pipe(take(1)).subscribe(() => {
 				this._completedMunro = new CompletedMunro();
 			});
 	}
