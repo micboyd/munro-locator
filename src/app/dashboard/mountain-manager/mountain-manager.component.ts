@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { map, shareReplay, startWith } from 'rxjs/operators';
+
+import { FormControl } from '@angular/forms';
+import { ILocationSetting } from '../../shared/interfaces/ILocationSetting';
 import { MunroService } from '../../shared/services/munros.service';
 import { UserMunro } from '../../shared/models/UserMunro';
-import { ILocationSetting } from '../../shared/interfaces/ILocationSetting';
 
 @Component({
 	selector: 'app-munro-list',
@@ -11,53 +13,53 @@ import { ILocationSetting } from '../../shared/interfaces/ILocationSetting';
 	standalone: false,
 })
 export class MountainManagerComponent implements OnInit {
-	private _allUserMunros: UserMunro[];
-	private _allUserCompletedMunros: UserMunro[];
-	private _allUserIncompleteMunros: UserMunro[];
+	// Filter handling
+	filterValue: string = '';
+	private filterSubject = new BehaviorSubject<string>('');
 
-	munrosLoading: boolean = true;
+	// Munro lists
+	munrosLoading = true;
 	munroStatus$: Observable<UserMunro[]>;
-	viewLocationSetting: ILocationSetting;
 
-	constructor(private munroService: MunroService) {
+	// Filtered lists
+	filteredAllMunros$: Observable<UserMunro[]>;
+	filteredCompletedMunros$: Observable<UserMunro[]>;
+	filteredIncompleteMunros$: Observable<UserMunro[]>;
+
+	filterControl = new FormControl('');
+
+	// Map view
+	viewLocationSetting: ILocationSetting = {
+		zoom: 8,
+		center: {
+			latitude: 56.8493796,
+			longitude: -4.5336288,
+		},
+	};
+
+	constructor(private munroService: MunroService) {}
+
+	ngOnInit(): void {
+		this.loadMunros();
+
+		this.filterControl.valueChanges.pipe(startWith('')).subscribe(value => this.filterSubject.next(value ?? ''));
+	}
+
+	// Handles input change for the filter
+	onFilterChange(value: string) {
+		this.filterSubject.next(value ?? '');
+	}
+
+	// For map centering
+	locateMunro(latitude: number, longitude: number) {
 		this.viewLocationSetting = {
-			zoom: 8,
-			center: {
-				latitude: 56.8493796,
-				longitude: -4.5336288,
-			},
+			zoom: 13,
+			center: { latitude, longitude },
 		};
 	}
 
-	ngOnInit(): void {
-		this.getAllMunros();
-	}
-
-	get allTitle(): string {
-		return `All Munros (${this.allUserMunros.length})`;
-	}
-
-	get allCompletedTitle(): string {
-		return `Complete Munros (${this.allCompletedUserMunros.length})`;
-	}
-
-	get allIncompleteTitle(): string {
-		return `Incomplete Munros (${this.allIncompleteUserMunros.length})`;
-	}
-
-	get allUserMunros() {
-		return this._allUserMunros;
-	}
-
-	get allCompletedUserMunros() {
-		return this._allUserCompletedMunros;
-	}
-
-	get allIncompleteUserMunros() {
-		return this._allUserIncompleteMunros;
-	}
-
-	getAllMunros() {
+	// Loads Munros and sets up filtering
+	private loadMunros() {
 		const allMunros$ = this.munroService.getMunros();
 		const completedMunros$ = this.munroService.getUserCompletedMunros();
 		this.munrosLoading = true;
@@ -69,24 +71,33 @@ export class MountainManagerComponent implements OnInit {
 					munro => new UserMunro(munro, completedMap.has(munro._id), completedMap.get(munro._id) ?? null),
 				);
 			}),
+			shareReplay(1),
 		);
 
-		this.munroStatus$.subscribe(data => {
-			this._allUserMunros = data;
-			this._allUserCompletedMunros = data.filter(value => value.completed);
-			this._allUserIncompleteMunros = data.filter(value => !value.completed);
-			this.munrosLoading = false;
-		});
+		// Filtered observables
+		const filtered$ = (predicate: (munro: UserMunro) => boolean) =>
+			combineLatest([this.munroStatus$, this.filterSubject.pipe(startWith(''))]).pipe(
+				map(([munros, filter]) =>
+					munros.filter(m => predicate(m) && m.hill_name.toLowerCase().includes(filter.toLowerCase())),
+				),
+			);
+
+		this.filteredAllMunros$ = filtered$(_ => true);
+		this.filteredCompletedMunros$ = filtered$(m => m.completed);
+		this.filteredIncompleteMunros$ = filtered$(m => !m.completed);
+
+		// Update loading state
+		this.munroStatus$.subscribe(() => (this.munrosLoading = false));
 	}
 
-	locateMunro(latitude: number, longitude: number) {
-		this.viewLocationSetting = {
-			zoom: 13,
-			center: {
-				latitude: latitude,
-				longitude: longitude,
-			},
-		};
+	// Optional: titles that update with filtering
+	get allTitle(): Observable<string> {
+		return this.filteredAllMunros$.pipe(map(list => `All Munros (${list.length})`));
+	}
+	get allCompletedTitle(): Observable<string> {
+		return this.filteredCompletedMunros$.pipe(map(list => `Complete Munros (${list.length})`));
+	}
+	get allIncompleteTitle(): Observable<string> {
+		return this.filteredIncompleteMunros$.pipe(map(list => `Incomplete Munros (${list.length})`));
 	}
 }
-

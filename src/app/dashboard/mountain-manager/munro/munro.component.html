@@ -55,6 +55,44 @@
 			<app-rating [rating]="completedMunro.rating" (ratingChange)="onRatingChanged($event)"></app-rating>
 		</div>
 
+		<!-- Hike Photos Gallery Section -->
+		<div class="mb-8">
+			<div class="flex items-center justify-between mb-4">
+				<h2 class="text-lg font-semibold text-gray-900">Hike Photos</h2>
+				<button
+					type="button"
+					class="border px-6 border-gray-200 bg-white text-black py-3 rounded-xl font-semibold hover:bg-gray-100 transition cursor-pointer mb-4"
+					disabled>
+					<i class="fa-solid fa-upload mr-2"></i>
+					Upload Photos
+				</button>
+			</div>
+
+			<!-- Responsive Gallery Grid -->
+			<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+				<!-- Example Images: Replace src with actual uploads -->
+				<div class="relative group rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+					<img
+						src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+						alt="Hike photo 1"
+						class="w-full h-36 object-cover group-hover:scale-105 transition" />
+				</div>
+				<div class="relative group rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+					<img
+						src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"
+						alt="Hike photo 2"
+						class="w-full h-36 object-cover group-hover:scale-105 transition" />
+				</div>
+				<div class="relative group rounded-xl overflow-hidden shadow hover:shadow-lg transition">
+					<img
+						src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80"
+						alt="Hike photo 3"
+						class="w-full h-36 object-cover group-hover:scale-105 transition" />
+				</div>
+				<!-- Add more <div> blocks for more photos -->
+			</div>
+		</div>
+
 		<button
 			type="submit"
 			[disabled]="completedMunroForm.invalid"
@@ -74,4 +112,3 @@
 	}
 </div>
 }
-

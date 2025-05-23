@@ -1,7 +1,8 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
+
+import { BaseUser } from './BaseUser';
 import { CompletedMunro } from './CompletedMunro';
 import { IUser } from '../interfaces/IUser';
-import { BaseUser } from './BaseUser';
 
 export class User extends BaseUser implements IUser {
 	userLoading: boolean = false;

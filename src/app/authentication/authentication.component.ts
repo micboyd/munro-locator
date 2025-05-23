@@ -10,7 +10,7 @@ export class AuthenticationComponent {
 	tabs = [];
 
 	constructor() {
-		this.tabs = [{ label: 'Login' }, { label: 'Register' }];
+		this.tabs = [{ label: 'Login' }];
 	}
 }
 

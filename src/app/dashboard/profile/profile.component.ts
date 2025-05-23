@@ -11,11 +11,12 @@ import { UserService } from '../../shared/services/user.service';
 })
 export class ProfileComponent implements OnInit {
 	userForm: FormGroup = null;
-
 	selectedUser: User;
 	editing = false;
 	profileLoading: boolean = false;
 	formInitilised: boolean = false;
+	selectedImageFile: File = null;
+	imagePreviewUrl: string | ArrayBuffer = null;
 
 	constructor(public userService: UserService, private fb: FormBuilder) {}
 
@@ -23,19 +24,16 @@ export class ProfileComponent implements OnInit {
 		this.getUser();
 	}
 
-	onImageSelect(event: any, user: User) {
+	onImageSelect(event: any) {
 		const file = event.target.files[0];
-
-		this.profileLoading = true;
-
 		if (file) {
-			const formData = new FormData();
-			formData.append('image', file, file.name);
-			this.userService.updateProfilePicture(user.id, formData).subscribe(response => {
-				this.profileLoading = false;
-				this.userService.currentUser.profileImage = response.profileImage;
-				this.userService.userChanged.next();
-			});
+			this.selectedImageFile = file;
+
+			const reader = new FileReader();
+			reader.onload = () => {
+				this.imagePreviewUrl = reader.result;
+			};
+			reader.readAsDataURL(file);
 		}
 	}
 
@@ -50,9 +48,27 @@ export class ProfileComponent implements OnInit {
 
 	updateUser() {
 		this.profileLoading = true;
-		this.userService.updateUser(this.userService.currentUser.id, this.userForm.value).subscribe(updatedUser => {
+
+		const formData = new FormData();
+
+		Object.entries(this.userForm.value).forEach(([key, value]) => {
+			if (value !== undefined && value !== null) {
+				formData.append(key, value as any);
+			}
+		});
+
+		if (this.selectedImageFile) {
+			formData.append('image', this.selectedImageFile, this.selectedImageFile.name);
+		}
+
+		console.log('Form Data:', formData);
+
+		this.userService.updateUser(this.userService.currentUser.id, formData).subscribe(updatedUser => {
 			this.profileLoading = false;
+			this.selectedUser = new User(updatedUser);
 			this.userService.userChanged.next();
+			this.selectedImageFile = null;
+			this.imagePreviewUrl = null;
 		});
 	}
 
@@ -61,4 +77,3 @@ export class ProfileComponent implements OnInit {
 		this.formInitilised = true;
 	}
 }
-

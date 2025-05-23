@@ -5,19 +5,19 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class FileUploadService {
-  constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient) {}
 
-  private _apiUrl = `${environment.baseApiUrl}/munros`;
+	private _apiUrl = `${environment.baseApiUrl}/munros`;
 
-  uploadFile(file: File, munroId: string): Observable<any> {
-    const formData: FormData = new FormData();
-    formData.append('image', file, file.name);
+	uploadFile(file: File, munroId: string): Observable<any> {
+		const formData: FormData = new FormData();
+		formData.append('image', file, file.name);
 
-    return this.http.post(`${this._apiUrl}/${munroId}/image`, formData, {
-      headers: new HttpHeaders(),
-    });
-  }
+		return this.http.post(`${this._apiUrl}/${munroId}/image`, formData, {
+			headers: new HttpHeaders(),
+		});
+	}
 }
