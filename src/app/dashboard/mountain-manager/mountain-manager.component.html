@@ -45,9 +45,9 @@
 							{{ munro.hill_name }}
 						</div>
 						<div class="text-sm text-gray-500 mb-1">{{ munro.height }} m</div>
-
+						@if (munro.completedDetails) {
 						<app-rating [readonly]="true" [rating]="munro.completedDetails.rating"></app-rating>
-
+						}
 					</div>
 
 					<!-- Actions -->
