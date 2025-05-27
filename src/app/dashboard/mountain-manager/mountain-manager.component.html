@@ -4,161 +4,85 @@
 } @else {
 <div class="flex flex-col lg:flex-row h-full">
 	<!-- Side One: Munro Manager + List -->
-	<div class="w-full lg:w-1/2 px-2 sm:px-4 lg:pr-6 flex flex-col h-[60vh] lg:h-full">
+	<div class="w-full lg:w-1/2 flex flex-col h-[60vh] lg:h-full lg:pr-6">
 		<!-- Modern header row: Title + Search -->
-		<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
-			<h1 class="font-semibold text-2xl sm:text-3xl md:text-4xl">Munro Manager</h1>
-			<input
-				type="text"
-				class="p-4 text-base border border-gray-200 rounded-xl focus:outline-none focus:border-black transition disabled:bg-gray-100"
-				placeholder="Search Munros"
-				[formControl]="filterControl" />
+		<div class="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 text-gray-400">
+			<div class="relative w-full">
+				<span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</span>
+				<input
+					type="text"
+					class="w-full pl-12 pr-4 p-4 text-base border border-gray-200 rounded-xl focus:outline-none focus:border-black transition disabled:bg-gray-100"
+					placeholder="Search Munros"
+					[formControl]="filterControl" />
+			</div>
 		</div>
 
-		<!-- Tabs and Munro List -->
-		<app-tabs class="flex-1 min-h-0">
-			<!-- All Munros -->
-			<app-tab-item [title]="allTitle | async" [active]="true">
-				<ng-template>
-					<div class="overflow-auto h-full min-h-0">
-						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6">
-							@for (munro of filteredAllMunros$ | async; track munro._id) {
-							<div
-								class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
-								<div class="relative">
-									<img
-										[src]="munro.image_url"
-										alt="Munro image"
-										class="w-full h-40 sm:h-48 object-cover" />
-									@if (munro.completed) {
-									<span
-										class="absolute top-2 left-2 bg-green-800 text-white text-xs sm:text-sm font-medium px-2 sm:px-3 py-1 rounded-full">
-										Completed
-									</span>
-									}
-								</div>
-								<div class="p-4">
-									<div class="flex items-start justify-between mb-2">
-										<h2
-											class="text-base sm:text-lg font-semibold text-gray-800 break-words max-w-[75%]">
-											{{ munro.hill_name }}
-										</h2>
-										<div class="flex-shrink-0 flex items-center ml-4">
-											<a
-												[routerLink]="munro._id"
-												class="ml-2 transition"
-												title="View Munro Details">
-												<i class="fa-solid fa-pen-to-square"></i>
-											</a>
-											<button
-												(click)="locateMunro(munro.latitude, munro.longitude)"
-												class="ml-3 cursor-pointer">
-												<i class="fa-solid fa-location-crosshairs"></i>
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							}
-						</div>
+		<!-- Parent container fills screen height -->
+		<div class="flex flex-col w-full h-full">
+			<div class="grid grid-cols-2 grid-rows-2 gap-4 w-full flex-1 pb-4">
+				@if (pagedMunros$ | async; as munros) { @for (munro of munros; track munro._id) {
+				<div
+					class="bg-white rounded-2xl shadow-md border border-gray-100 flex flex-col overflow-hidden transition-all hover:shadow-xl w-full">
+					<!-- Image section -->
+					<div class="relative w-full h-44 bg-gray-50">
+						<img
+							[src]="munro.image_url"
+							alt="Munro image"
+							class="w-full h-full object-cover transition group-hover:scale-105 duration-200" />
+						@if (munro.completed) {
+						<span
+							class="absolute top-3 left-3 bg-green-700/90 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
+							Completed
+						</span>
+						}
 					</div>
-				</ng-template>
-			</app-tab-item>
 
-			<!-- Completed Munros -->
-			<app-tab-item [title]="allCompletedTitle | async">
-				<ng-template>
-					<div class="overflow-auto h-full min-h-0">
-						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6">
-							@for (munro of filteredCompletedMunros$ | async; track munro._id) {
-							<div
-								class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
-								<div class="relative">
-									<img
-										[src]="munro.image_url"
-										alt="Munro image"
-										class="w-full h-40 sm:h-48 object-cover" />
-									@if (munro.completed) {
-									<span
-										class="absolute top-2 left-2 bg-green-800 text-white text-xs sm:text-sm font-medium px-2 sm:px-3 py-1 rounded-full">
-										Completed
-									</span>
-									}
-								</div>
-								<div class="p-4">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="text-base sm:text-lg font-semibold text-gray-800">
-											{{ munro.hill_name }}
-										</h2>
-										<div>
-											<a
-												[routerLink]="munro._id"
-												class="ml-2 transition"
-												title="View Munro Details">
-												<i class="fa-solid fa-pen-to-square"></i>
-											</a>
-											<button
-												(click)="locateMunro(munro.latitude, munro.longitude)"
-												class="ml-3 cursor-pointer">
-												<i class="fa-solid fa-location-crosshairs"></i>
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							}
+					<!-- Content section -->
+					<div class="flex flex-col gap-1 px-4 py-4 flex-grow">
+						<div class="text-lg font-semibold text-gray-800 truncate">
+							{{ munro.hill_name }}
 						</div>
-					</div>
-				</ng-template>
-			</app-tab-item>
+						<div class="text-sm text-gray-500 mb-1">{{ munro.height }} m</div>
 
-			<!-- Incomplete Munros -->
-			<app-tab-item [title]="allIncompleteTitle | async">
-				<ng-template>
-					<div class="overflow-auto h-full min-h-0">
-						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 sm:gap-6">
-							@for (munro of filteredIncompleteMunros$ | async; track munro._id) {
-							<div
-								class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 relative">
-								<div class="relative">
-									<img
-										[src]="munro.image_url"
-										alt="Munro image"
-										class="w-full h-40 sm:h-48 object-cover" />
-									@if (munro.completed) {
-									<span
-										class="absolute top-2 left-2 bg-green-800 text-white text-xs sm:text-sm font-medium px-2 sm:px-3 py-1 rounded-full">
-										Completed
-									</span>
-									}
-								</div>
-								<div class="p-4">
-									<div class="flex items-center justify-between mb-2">
-										<h2 class="text-base sm:text-lg font-semibold text-gray-800">
-											{{ munro.hill_name }}
-										</h2>
-										<div>
-											<a
-												[routerLink]="munro._id"
-												class="ml-2 transition"
-												title="View Munro Details">
-												<i class="fa-solid fa-pen-to-square"></i>
-											</a>
-											<button
-												(click)="locateMunro(munro.latitude, munro.longitude)"
-												class="ml-3 cursor-pointer">
-												<i class="fa-solid fa-location-crosshairs"></i>
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							}
-						</div>
+						<app-rating [readonly]="true" [rating]="munro.completedDetails.rating"></app-rating>
+
 					</div>
-				</ng-template>
-			</app-tab-item>
-		</app-tabs>
+
+					<!-- Actions -->
+					<div class="flex justify-end gap-2 px-4 pb-4">
+						<a
+							[routerLink]="munro._id"
+							class="text-gray-500 hover:text-blue-600 transition-colors"
+							title="View Munro Details">
+							<i class="fa-solid fa-pen-to-square"></i>
+						</a>
+						<button
+							(click)="locateMunro(munro.latitude, munro.longitude)"
+							class="text-gray-500 hover:text-green-700 transition-colors"
+							title="Locate Munro">
+							<i class="fa-solid fa-location-crosshairs"></i>
+						</button>
+					</div>
+				</div>
+				} }
+			</div>
+			@if (totalMunros$ | async; as totalMunros) {
+			<div class="w-full flex justify-between items-center">
+				<button class="cursor-pointer text-gray-800" (click)="prevPage()" [disabled]="(pageIndex$ | async) === 0">
+					<i class="fa-regular fa-circle-arrow-left text-2xl"></i>
+				</button>
+				<button
+
+					class="cursor-pointer text-gray-800"
+					(click)="nextPage(totalMunros)"
+					[disabled]="((pageIndex$ | async) + 1) * pageSize >= totalMunros">
+					<i class="fa-regular fa-circle-arrow-right text-2xl"></i>
+				</button>
+			</div>
+			}
+		</div>
 	</div>
 
 	<!-- Side Two: Blue background / Map -->

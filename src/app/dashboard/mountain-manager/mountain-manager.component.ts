@@ -17,6 +17,12 @@ export class MountainManagerComponent implements OnInit {
 	filterValue: string = '';
 	private filterSubject = new BehaviorSubject<string>('');
 
+	readonly pageSize = 4;
+	pageIndex$ = new BehaviorSubject<number>(0);
+
+	pagedMunros$: Observable<UserMunro[]>;
+	totalMunros$: Observable<number>;
+
 	// Munro lists
 	munrosLoading = true;
 	munroStatus$: Observable<UserMunro[]>;
@@ -43,6 +49,24 @@ export class MountainManagerComponent implements OnInit {
 		this.loadMunros();
 
 		this.filterControl.valueChanges.pipe(startWith('')).subscribe(value => this.filterSubject.next(value ?? ''));
+
+		this.pagedMunros$ = combineLatest([this.filteredAllMunros$, this.pageIndex$]).pipe(
+			map(([munros, pageIndex]) => {
+				const start = pageIndex * this.pageSize;
+				return munros.slice(start, start + this.pageSize);
+			}),
+		);
+
+		this.totalMunros$ = this.filteredAllMunros$.pipe(map(munros => munros.length));
+	}
+
+	nextPage(total: number) {
+		const maxPage = Math.floor((total - 1) / this.pageSize);
+		if (this.pageIndex$.value < maxPage) this.pageIndex$.next(this.pageIndex$.value + 1);
+	}
+
+	prevPage() {
+		if (this.pageIndex$.value > 0) this.pageIndex$.next(this.pageIndex$.value - 1);
 	}
 
 	// Handles input change for the filter
