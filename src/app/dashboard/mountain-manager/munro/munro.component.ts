@@ -15,11 +15,17 @@ import { UserService } from '../../../shared/services/user.service';
 	standalone: false,
 })
 export class MunroComponent implements OnInit {
+	munroId: string = '';
+
+	selectedPhotos: { file: File; preview: string }[] = [];
+	expandedPhoto: string | null = null;
+	editMode: boolean = false;
+
 	private _selectedMunro: Munro = null;
 	private _completedMunro: CompletedMunro = null;
 
-    editMode: boolean = false;
 	completedMunroForm: FormGroup = null;
+	munroSaving: boolean = false;
 	munroLoading: boolean = true;
 	munroStatus$: Observable<{ munro: Munro; completedMunro: CompletedMunro | null }>;
 
@@ -38,11 +44,12 @@ export class MunroComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		const id = this.route.snapshot.paramMap.get('id');
-		this.getMunroDetails(id);
+		this.munroId = this.route.snapshot.paramMap.get('id');
+		this.getMunroDetails(this.munroId);
 	}
 
 	getMunroDetails(munroId: string) {
+		this.munroLoading = true;
 		const munro$ = this.munroService.getSingleMunro(munroId);
 		const completedMunro$ = this.munroService.getUserCompletedMunroSingle(munroId).pipe(catchError(() => of(null)));
 
@@ -67,20 +74,47 @@ export class MunroComponent implements OnInit {
 		this.completedMunroForm.controls['rating'].setValue(newRating);
 	}
 
+	onEditClick() {
+		this.editMode = true;
+	}
+
+	onPhotosSelected(event: Event): void {
+		const input = event.target as HTMLInputElement;
+		if (input.files) {
+			this.selectedPhotos = Array.from(input.files).map(file => ({
+				file,
+				preview: URL.createObjectURL(file),
+			}));
+		}
+
+		this.completedMunroForm.get('summitImages')?.setValue(Array.from(input.files));
+	}
+
 	saveCompletedMunro() {
+		this.munroSaving = true;
+		const formValue = this.completedMunroForm.value; // Use FormData if photos exist and have files
+		const hasPhotos =
+			formValue.summitImages && Array.isArray(formValue.summitImages) && formValue.summitImages.length > 0;
+		const body = hasPhotos ? this.buildFormData(formValue) : formValue;
+
 		if (this.isNewCompletedMunro) {
 			this.munroService
-				.addUserCompletedMunroSingle(this.completedMunroForm.value)
+				.addUserCompletedMunroSingle(body)
 				.pipe(take(1))
 				.subscribe(data => {
 					this._completedMunro = new CompletedMunro(data);
+					this.munroSaving = false;
+					this.editMode = false;
+					this.getMunroDetails(this.munroId);
 				});
 		} else {
 			this.munroService
-				.updatedUserCompletedMunro(this.completedMunroForm.value)
+				.updatedUserCompletedMunro(body, formValue.munroId)
 				.pipe(take(1))
 				.subscribe(() => {
-					this.munroLoading = false;
+					this.munroSaving = false;
+					this.editMode = false;
+					this.getMunroDetails(this.munroId);
 				});
 		}
 	}
@@ -91,6 +125,30 @@ export class MunroComponent implements OnInit {
 			.pipe(take(1))
 			.subscribe(() => {
 				this._completedMunro = new CompletedMunro();
+				this.editMode = false;
 			});
+	}
+
+	openPhoto(photoUrl: string) {
+		this.expandedPhoto = photoUrl;
+	}
+	closePhoto() {
+		this.expandedPhoto = null;
+	}
+
+	private buildFormData(formValue: any): FormData {
+		const formData = new FormData();
+
+		formData.append('munroId', formValue.munroId ?? '');
+		formData.append('notes', formValue.notes ?? '');
+		formData.append('rating', formValue.rating ?? '');
+
+		if (formValue.summitImages && Array.isArray(formValue.summitImages)) {
+			formValue.summitImages.forEach((file: File) => {
+				if (file) formData.append('summitImages', file);
+			});
+		}
+
+		return formData;
 	}
 }

@@ -6,7 +6,7 @@ export class CompletedMunro {
 	dateCompleted?: Date;
 	notes?: string;
 	rating?: number;
-	summitImage?: string;
+	summitImages?: string;
 
 	constructor(init?: Partial<CompletedMunro>) {
 		Object.assign(this, init);
@@ -17,6 +17,8 @@ export class CompletedMunro {
 			munroId: [this.munroId || ''],
 			notes: [this.notes || ''],
 			rating: [this.rating || 0],
+            dateCompleted: [this.dateCompleted ? new Date(this.dateCompleted) : null],
+            summitImages: [ [] ],
 		});
 	}
 }

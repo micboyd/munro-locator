@@ -82,9 +82,9 @@ export class MunroService {
 		return this.http.post<CompletedMunro>(this.apiUrl + `/users/${this.userService.userId}/completed`, munro);
 	}
 
-	updatedUserCompletedMunro(munro: CompletedMunro): Observable<CompletedMunro> {
+	updatedUserCompletedMunro(munro: CompletedMunro, munroId: string): Observable<CompletedMunro> {
 		return this.http.put<CompletedMunro>(
-			this.apiUrl + `/users/${this.userService.userId}/completed/${munro.munroId}`,
+			this.apiUrl + `/users/${this.userService.userId}/completed/${munroId}`,
 			munro,
 		);
 	}
