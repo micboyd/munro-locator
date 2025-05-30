@@ -38,6 +38,13 @@
 	</div>
 	}
 
+    <button
+        type="submit"
+        [disabled]="completedMunroForm.invalid"
+        class="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-900 transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer">
+        Mark as complete
+    </button>
+
 	<!-- Form -->
 	<form [formGroup]="completedMunroForm" (ngSubmit)="saveCompletedMunro()" class="space-y-7">
 		<div>
@@ -68,9 +75,12 @@
 				</button>
 			</div>
 
-			<!-- Responsive Gallery Grid -->
-			<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-				<!-- Example Images: Replace src with actual uploads -->
+			<p class="text-center font-light">
+				<i class="fa-solid fa-camera mr-2"></i>
+				You haven't added any photos from this hike yet.
+			</p>
+
+			<!-- <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
 				<div class="relative group rounded-xl overflow-hidden shadow hover:shadow-lg transition">
 					<img
 						src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
@@ -89,8 +99,7 @@
 						alt="Hike photo 3"
 						class="w-full h-36 object-cover group-hover:scale-105 transition" />
 				</div>
-				<!-- Add more <div> blocks for more photos -->
-			</div>
+			</div> -->
 		</div>
 
 		<button
