@@ -125,3 +125,4 @@ export class MountainManagerComponent implements OnInit {
 		return this.filteredIncompleteMunros$.pipe(map(list => `Incomplete Munros (${list.length})`));
 	}
 }
+

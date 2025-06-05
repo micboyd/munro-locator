@@ -1,48 +1,80 @@
-<!-- Toggle Button (Hamburger - mobile only) -->
-@if(!sidebarOpen) {
-<button class="md:hidden fixed top-4 left-4 z-30 p-2 bg-[#0D1B2A] text-white rounded" (click)="sidebarOpen = true">
-	Menu
-</button>
-}
-<!-- Sidebar -->
-<div
-	class="fixed top-0 left-0 z-20 h-screen bg-[#0D1B2A] text-white border-r border-[#1B263B] shadow-md transition-transform duration-300 ease-in-out w-full md:w-64"
-	[class.-translate-x-full]="!sidebarOpen"
-	[class.md:translate-x-0]="true">
-	<div class="p-6 overflow-y-auto h-full">
-		<!-- Close Button (mobile only) -->
-		<button class="md:hidden mb-8 text-white hover:text-[#8DA9C4]" (click)="sidebarOpen = false">✕ Close</button>
-
-		<!-- Profile Section -->
-		<ng-container *ngIf="!userService.userLoading">
-			<div class="flex items-center space-x-4 mb-8">
-				<div
-					class="w-12 h-12 rounded-full bg-cover bg-center"
-					[ngStyle]="{ 'background-image': 'url(' + userService.currentUser?.profileImage + ')' }"></div>
-				<div>
-					<p class="font-medium">{{ userService.fullName }}</p>
-					<a class="text-sm text-[#8DA9C4] hover:underline" routerLink="profile">View profile</a>
-				</div>
+<!-- Main Navigation Bar -->
+<nav class="bg-white shadow-sm border-b border-gray-200">
+	<div class="max-w-7xl mx-auto px-6 lg:px-8">
+		<div class="flex justify-between items-center h-20">
+			<!-- Desktop Menu -->
+			<div class="hidden md:flex items-center space-x-10 text-base font-medium text-gray-600">
+				<a
+					routerLink="mountain-manager"
+					routerLinkActive="text-black underline underline-offset-8 decoration-2"
+					class="hover:text-black transition">
+					Mountain Manager
+				</a>
+				<a
+					routerLink="locator"
+					routerLinkActive="text-black underline underline-offset-8 decoration-2"
+					class="hover:text-black transition">
+					Locator
+				</a>
+				<a
+					routerLink="album"
+					routerLinkActive="text-black underline underline-offset-8 decoration-2"
+					class="hover:text-black transition">
+					Album
+				</a>
 			</div>
-		</ng-container>
 
-		<!-- Navigation -->
-		<h2 class="text-lg font-semibold text-[#E0E1DD] mb-6">Menu</h2>
-		<nav class="space-y-3">
-			<a
-				routerLink="mountain-manager"
-				routerLinkActive="bg-[#1B263B]"
-				class="block px-4 py-3 rounded-lg text-base hover:bg-[#1B263B] transition">
-				Mountain Manager
-			</a>
-			<a
-				routerLink="locator"
-				routerLinkActive="bg-[#1B263B]"
-				class="block px-4 py-3 rounded-lg text-base hover:bg-[#1B263B] transition">
-				Locator
-			</a>
-			<a routerLink="/login" class="block px-4 py-3 rounded-lg text-base hover:bg-[#1B263B] transition">Logout</a>
-		</nav>
+			<!-- Right Section (User Avatar / Hamburger) -->
+			<div class="flex items-center space-x-4">
+				<!-- Avatar Dropdown -->
+				<ng-container *ngIf="!userService.userLoading">
+					<div class="relative group">
+						<div
+							class="w-12 h-12 rounded-full bg-cover bg-center ring-1 ring-gray-300 shadow-sm cursor-pointer"
+							[ngStyle]="{
+								'background-image': 'url(' + userService.currentUser?.profileImage + ')'
+							}"></div>
+
+						<!-- Dropdown Menu -->
+						<div
+							class="absolute right-0 mt-4 w-48 bg-white border border-gray-100 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all z-50">
+							<a routerLink="profile" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+								View Profile
+							</a>
+							<a routerLink="/login" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
+								Logout
+							</a>
+						</div>
+					</div>
+				</ng-container>
+
+				<!-- Mobile Toggle -->
+				<button class="md:hidden" (click)="sidebarOpen = !sidebarOpen">
+					<svg
+						class="w-7 h-7 text-gray-800"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						viewBox="0 0 24 24"
+						stroke-linecap="round"
+						stroke-linejoin="round">
+						<path d="M4 6h16M4 12h16M4 18h16" />
+					</svg>
+				</button>
+			</div>
+		</div>
+	</div>
+</nav>
+
+<!-- Mobile Dropdown Menu (container aligned) -->
+<div *ngIf="sidebarOpen" class="bg-white shadow-lg border-t border-gray-200">
+	<div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 space-y-4">
+		<a routerLink="mountain-manager" class="block text-gray-800 text-base font-medium hover:text-black">
+			Mountain Manager
+		</a>
+		<a routerLink="locator" class="block text-gray-800 text-base font-medium hover:text-black">Locator</a>
+		<a routerLink="album" class="block text-gray-800 text-base font-medium hover:text-black">Album</a>
+		<a routerLink="/login" class="block text-gray-800 text-base font-medium hover:text-black">Logout</a>
 	</div>
 </div>
 

@@ -1,48 +1,47 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-7 w-full">
-	<div>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6 w-full max-w-md mx-auto">
+	<div class="space-y-2">
 		<input
-			class="w-full p-4 text-base border border-gray-200 rounded-xl focus:outline-none focus:border-black transition disabled:bg-gray-100"
-			[ngClass]="{ 'border-red-800': isInvalid('username') }"
-			placeholder="username (email)"
+			class="w-full px-4 py-3 text-base border rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition disabled:bg-gray-100"
+			[ngClass]="{ 'border-red-500 ring-1 ring-red-500': isInvalid('username') }"
+			placeholder="Email address"
 			formControlName="username"
-			type="text" />
+			type="email" />
 		@if (isInvalid('username')) {
-		<p class="text-red-800 mt-2 text-sm">You must enter a valid email address.</p>
+		<p class="text-sm text-red-600">Please enter a valid email address.</p>
 		}
 	</div>
 
-	<div>
+	<div class="space-y-2">
 		<input
-			class="w-full p-4 text-base border border-gray-200 rounded-xl focus:outline-none focus:border-black transition disabled:bg-gray-100"
-			[ngClass]="{ 'border-red-800': isInvalid('password') }"
-			placeholder="password"
+			class="w-full px-4 py-3 text-base border rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition disabled:bg-gray-100"
+			[ngClass]="{ 'border-red-500 ring-1 ring-red-500': isInvalid('password') }"
+			placeholder="Password"
 			formControlName="password"
 			type="password" />
 		@if (isInvalid('password')) {
-		<p class="text-red-800 mt-2 text-sm">You must enter a password.</p>
+		<p class="text-sm text-red-600">Password is required.</p>
 		}
 	</div>
 
 	@if (loginErrorMessage) {
 	<div>
-		<p class="text-red-800 text-sm">{{ loginErrorMessage }}</p>
+		<p class="text-sm text-red-600">{{ loginErrorMessage }}</p>
 	</div>
 	}
 
-	<div>
-		<a href="#" class="text-blue-500 text-sm hover:underline">Forgot password?</a>
+	<div class="text-right">
+		<a href="#" class="text-sm text-gray-600 hover:text-black hover:underline">Forgot password?</a>
 	</div>
 
 	<button
 		type="submit"
 		[disabled]="!canSubmit"
 		[ngClass]="{ 'opacity-50 cursor-not-allowed': !canSubmit }"
-		class="w-full bg-black text-white py-3 rounded-xl font-semibold hover:bg-gray-900 transition flex items-center justify-center">
-		@if(loginLoading) {
+		class="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-gray-900 transition flex items-center justify-center">
+		@if (loginLoading) {
 		<app-loading-indicator [spinner]="true"></app-loading-indicator>
 		} @else {
 		<span>Login</span>
 		}
 	</button>
 </form>
-

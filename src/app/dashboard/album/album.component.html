@@ -1,0 +1,19 @@
+@if (completedMunrosLoading) {
+<app-loading-indicator></app-loading-indicator>
+} @else {
+
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+	<!-- Heading -->
+	<h1 class="text-3xl md:text-4xl font-bold mb-8 text-gray-900 tracking-tight leading-tight">Summit Album</h1>
+
+	<!-- Responsive Image Grid -->
+	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+		@for (url of imageUrls; track url) {
+		<div class="aspect-w-1 aspect-h-1 overflow-hidden rounded-lg shadow hover:shadow-lg transition-shadow">
+			<img [src]="url" alt="Summit Image" class="w-full h-full object-cover" loading="lazy" />
+		</div>
+		}
+	</div>
+</div>
+
+}

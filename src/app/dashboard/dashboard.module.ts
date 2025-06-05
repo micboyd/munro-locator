@@ -9,6 +9,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { AlbumComponent } from './album/album.component';
 
 @NgModule({
 	declarations: [
@@ -18,6 +19,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 		ProfileComponent,
 		LocatorComponent,
 		MunroComponent,
+		AlbumComponent,
 	],
 	imports: [CommonModule, ReactiveFormsModule, AppRoutingModule, SharedModule],
 	exports: [DashboardComponent],

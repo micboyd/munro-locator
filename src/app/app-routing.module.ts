@@ -8,6 +8,7 @@ import { MountainManagerComponent } from './dashboard/mountain-manager/mountain-
 import { MunroComponent } from './dashboard/mountain-manager/munro/munro.component';
 import { NgModule } from '@angular/core';
 import { ProfileComponent } from './dashboard/profile/profile.component';
+import { AlbumComponent } from './dashboard/album/album.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -27,6 +28,7 @@ const routes: Routes = [
 				component: MunroComponent,
 				canActivate: [AuthGuard],
 			},
+			{ path: 'album', component: AlbumComponent, canActivate: [AuthGuard] },
 			{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 			{ path: 'locator', component: LocatorComponent, canActivate: [AuthGuard] },
 		],
@@ -39,3 +41,4 @@ const routes: Routes = [
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}
+
