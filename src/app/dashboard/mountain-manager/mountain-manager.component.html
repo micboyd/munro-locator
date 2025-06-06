@@ -1,95 +1,92 @@
 @if (munrosLoading) {
 <app-loading-indicator></app-loading-indicator>
 } @else {
-<div class="pt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col gap-12">
-	<!-- Header with Search -->
-	<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-		<h1 class="text-3xl font-bold text-gray-900">Explore Munros</h1>
-		<div class="relative w-full sm:w-96">
+<app-container>
+	<div class="w-full py-10 flex flex-col gap-10">
+		<!-- Search -->
+		<div class="relative w-full">
 			<span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-				<i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+				<i class="fa-solid fa-magnifying-glass text-gray-400 text-base"></i>
 			</span>
 			<input
 				type="text"
-				class="w-full pl-12 pr-4 py-3 rounded-full border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-800"
+				class="w-full pl-11 pr-4 py-3 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black text-gray-900 text-sm"
 				placeholder="Search Munros"
 				[formControl]="filterControl" />
 		</div>
-	</div>
 
-	<!-- Munro Grid -->
-	<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-		@if (pagedMunros$ | async; as munros) { @for (munro of munros; track munro._id) {
-		<div
-			class="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition cursor-pointer group border border-gray-100 flex flex-col">
-			<!-- Image -->
-			<div class="relative w-full h-48 bg-gray-100">
-				<img
-					[src]="munro.image_url"
-					alt="Munro image"
-					class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" />
-				@if (munro.completed) {
-				<span
-					class="absolute top-3 left-3 bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
-					Completed
-				</span>
-				}
-			</div>
-
-			<!-- Info -->
-			<div class="px-5 py-4 flex-1 flex flex-col justify-between">
-				<div>
-					<h2 class="text-lg font-semibold text-gray-900 truncate">{{ munro.hill_name }}</h2>
-					<p class="text-sm text-gray-500">{{ munro.height }} m</p>
+		<!-- Munro Grid -->
+		<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+			@if (pagedMunros$ | async; as munros) { @for (munro of munros; track munro._id) {
+			<div
+				class="bg-white border border-gray-200 rounded-md transition-colors hover:border-black cursor-pointer group flex flex-col">
+				<!-- Image -->
+				<div class="relative w-full h-40 bg-gray-100">
+					<img [src]="munro.image_url" alt="Munro image" class="w-full h-full object-cover" />
+					@if (munro.completed) {
+					<span class="absolute top-2 left-2 bg-green-600 text-white text-xs font-medium px-2 py-0.5 rounded">
+						Completed
+					</span>
+					}
 				</div>
 
-				@if (munro.completedDetails) {
-				<div class="mt-2">
-					<app-rating [readonly]="true" [rating]="munro.completedDetails.rating"></app-rating>
-				</div>
-				}
+				<!-- Info -->
+				<div class="flex-1 flex flex-col justify-between px-4 py-3">
+					<div>
+						<h2 class="text-sm font-medium text-gray-900 truncate">{{ munro.hill_name }}</h2>
+						<p class="text-xs text-gray-500">{{ munro.height }} m</p>
+					</div>
 
-				<!-- Actions -->
-				<div class="mt-4 flex justify-end gap-4 text-gray-500">
-					<a [routerLink]="munro._id" title="View Details" class="hover:text-blue-600 transition-colors">
-						<i class="fa-solid fa-pen-to-square"></i>
-					</a>
-					<button
-						(click)="locateMunro(munro.latitude, munro.longitude)"
-						title="Locate Munro"
-						class="hover:text-green-600 transition-colors">
-						<i class="fa-solid fa-location-crosshairs"></i>
-					</button>
+					@if (munro.completedDetails) {
+					<div class="mt-1">
+						<app-rating [readonly]="true" [rating]="munro.completedDetails.rating"></app-rating>
+					</div>
+					}
+
+					<!-- Actions -->
+					<div class="mt-3 flex justify-end gap-3 text-gray-500 text-sm">
+						<a [routerLink]="munro._id" title="View Details" class="hover:text-blue-600">
+							<i class="fa-solid fa-pen-to-square"></i>
+						</a>
+						<button
+							(click)="locateMunro(munro.latitude, munro.longitude)"
+							title="Locate Munro"
+							class="hover:text-green-600">
+							<i class="fa-solid fa-location-crosshairs"></i>
+						</button>
+					</div>
 				</div>
 			</div>
+			} }
 		</div>
-		} }
-	</div>
 
-	<!-- Pagination -->
-	@if (totalMunros$ | async; as totalMunros) {
-	<div class="flex justify-center gap-8 items-center mt-6">
-		<button
-			class="text-gray-800 hover:text-black disabled:opacity-30"
-			(click)="prevPage()"
-			[disabled]="(pageIndex$ | async) === 0">
-			<i class="fa-regular fa-circle-arrow-left text-3xl"></i>
-		</button>
-		<button
-			class="text-gray-800 hover:text-black disabled:opacity-30"
-			(click)="nextPage(totalMunros)"
-			[disabled]="((pageIndex$ | async) + 1) * pageSize >= totalMunros">
-			<i class="fa-regular fa-circle-arrow-right text-3xl"></i>
-		</button>
-	</div>
-	}
+		<!-- Pagination -->
+		@if (totalMunros$ | async; as totalMunros) {
+		<div class="flex justify-center items-center gap-6 mt-4">
+			<button
+				class="text-gray-800 hover:text-black disabled:opacity-30"
+				(click)="prevPage()"
+				[disabled]="(pageIndex$ | async) === 0">
+				<i class="fa-regular fa-circle-arrow-left text-2xl"></i>
+			</button>
+			<button
+				class="text-gray-800 hover:text-black disabled:opacity-30"
+				(click)="nextPage(totalMunros)"
+				[disabled]="((pageIndex$ | async) + 1) * pageSize >= totalMunros">
+				<i class="fa-regular fa-circle-arrow-right text-2xl"></i>
+			</button>
+		</div>
+		}
 
-	<!-- Map (Full-width below grid) -->
-	<div class="w-full h-[40vh] sm:h-[50vh] lg:h-[60vh] mt-4 rounded-3xl overflow-hidden shadow">
-		<app-map
-			[viewLocationSetting]="viewLocationSetting"
-			[allMunros]="filteredAllMunros$ | async"
-			class="w-full h-full"></app-map>
+		<!-- Optional Map -->
+		<!--
+      <div class="w-full h-[40vh] sm:h-[50vh] lg:h-[60vh] mt-6 rounded-md overflow-hidden border border-gray-200">
+        <app-map
+          [viewLocationSetting]="viewLocationSetting"
+          [allMunros]="filteredAllMunros$ | async"
+          class="w-full h-full"></app-map>
+      </div>
+      -->
 	</div>
-</div>
+</app-container>
 }

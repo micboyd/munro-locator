@@ -1,80 +1,48 @@
-<!-- Main Navigation Bar -->
-<nav class="bg-white shadow-sm border-b border-gray-200">
-	<div class="max-w-7xl mx-auto px-6 lg:px-8">
-		<div class="flex justify-between items-center h-20">
-			<!-- Desktop Menu -->
-			<div class="hidden md:flex items-center space-x-10 text-base font-medium text-gray-600">
+<nav class="bg-white w-full border-b border-gray-200">
+	<app-container>
+		<div class="flex items-center justify-between py-4">
+			<!-- Logo -->
+			<a routerLink="/" class="flex items-center space-x-3">
+				<!-- Logo Container -->
+				<div class="w-10 h-10 flex items-center justify-center rounded-full">
+					<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
+						<!-- Black circular background -->
+						<circle cx="50" cy="50" r="48" fill="#000" />
+
+						<!-- White mountain icon, centered and slightly smaller -->
+						<g transform="translate(22, 14) scale(0.115)">
+							<path
+								d="M464 424.1c0 4.4-3.5 7.9-7.9 7.9L55.9 432c-4.4 0-7.9-3.5-7.9-7.9c0-1.5 .4-2.9 1.2-4.2L149.6 260l39.5 50.8c4.6 5.9 11.7 9.3 19.2 9.3s14.5-3.6 19-9.6L268 256l92 0L462.8 419.9c.8 1.3 1.2 2.7 1.2 4.2zM329.8 208L256 208c-7.6 0-14.7 3.6-19.2 9.6l-29.1 38.9-30.9-39.8L256 90.3 329.8 208zM55.9 480l400.2 0c30.9 0 55.9-25 55.9-55.9c0-10.5-3-20.8-8.6-29.7L286.8 49c-6.6-10.6-18.3-17-30.8-17s-24.1 6.4-30.8 17L8.6 394.4C3 403.3 0 413.6 0 424.1C0 455 25 480 55.9 480z"
+								fill="#fff" />
+						</g>
+					</svg>
+				</div>
+
+				<!-- Brand Name -->
+				<span class="text-black text-xl font-semibold tracking-tight">MunroLocator</span>
+			</a>
+
+			<!-- Navigation -->
+			<div class="space-x-6 items-center font-normal">
 				<a
 					routerLink="mountain-manager"
-					routerLinkActive="text-black underline underline-offset-8 decoration-2"
-					class="hover:text-black transition">
+					routerLinkActive="text-black border-b-2 border-purple-600"
+					class="text-black pb-2">
 					Mountain Manager
 				</a>
 				<a
-					routerLink="locator"
-					routerLinkActive="text-black underline underline-offset-8 decoration-2"
-					class="hover:text-black transition">
+                    routerLink="locator"
+                    routerLinkActive="text-black border-b-2 border-purple-600"
+                    class="text-black pb-2">
 					Locator
 				</a>
 				<a
-					routerLink="album"
-					routerLinkActive="text-black underline underline-offset-8 decoration-2"
-					class="hover:text-black transition">
+                    routerLink="album"
+                    routerLinkActive="text-black border-b-2 border-purple-600"
+                    class="text-black pb-2">
 					Album
 				</a>
 			</div>
-
-			<!-- Right Section (User Avatar / Hamburger) -->
-			<div class="flex items-center space-x-4">
-				<!-- Avatar Dropdown -->
-				<ng-container *ngIf="!userService.userLoading">
-					<div class="relative group">
-						<div
-							class="w-12 h-12 rounded-full bg-cover bg-center ring-1 ring-gray-300 shadow-sm cursor-pointer"
-							[ngStyle]="{
-								'background-image': 'url(' + userService.currentUser?.profileImage + ')'
-							}"></div>
-
-						<!-- Dropdown Menu -->
-						<div
-							class="absolute right-0 mt-4 w-48 bg-white border border-gray-100 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all z-50">
-							<a routerLink="profile" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
-								View Profile
-							</a>
-							<a routerLink="/login" class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50">
-								Logout
-							</a>
-						</div>
-					</div>
-				</ng-container>
-
-				<!-- Mobile Toggle -->
-				<button class="md:hidden" (click)="sidebarOpen = !sidebarOpen">
-					<svg
-						class="w-7 h-7 text-gray-800"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="2"
-						viewBox="0 0 24 24"
-						stroke-linecap="round"
-						stroke-linejoin="round">
-						<path d="M4 6h16M4 12h16M4 18h16" />
-					</svg>
-				</button>
-			</div>
 		</div>
-	</div>
+	</app-container>
 </nav>
-
-<!-- Mobile Dropdown Menu (container aligned) -->
-<div *ngIf="sidebarOpen" class="bg-white shadow-lg border-t border-gray-200">
-	<div class="max-w-7xl mx-auto px-6 lg:px-8 py-4 space-y-4">
-		<a routerLink="mountain-manager" class="block text-gray-800 text-base font-medium hover:text-black">
-			Mountain Manager
-		</a>
-		<a routerLink="locator" class="block text-gray-800 text-base font-medium hover:text-black">Locator</a>
-		<a routerLink="album" class="block text-gray-800 text-base font-medium hover:text-black">Album</a>
-		<a routerLink="/login" class="block text-gray-800 text-base font-medium hover:text-black">Logout</a>
-	</div>
-</div>
-

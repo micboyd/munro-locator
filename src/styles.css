@@ -3,3 +3,7 @@
 body {
     font-family: 'basic-sans', sans-serif;
 }
+
+@theme {
+  --color-midnight: #183446;
+}
