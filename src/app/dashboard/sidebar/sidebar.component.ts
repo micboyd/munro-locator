@@ -11,8 +11,14 @@ import { UserService } from '../../shared/services/user.service';
 export class SidebarComponent implements OnInit {
 	constructor(public userService: UserService) {}
 
-	isMenuOpen = false;
+	mobileMenuOpen = false;
 
+	closeMenu(): void {
+		this.mobileMenuOpen = false;
+	}
+
+	toggleMenu(): void {
+		this.mobileMenuOpen = !this.mobileMenuOpen;
+	}
 	ngOnInit() {}
 }
-

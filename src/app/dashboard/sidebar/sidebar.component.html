@@ -3,13 +3,9 @@
 		<div class="flex items-center justify-between py-4">
 			<!-- Logo -->
 			<a routerLink="/" class="flex items-center space-x-3">
-				<!-- Logo Container -->
 				<div class="w-10 h-10 flex items-center justify-center rounded-full">
 					<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
-						<!-- Black circular background -->
 						<circle cx="50" cy="50" r="48" fill="#000" />
-
-						<!-- White mountain icon, centered and slightly smaller -->
 						<g transform="translate(22, 14) scale(0.115)">
 							<path
 								d="M464 424.1c0 4.4-3.5 7.9-7.9 7.9L55.9 432c-4.4 0-7.9-3.5-7.9-7.9c0-1.5 .4-2.9 1.2-4.2L149.6 260l39.5 50.8c4.6 5.9 11.7 9.3 19.2 9.3s14.5-3.6 19-9.6L268 256l92 0L462.8 419.9c.8 1.3 1.2 2.7 1.2 4.2zM329.8 208L256 208c-7.6 0-14.7 3.6-19.2 9.6l-29.1 38.9-30.9-39.8L256 90.3 329.8 208zM55.9 480l400.2 0c30.9 0 55.9-25 55.9-55.9c0-10.5-3-20.8-8.6-29.7L286.8 49c-6.6-10.6-18.3-17-30.8-17s-24.1 6.4-30.8 17L8.6 394.4C3 403.3 0 413.6 0 424.1C0 455 25 480 55.9 480z"
@@ -17,13 +13,11 @@
 						</g>
 					</svg>
 				</div>
-
-				<!-- Brand Name -->
 				<span class="text-black text-xl font-semibold tracking-tight">MunroLocator</span>
 			</a>
 
-			<!-- Navigation -->
-			<div class="space-x-6 items-center font-normal">
+			<!-- Desktop Navigation -->
+			<div class="hidden md:flex space-x-6 items-center font-normal">
 				<a
 					routerLink="mountain-manager"
 					routerLinkActive="text-black border-b-2 border-purple-600"
@@ -31,18 +25,42 @@
 					Mountain Manager
 				</a>
 				<a
-                    routerLink="locator"
-                    routerLinkActive="text-black border-b-2 border-purple-600"
-                    class="text-black pb-2">
+					routerLink="locator"
+					routerLinkActive="text-black border-b-2 border-purple-600"
+					class="text-black pb-2">
 					Locator
 				</a>
 				<a
-                    routerLink="album"
-                    routerLinkActive="text-black border-b-2 border-purple-600"
-                    class="text-black pb-2">
+					routerLink="album"
+					routerLinkActive="text-black border-b-2 border-purple-600"
+					class="text-black pb-2">
 					Album
 				</a>
 			</div>
+
+			<!-- Hamburger Button (Mobile) -->
+			<button class="md:hidden text-black" (click)="toggleMenu()">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-6 w-6"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+				</svg>
+			</button>
+		</div>
+
+		<!-- Fullscreen Mobile Menu -->
+		<div
+			*ngIf="mobileMenuOpen"
+			class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center space-y-8 text-lg font-semibold md:hidden">
+			<a routerLink="mountain-manager" routerLinkActive="text-black" class="text-black" (click)="closeMenu()">
+				Mountain Manager
+			</a>
+			<a routerLink="locator" routerLinkActive="text-black" class="text-black" (click)="closeMenu()">Locator</a>
+			<a routerLink="album" routerLinkActive="text-black" class="text-black" (click)="closeMenu()">Album</a>
+			<button (click)="closeMenu()" class="absolute top-4 right-4 text-black text-3xl">&times;</button>
 		</div>
 	</app-container>
 </nav>
