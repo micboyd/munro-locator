@@ -1,6 +1,6 @@
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
-import { map, shareReplay, startWith } from 'rxjs/operators';
+import { BehaviorSubject, Subject, combineLatest } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 
 import { FormControl } from '@angular/forms';
 import { ILocationSetting } from '../../shared/interfaces/ILocationSetting';
@@ -12,27 +12,28 @@ import { UserMunro } from '../../shared/models/UserMunro';
 	templateUrl: './mountain-manager.component.html',
 	standalone: false,
 })
-export class MountainManagerComponent implements OnInit {
-	// Filter handling
-	filterValue: string = '';
-	private filterSubject = new BehaviorSubject<string>('');
-
-	readonly pageSize = 4;
-	pageIndex$ = new BehaviorSubject<number>(0);
-
-	pagedMunros$: Observable<UserMunro[]>;
-	totalMunros$: Observable<number>;
-
-	// Munro lists
-	munrosLoading = true;
-	munroStatus$: Observable<UserMunro[]>;
-
-	// Filtered lists
-	filteredAllMunros$: Observable<UserMunro[]>;
-	filteredCompletedMunros$: Observable<UserMunro[]>;
-	filteredIncompleteMunros$: Observable<UserMunro[]>;
-
+export class MountainManagerComponent implements OnInit, OnDestroy {
+	// Filter control
 	filterControl = new FormControl('');
+	private filterSubject = new BehaviorSubject<string>('');
+	private destroy$ = new Subject<void>();
+
+	// Pagination
+	readonly pageSize = 52;
+	private pageIndex$ = new BehaviorSubject<number>(0);
+	pageIndex: number = 0;
+
+	// Munro data
+	munrosLoading = true;
+	munroStatus: UserMunro[] = [];
+	filteredAllMunros: UserMunro[] = [];
+	pagedMunros: UserMunro[] = [];
+	totalMunros: number = 0;
+    mapDialogOpen = false;
+
+	// Optional subsets
+	filteredCompletedMunros: UserMunro[] = [];
+	filteredIncompleteMunros: UserMunro[] = [];
 
 	// Map view
 	viewLocationSetting: ILocationSetting = {
@@ -48,81 +49,97 @@ export class MountainManagerComponent implements OnInit {
 	ngOnInit(): void {
 		this.loadMunros();
 
-		this.filterControl.valueChanges.pipe(startWith('')).subscribe(value => this.filterSubject.next(value ?? ''));
+		this.filterControl.valueChanges
+			.pipe(startWith(''), takeUntil(this.destroy$))
+			.subscribe(value => this.filterSubject.next(value ?? ''));
 
-		this.pagedMunros$ = combineLatest([this.filteredAllMunros$, this.pageIndex$]).pipe(
-			map(([munros, pageIndex]) => {
-				const start = pageIndex * this.pageSize;
-				return munros.slice(start, start + this.pageSize);
-			}),
-		);
-
-		this.totalMunros$ = this.filteredAllMunros$.pipe(map(munros => munros.length));
+		this.pageIndex$.pipe(takeUntil(this.destroy$)).subscribe(index => {
+			this.pageIndex = index;
+			this.updatePagedMunros();
+		});
 	}
 
-	nextPage(total: number) {
-		const maxPage = Math.floor((total - 1) / this.pageSize);
-		if (this.pageIndex$.value < maxPage) this.pageIndex$.next(this.pageIndex$.value + 1);
+	private loadMunros(): void {
+		const allMunros$ = this.munroService.getMunros();
+		const completedMunros$ = this.munroService.getUserCompletedMunros();
+
+		this.munrosLoading = true;
+
+		combineLatest([allMunros$, completedMunros$])
+			.pipe(takeUntil(this.destroy$))
+			.subscribe(([allMunros, completedMunros]) => {
+				const completedMap = new Map(completedMunros.map(c => [c.munroId, c]));
+				this.munroStatus = allMunros.map(
+					munro => new UserMunro(munro, completedMap.has(munro._id), completedMap.get(munro._id) ?? null),
+				);
+
+				this.applyFilterAndCategorize();
+				this.munrosLoading = false;
+			});
+
+		this.filterSubject.pipe(takeUntil(this.destroy$)).subscribe(() => this.applyFilterAndCategorize());
 	}
 
-	prevPage() {
-		if (this.pageIndex$.value > 0) this.pageIndex$.next(this.pageIndex$.value - 1);
+	private applyFilterAndCategorize(): void {
+		const filter = this.filterSubject.value.toLowerCase();
+		this.filteredAllMunros = this.munroStatus.filter(m => m.hill_name.toLowerCase().includes(filter));
+
+		this.filteredCompletedMunros = this.filteredAllMunros.filter(m => m.completed);
+		this.filteredIncompleteMunros = this.filteredAllMunros.filter(m => !m.completed);
+
+		this.totalMunros = this.filteredAllMunros.length;
+		this.updatePagedMunros();
 	}
 
-	// Handles input change for the filter
-	onFilterChange(value: string) {
-		this.filterSubject.next(value ?? '');
+	private updatePagedMunros(): void {
+		const start = this.pageIndex * this.pageSize;
+		this.pagedMunros = this.filteredAllMunros.slice(start, start + this.pageSize);
 	}
 
-	// For map centering
-	locateMunro(latitude: number, longitude: number) {
+	nextPage(): void {
+		const maxPage = Math.floor((this.totalMunros - 1) / this.pageSize);
+		if (this.pageIndex < maxPage) {
+			this.pageIndex$.next(this.pageIndex + 1);
+		}
+	}
+
+	prevPage(): void {
+		if (this.pageIndex > 0) {
+			this.pageIndex$.next(this.pageIndex - 1);
+		}
+	}
+
+	locateMunro(latitude: number, longitude: number): void {
+        this.openMapDialog();
 		this.viewLocationSetting = {
 			zoom: 13,
 			center: { latitude, longitude },
 		};
 	}
 
-	// Loads Munros and sets up filtering
-	private loadMunros() {
-		const allMunros$ = this.munroService.getMunros();
-		const completedMunros$ = this.munroService.getUserCompletedMunros();
-		this.munrosLoading = true;
+    openMapDialog(): void {
+        this.mapDialogOpen = true;
+    }
 
-		this.munroStatus$ = combineLatest([allMunros$, completedMunros$]).pipe(
-			map(([allMunros, completedMunros]) => {
-				const completedMap = new Map(completedMunros.map(c => [c.munroId, c]));
-				return allMunros.map(
-					munro => new UserMunro(munro, completedMap.has(munro._id), completedMap.get(munro._id) ?? null),
-				);
-			}),
-			shareReplay(1),
-		);
+    closeMapDialog(): void {
+        this.mapDialogOpen = false;
+    }
 
-		// Filtered observables
-		const filtered$ = (predicate: (munro: UserMunro) => boolean) =>
-			combineLatest([this.munroStatus$, this.filterSubject.pipe(startWith(''))]).pipe(
-				map(([munros, filter]) =>
-					munros.filter(m => predicate(m) && m.hill_name.toLowerCase().includes(filter.toLowerCase())),
-				),
-			);
-
-		this.filteredAllMunros$ = filtered$(_ => true);
-		this.filteredCompletedMunros$ = filtered$(m => m.completed);
-		this.filteredIncompleteMunros$ = filtered$(m => !m.completed);
-
-		// Update loading state
-		this.munroStatus$.subscribe(() => (this.munrosLoading = false));
+	// Optional: derived titles
+	get allTitle(): string {
+		return `All Munros (${this.filteredAllMunros.length})`;
 	}
 
-	// Optional: titles that update with filtering
-	get allTitle(): Observable<string> {
-		return this.filteredAllMunros$.pipe(map(list => `All Munros (${list.length})`));
+	get allCompletedTitle(): string {
+		return `Complete Munros (${this.filteredCompletedMunros.length})`;
 	}
-	get allCompletedTitle(): Observable<string> {
-		return this.filteredCompletedMunros$.pipe(map(list => `Complete Munros (${list.length})`));
+
+	get allIncompleteTitle(): string {
+		return `Incomplete Munros (${this.filteredIncompleteMunros.length})`;
 	}
-	get allIncompleteTitle(): Observable<string> {
-		return this.filteredIncompleteMunros$.pipe(map(list => `Incomplete Munros (${list.length})`));
+
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 }
-

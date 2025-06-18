@@ -3,26 +3,26 @@
 } @else {
 <app-container>
 	<div class="w-full py-10 flex flex-col gap-10">
-		<!-- Search -->
+		<!-- Search Bar -->
 		<div class="relative w-full">
-			<span class="absolute inset-y-0 left-0 pl-4 sm:pl-4 flex items-center pointer-events-none">
+			<span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
 				<i class="fa-solid fa-magnifying-glass text-gray-400 text-base"></i>
 			</span>
 			<input
 				type="text"
-				class="w-full pl-11 sm:pl-12 pr-4 py-3 rounded-md border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black text-gray-900 text-sm md:text-base"
+				class="w-full pl-11 pr-4 py-3 rounded-md border border-gray-300 bg-white focus:ring-2 focus:ring-black/10 focus:border-black text-gray-900 text-sm md:text-base"
 				placeholder="Search Munros"
 				[formControl]="filterControl" />
 		</div>
 
 		<!-- Munro Grid -->
 		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-			@if (pagedMunros$ | async; as munros) { @for (munro of munros; track munro._id) {
+			@for (munro of pagedMunros; track munro._id) {
 			<div
-				class="bg-white border border-gray-200 rounded-md transition-colors hover:border-black cursor-pointer group flex flex-col">
+				class="bg-gradient-to-br from-white via-gray-50 to-gray-100 border border-gray-200 rounded-md hover:border-black transition-colors cursor-pointer group flex flex-col">
 				<!-- Image -->
 				<div class="relative w-full h-40 sm:h-48 bg-gray-100">
-					<img [src]="munro.image_url" alt="Munro image" class="w-full h-full object-cover" />
+					<img [src]="munro.image_url" alt="{{ munro.hill_name }} image" class="w-full h-full object-cover" />
 					@if (munro.completed) {
 					<span class="absolute top-2 left-2 bg-green-600 text-white text-xs font-medium px-2 py-0.5 rounded">
 						Completed
@@ -37,11 +37,9 @@
 						<p class="text-xs text-gray-500">{{ munro.height }} m</p>
 					</div>
 
-					@if (munro.completedDetails) {
 					<div class="mt-1">
-						<app-rating [readonly]="true" [rating]="munro.completedDetails.rating"></app-rating>
+						<app-rating [readonly]="true" [rating]="munro.completedDetails?.rating"></app-rating>
 					</div>
-					}
 
 					<!-- Actions -->
 					<div class="mt-3 flex flex-wrap justify-end gap-3 text-gray-500 text-sm">
@@ -57,36 +55,45 @@
 					</div>
 				</div>
 			</div>
-			} }
+			}
 		</div>
 
 		<!-- Pagination -->
-		@if (totalMunros$ | async; as totalMunros) {
 		<div class="flex justify-center items-center gap-6 mt-4">
 			<button
 				class="text-gray-800 hover:text-black disabled:opacity-30"
 				(click)="prevPage()"
-				[disabled]="(pageIndex$ | async) === 0">
+				[disabled]="pageIndex === 0">
 				<i class="fa-regular fa-circle-arrow-left text-2xl"></i>
 			</button>
 			<button
 				class="text-gray-800 hover:text-black disabled:opacity-30"
-				(click)="nextPage(totalMunros)"
-				[disabled]="((pageIndex$ | async) + 1) * pageSize >= totalMunros">
+				(click)="nextPage()"
+				[disabled]="(pageIndex + 1) * pageSize >= totalMunros">
 				<i class="fa-regular fa-circle-arrow-right text-2xl"></i>
 			</button>
 		</div>
-		}
 
 		<!-- Optional Map -->
-		<!--
-      <div class="w-full h-[40vh] sm:h-[50vh] lg:h-[60vh] mt-6 rounded-md overflow-hidden border border-gray-200">
-        <app-map
-          [viewLocationSetting]="viewLocationSetting"
-          [allMunros]="filteredAllMunros$ | async"
-          class="w-full h-full"></app-map>
-      </div>
-      -->
 	</div>
 </app-container>
-}
+
+@if (mapDialogOpen) {
+<div class="fixed inset-0 z-5 bg-white flex items-center justify-center p-4">
+	<div class="w-full h-full relative">
+		<!-- Close Button -->
+		<button
+			(click)="closeMapDialog()"
+			class="absolute top-2 right-2 bg-white text-gray-600 hover:text-black text-2xl z-1000 px-4 py-3 cursor-pointer"
+			aria-label="Close dialog">
+			<i class="fa-solid fa-xmark"></i>
+		</button>
+
+		<!-- Fullscreen Map -->
+		<app-map
+			[viewLocationSetting]="viewLocationSetting"
+			[allMunros]="filteredAllMunros"
+			class="w-full h-full"></app-map>
+	</div>
+</div>
+} }

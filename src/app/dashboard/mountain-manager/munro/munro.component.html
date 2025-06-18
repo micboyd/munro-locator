@@ -120,8 +120,8 @@
 			<div class="space-y-2">
 				<button
 					type="submit"
-					[disabled]="completedMunroForm.invalid"
-					class="w-full bg-black text-white py-2 rounded-xl font-medium">
+					class="w-full bg-black text-white py-2 rounded-xl font-medium"
+                    (click)="saveCompletedMunro()">
 					@if (munroSaving) {
 					<app-loading-indicator [spinner]="true"></app-loading-indicator>
 					} @else { Save }

@@ -1,8 +1,12 @@
 <div class="flex space-x-1">
 	<ng-container *ngFor="let star of stars">
-		<button [disabled]="readonly" class="text-xl cursor-pointer select-none transition-colors duration-150" (click)="setRating(star)">
-			<i class="fa-solid fa-star-sharp" [ngClass]="star <= rating ? 'text-yellow-400' : 'text-gray-300'"></i>
-        </button>
+		<button
+			[disabled]="readonly"
+			class="text-xl cursor-pointer select-none transition-colors duration-150"
+			(click)="setRating(star)">
+			<i
+				class="fa-solid fa-star-sharp"
+				[ngClass]="star <= rating ? 'text-yellow-400' : 'text-gray-300'"></i>
+		</button>
 	</ng-container>
 </div>
-
