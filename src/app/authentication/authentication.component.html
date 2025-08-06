@@ -1,36 +1,45 @@
 <section class="w-screen h-screen flex flex-col md:flex-row">
-	<div class="w-full md:w-1/2 text-gray-800">
+	<!-- Left: Form Section -->
+	<div class="w-full md:w-1/2 text-gray-900 bg-white">
 		<div class="w-full h-screen flex items-center justify-center">
-			<!-- Tabs header -->
-			<div class="w-1/2">
-				<div class="mb-4 w-full">
-                    <h1 class="text-4xl font-semibold mb-4">Munro Manager</h1>
-					<div class="flex mb-4 space-x-6 border-b border-gray-200 text-sm">
-						@for (tab of tabs; track $index; let i = $index) {
-						<button
-							(click)="activeTab = i"
-							class="pb-3 transition-colors duration-200 flex items-center space-x-1 cursor-pointer"
-							[ngClass]="
-								activeTab === i
-									? 'border-b-2 border-purple-800 text-black'
-									: 'border-b-2 border-transparent text-gray-500 hover:text-black hover:border-gray-300'
-							">
-							<span>{{ tab.label }}</span>
-						</button>
-						}
-					</div>
+			<div class="w-11/12 max-w-md">
+				<!-- Header -->
+				<div class="mb-8 text-center">
+					<h1 class="text-4xl font-bold mb-2 tracking-tight">
+						Munro Manager
+					</h1>
+					<p class="text-sm text-gray-500">Manage and track your mountain climbs</p>
 				</div>
 
+				<!-- Tabs -->
+				<div class="flex mb-8 space-x-6 border-b border-gray-200 text-sm">
+					@for (tab of tabs; track $index; let i = $index) {
+					<button
+						(click)="activeTab = i"
+						class="pb-3 transition-colors duration-200 flex items-center space-x-1 cursor-pointer"
+						[ngClass]="
+							activeTab === i
+								? 'border-b-2 border-black text-black font-medium'
+								: 'border-b-2 border-transparent text-gray-500 hover:text-black hover:border-gray-300'
+						">
+						<span>{{ tab.label }}</span>
+					</button>
+					}
+				</div>
+
+				<!-- Forms -->
 				@if(activeTab === 0) {
-				<app-login></app-login>
-				} @if(activeTab === 1) {
-				<app-register></app-register>
+					<app-login></app-login>
+				}
+				@if(activeTab === 1) {
+					<app-register></app-register>
 				}
 			</div>
 		</div>
 	</div>
 
+	<!-- Right: Background Image -->
 	<div
-		class="hidden md:flex w-1/2 bg-[url(https://i.imghippo.com/files/tn9640iuI.jpg)] bg-cover bg-center h-screen"></div>
+		class="hidden md:flex w-1/2 bg-[url('https://res.cloudinary.com/dlg9y5dfv/image/upload/v1754473288/munros/3W2A5466-min_ylrgf0.jpg')] bg-cover bg-center h-screen">
+	</div>
 </section>
-
