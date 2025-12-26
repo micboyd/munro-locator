@@ -9,7 +9,13 @@ import { UserService } from '../../shared/services/user.service';
 	standalone: false,
 })
 export class SidebarComponent implements OnInit {
-	constructor(public userService: UserService) {}
+
+    selectedUser: User = null;
+
+	constructor(public userService: UserService) {
+        this.selectedUser = this.userService.currentUser;
+        console.log(this.selectedUser);
+    }
 
 	mobileMenuOpen = false;
 

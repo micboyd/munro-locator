@@ -1,24 +1,116 @@
-<div class="ml-64 flex-1 h-screen">
+<div class="flex-1 min-h-[100dvh] w-full">
 	<section class="h-full w-full flex flex-col">
-		<!-- Your existing content structure here -->
-		<div class="bg-white flex-1">
-			<section class="flex-1 h-full">
-				<div class="h-screen p-12 w-full flex flex-col">
-					@if (closestMunro) {
-					<h1 class="text-4xl">{{ closestMunro.hill_name }}</h1>
-					<div class="h-full">
-						<!-- <app-map [singleMunro]="closestMunro"></app-map> -->
+		<!-- Page body -->
+		<div class="flex-1 bg-slate-50/70">
+			<section class="h-full">
+				<div class="h-full w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+					<!-- Shell -->
+					<div
+						class="bg-white rounded-2xl border border-slate-200 shadow-[0_1px_0_rgba(15,23,42,0.04)] overflow-hidden min-h-[calc(100dvh-3rem)]">
+						<!-- Header strip -->
+						<div class="px-5 sm:px-6 py-5 sm:py-6 bg-slate-50/70 border-b border-slate-200">
+							@if (closestMunro) {
+							<div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+								<div class="min-w-0">
+									<h1 class="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-900 truncate">
+										{{ closestMunro.hill_name }}
+									</h1>
+									<p class="mt-1 text-sm text-slate-500">Nearest Munro result</p>
+								</div>
+
+								<button
+									type="button"
+									class="inline-flex items-center justify-center gap-2 rounded-xl bg-white text-slate-700 border border-slate-200 px-3.5 py-2 text-sm font-semibold shadow-[0_1px_0_rgba(15,23,42,0.04)] hover:text-slate-900 hover:border-slate-300 hover:shadow-[0_10px_30px_rgba(15,23,42,0.08)] transition w-full sm:w-auto"
+									(click)="getClosestMunro()">
+									<i class="fa-solid fa-rotate-right text-sm"></i>
+									Refresh
+								</button>
+							</div>
+							} @else {
+							<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+								<div class="min-w-0">
+									<h1 class="text-xl sm:text-2xl md:text-3xl font-semibold text-slate-900">
+										Locator
+									</h1>
+									<p class="mt-1 text-sm text-slate-500">
+										Find the Munro closest to your current location.
+									</p>
+								</div>
+							</div>
+							}
+						</div>
+
+						<!-- Content -->
+						<div class="px-5 sm:px-6 py-6">
+							@if (closestMunro) {
+							<!-- Map / Result area -->
+							<div class="flex flex-col gap-4">
+								<!-- Result meta row (optional placeholders) -->
+								<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+									<div class="inline-flex items-center gap-2 text-sm text-slate-600">
+										<span class="inline-block h-2 w-2 rounded-full bg-emerald-500"></span>
+										<span class="font-semibold text-slate-800">Located</span>
+										<span class="text-slate-400">•</span>
+										<span class="truncate">Ready to view on map</span>
+									</div>
+
+									<a
+										*ngIf="closestMunro?._id"
+										[routerLink]="['/dashboard/mountain-manager', closestMunro._id]"
+										class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-50 text-slate-700 border border-slate-200 px-3.5 py-2 text-sm font-semibold hover:bg-white hover:text-slate-900 hover:border-slate-300 transition w-full sm:w-auto">
+										<i class="fa-solid fa-pen-to-square text-sm"></i>
+										View details
+									</a>
+								</div>
+
+								<!-- Map container (keeps layout stable even if map is commented out) -->
+								<div
+									class="w-full rounded-2xl border border-slate-200 bg-slate-100 overflow-hidden shadow-[0_1px_0_rgba(15,23,42,0.04)] h-[55vh] sm:h-[60vh] min-h-[320px]">
+									<!-- <app-map [singleMunro]="closestMunro" class="w-full h-full"></app-map> -->
+
+									<!-- Fallback placeholder when map is disabled -->
+									<div class="w-full h-full flex items-center justify-center text-slate-500">
+										<div class="text-center px-6">
+											<i class="fa-regular fa-map text-2xl text-slate-400"></i>
+											<div class="mt-2 text-sm font-semibold text-slate-700">Map preview</div>
+											<div class="mt-1 text-sm text-slate-500">
+												Enable the map component to display the location.
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							} @else {
+							<!-- Empty state -->
+							<div
+								class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-10 sm:px-6">
+								<div class="flex flex-col items-center text-center max-w-xl mx-auto">
+									<div
+										class="h-12 w-12 rounded-2xl bg-white border border-slate-200 shadow-[0_1px_0_rgba(15,23,42,0.04)] flex items-center justify-center">
+										<i class="fa-solid fa-location-crosshairs text-slate-600"></i>
+									</div>
+
+									<h2 class="mt-4 text-base sm:text-lg font-semibold text-slate-900">
+										Find your nearest Munro
+									</h2>
+									<p class="mt-1 text-sm text-slate-500">
+										We’ll use your device location (if you allow it) to calculate the closest peak.
+									</p>
+
+									<button
+										type="button"
+										class="mt-5 w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 text-white px-5 py-2.5 text-sm font-semibold shadow-[0_1px_0_rgba(15,23,42,0.12)] hover:bg-slate-950 hover:shadow-[0_10px_30px_rgba(15,23,42,0.18)] transition"
+										(click)="getClosestMunro()">
+										<i class="fa-solid fa-location-dot text-sm"></i>
+										Find my nearest Munro
+									</button>
+								</div>
+							</div>
+							}
+						</div>
 					</div>
-					} @else {
-					<button
-						class="text-sm bg-black text-white py-2 px-4 rounded cursor-pointer"
-						(click)="getClosestMunro()">
-						Find my nearest Munro
-					</button>
-					}
 				</div>
 			</section>
 		</div>
 	</section>
 </div>
-

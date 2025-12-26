@@ -11,7 +11,8 @@ import { environment } from '../../../environments/environment';
 	providedIn: 'root',
 })
 export class MunroService {
-	private apiUrl = `${environment.baseApiUrl}/munros`;
+	private apiUrl = `${environment.baseApiUrl}/user`;
+    private munroApiUrl = `${environment.baseApiUrl}/munros`;
 
 	constructor(private http: HttpClient, private userService: UserService) {}
 
@@ -63,33 +64,33 @@ export class MunroService {
 	}
 
 	getMunros(): Observable<Array<Munro>> {
-		return this.http.get<Array<Munro>>(this.apiUrl);
+		return this.http.get<Array<Munro>>(this.munroApiUrl);
 	}
 
 	getSingleMunro(munroId: string): Observable<Munro> {
-		return this.http.get<Munro>(this.apiUrl + `/${munroId}`);
+		return this.http.get<Munro>(this.munroApiUrl + `/${munroId}`);
 	}
 
 	getUserCompletedMunros(): Observable<Array<CompletedMunro>> {
-		return this.http.get<Array<CompletedMunro>>(this.apiUrl + `/users/${this.userService.userId}/completed`);
+		return this.http.get<Array<CompletedMunro>>(this.apiUrl + `/${this.userService.userId}/completed`);
 	}
 
 	getUserCompletedMunroSingle(hillId: string): Observable<CompletedMunro> {
-		return this.http.get<CompletedMunro>(this.apiUrl + `/users/${this.userService.userId}/completed/${hillId}`);
+		return this.http.get<CompletedMunro>(this.apiUrl + `/${this.userService.userId}/completed/${hillId}`);
 	}
 
 	addUserCompletedMunroSingle(munro: CompletedMunro): Observable<CompletedMunro> {
-		return this.http.post<CompletedMunro>(this.apiUrl + `/users/${this.userService.userId}/completed`, munro);
+		return this.http.post<CompletedMunro>(this.apiUrl + `/${this.userService.userId}/completed`, munro);
 	}
 
 	updatedUserCompletedMunro(munro: CompletedMunro, munroId: string): Observable<CompletedMunro> {
 		return this.http.put<CompletedMunro>(
-			this.apiUrl + `/users/${this.userService.userId}/completed/${munroId}`,
+			this.apiUrl + `/${this.userService.userId}/completed/${munroId}`,
 			munro,
 		);
 	}
 
 	removeCompletedMunro(completedMunroId: string): Observable<any> {
-		return this.http.delete(this.apiUrl + `/users/${this.userService.userId}/completed/${completedMunroId}`);
+		return this.http.delete(this.apiUrl + `/${this.userService.userId}/completed/${completedMunroId}`);
 	}
 }

@@ -1,9 +1,10 @@
-<nav class="bg-white w-full border-b border-gray-200">
+<nav class="bg-white w-full border-b border-slate-200">
 	<app-container>
-		<div class="flex items-center justify-between py-4">
+		<div class="flex items-center justify-between py-3 sm:py-4">
 			<!-- Logo -->
-			<a routerLink="/" class="flex items-center space-x-3">
-				<div class="w-10 h-10 flex items-center justify-center rounded-full">
+			<a routerLink="/" class="flex items-center gap-3 min-w-0">
+				<div
+					class="w-10 h-10 flex items-center justify-center rounded-2xl border border-slate-200 bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)]">
 					<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
 						<circle cx="50" cy="50" r="48" fill="#000" />
 						<g transform="translate(22, 14) scale(0.115)">
@@ -13,36 +14,86 @@
 						</g>
 					</svg>
 				</div>
-				<span class="text-black text-xl font-semibold tracking-tight">MunroLocator</span>
+
+				<span class="text-slate-900 text-lg sm:text-xl font-semibold tracking-tight truncate">
+					MunroLocator
+				</span>
 			</a>
 
-			<!-- Desktop Navigation -->
-			<div class="hidden md:flex space-x-6 items-center font-normal">
+			<!-- Desktop: nav + profile cluster -->
+			<div class="hidden md:flex items-center gap-3">
+				<!-- Nav pills -->
+				<div class="flex items-center gap-1 rounded-2xl bg-slate-50 border border-slate-200 p-1">
+					<a
+						routerLink="mountain-manager"
+						routerLinkActive="bg-white text-slate-900 shadow-[0_1px_0_rgba(15,23,42,0.04)]"
+						class="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition">
+						<i class="fa-solid fa-mountain text-[13px] text-slate-400"></i>
+						Mountain Manager
+					</a>
+
+					<a
+						routerLink="locator"
+						routerLinkActive="bg-white text-slate-900 shadow-[0_1px_0_rgba(15,23,42,0.04)]"
+						class="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition">
+						<i class="fa-solid fa-location-crosshairs text-[13px] text-slate-400"></i>
+						Locator
+					</a>
+
+					<a
+						routerLink="album"
+						routerLinkActive="bg-white text-slate-900 shadow-[0_1px_0_rgba(15,23,42,0.04)]"
+						class="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition">
+						<i class="fa-regular fa-images text-[13px] text-slate-400"></i>
+						Album
+					</a>
+
+					<a
+						routerLink="profile"
+						routerLinkActive="bg-white text-slate-900 shadow-[0_1px_0_rgba(15,23,42,0.04)]"
+						class="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-white/70 transition">
+						<i class="fa-regular fa-user text-[13px] text-slate-400"></i>
+						Profile
+					</a>
+				</div>
+
+				<!-- Profile details (no new logic; uses whatever you already have available) -->
 				<a
-					routerLink="mountain-manager"
-					routerLinkActive="text-black border-b-2 border-purple-600"
-					class="text-black pb-2">
-					Mountain Manager
-				</a>
-				<a
-					routerLink="locator"
-					routerLinkActive="text-black border-b-2 border-purple-600"
-					class="text-black pb-2">
-					Locator
-				</a>
-				<a
-					routerLink="album"
-					routerLinkActive="text-black border-b-2 border-purple-600"
-					class="text-black pb-2">
-					Album
+					routerLink="profile"
+					class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2 shadow-[0_1px_0_rgba(15,23,42,0.04)] hover:border-slate-300 hover:shadow-[0_10px_30px_rgba(15,23,42,0.08)] transition max-w-[260px]">
+					<!-- Avatar: falls back to initials circle if image missing -->
+					<div
+						class="relative h-10 w-10 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 flex-shrink-0">
+						<!-- If you have a user image variable, bind it here -->
+						<img
+							*ngIf="selectedUser?.profileImage"
+							[src]="selectedUser.profileImage"
+							alt="Profile"
+							class="h-full w-full object-cover" />
+						<div *ngIf="!selectedUser?.profileImage" class="h-full w-full flex items-center justify-center">
+							<span class="text-sm font-semibold text-slate-600">U</span>
+						</div>
+					</div>
+
+					<div class="min-w-0">
+						<div class="text-sm font-semibold text-slate-900 truncate">
+							{{ selectedUser?.fullname || 'Your profile' }}
+						</div>
+						<div class="text-xs text-slate-500 truncate">View and edit profile</div>
+					</div>
+
+					<i class="fa-solid fa-chevron-right text-slate-400 ml-auto"></i>
 				</a>
 			</div>
 
 			<!-- Hamburger Button (Mobile) -->
-			<button class="md:hidden text-black" (click)="toggleMenu()">
+			<button
+				class="md:hidden inline-flex items-center justify-center h-11 w-11 rounded-xl border border-slate-200 bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)] text-slate-700 hover:text-slate-900 hover:border-slate-300 hover:shadow-[0_10px_30px_rgba(15,23,42,0.08)] transition"
+				(click)="toggleMenu()"
+				aria-label="Open menu">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					class="h-6 w-6"
+					class="h-5 w-5"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor">
@@ -52,15 +103,86 @@
 		</div>
 
 		<!-- Fullscreen Mobile Menu -->
-		<div
-			*ngIf="mobileMenuOpen"
-			class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center space-y-8 text-lg font-semibold md:hidden">
-			<a routerLink="mountain-manager" routerLinkActive="text-black" class="text-black" (click)="closeMenu()">
-				Mountain Manager
-			</a>
-			<a routerLink="locator" routerLinkActive="text-black" class="text-black" (click)="closeMenu()">Locator</a>
-			<a routerLink="album" routerLinkActive="text-black" class="text-black" (click)="closeMenu()">Album</a>
-			<button (click)="closeMenu()" class="absolute top-4 right-4 text-black text-3xl">&times;</button>
+		<div *ngIf="mobileMenuOpen" class="fixed inset-0 z-50 md:hidden bg-white">
+			<!-- top bar -->
+			<div class="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-slate-200">
+				<span class="text-slate-900 font-semibold tracking-tight">Menu</span>
+				<button
+					(click)="closeMenu()"
+					class="inline-flex items-center justify-center h-11 w-11 rounded-xl border border-slate-200 bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)] text-slate-700 hover:text-slate-900 hover:border-slate-300 hover:shadow-[0_10px_30px_rgba(15,23,42,0.08)] transition"
+					aria-label="Close menu">
+					<i class="fa-solid fa-xmark text-lg"></i>
+				</button>
+			</div>
+
+			<!-- Profile block -->
+			<div class="px-4 sm:px-6 pt-6">
+				<a
+					routerLink="profile"
+					(click)="closeMenu()"
+					class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 hover:bg-white transition">
+					<div class="h-12 w-12 rounded-2xl overflow-hidden bg-white border border-slate-200 flex-shrink-0">
+						<img
+							*ngIf="selectedUser?.profileImage"
+							[src]="selectedUser.profileImage"
+							alt="Profile"
+							class="h-full w-full object-cover" />
+						<div *ngIf="!selectedUser?.profileImage" class="h-full w-full flex items-center justify-center">
+							<span class="text-sm font-semibold text-slate-600">U</span>
+						</div>
+					</div>
+
+					<div class="min-w-0">
+						<div class="text-sm font-semibold text-slate-900 truncate">
+							{{ selectedUser?.fullname || 'Your profile' }}
+						</div>
+						<div class="text-xs text-slate-500 truncate">Tap to view & edit</div>
+					</div>
+
+					<i class="fa-solid fa-chevron-right text-slate-400 ml-auto"></i>
+				</a>
+			</div>
+
+			<!-- menu links -->
+			<div class="px-4 sm:px-6 py-6">
+				<div class="flex flex-col gap-2">
+					<a
+						routerLink="mountain-manager"
+						routerLinkActive="bg-slate-50 text-slate-900 border-slate-200"
+						class="w-full inline-flex items-center justify-between px-4 py-3 rounded-2xl border border-transparent text-slate-700 font-semibold hover:bg-slate-50 hover:text-slate-900 hover:border-slate-200 transition"
+						(click)="closeMenu()">
+						<span>Mountain Manager</span>
+						<i class="fa-solid fa-chevron-right text-slate-400"></i>
+					</a>
+
+					<a
+						routerLink="locator"
+						routerLinkActive="bg-slate-50 text-slate-900 border-slate-200"
+						class="w-full inline-flex items-center justify-between px-4 py-3 rounded-2xl border border-transparent text-slate-700 font-semibold hover:bg-slate-50 hover:text-slate-900 hover:border-slate-200 transition"
+						(click)="closeMenu()">
+						<span>Locator</span>
+						<i class="fa-solid fa-chevron-right text-slate-400"></i>
+					</a>
+
+					<a
+						routerLink="album"
+						routerLinkActive="bg-slate-50 text-slate-900 border-slate-200"
+						class="w-full inline-flex items-center justify-between px-4 py-3 rounded-2xl border border-transparent text-slate-700 font-semibold hover:bg-slate-50 hover:text-slate-900 hover:border-slate-200 transition"
+						(click)="closeMenu()">
+						<span>Album</span>
+						<i class="fa-solid fa-chevron-right text-slate-400"></i>
+					</a>
+
+					<a
+						routerLink="profile"
+						routerLinkActive="bg-slate-50 text-slate-900 border-slate-200"
+						class="w-full inline-flex items-center justify-between px-4 py-3 rounded-2xl border border-transparent text-slate-700 font-semibold hover:bg-slate-50 hover:text-slate-900 hover:border-slate-200 transition"
+						(click)="closeMenu()">
+						<span>Profile</span>
+						<i class="fa-solid fa-chevron-right text-slate-400"></i>
+					</a>
+				</div>
+			</div>
 		</div>
 	</app-container>
 </nav>

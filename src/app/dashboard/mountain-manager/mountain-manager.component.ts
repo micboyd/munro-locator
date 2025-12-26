@@ -69,9 +69,14 @@ export class MountainManagerComponent implements OnInit, OnDestroy {
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(([allMunros, completedMunros]) => {
 				const completedMap = new Map(completedMunros.map(c => [c.munroId, c]));
+
+                console.log(allMunros)
+
 				this.munroStatus = allMunros.map(
 					munro => new UserMunro(munro, completedMap.has(munro._id), completedMap.get(munro._id) ?? null),
 				);
+
+                console.log(this.munroStatus);
 
 				this.applyFilterAndCategorize();
 				this.munrosLoading = false;
