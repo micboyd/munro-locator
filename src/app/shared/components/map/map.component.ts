@@ -11,7 +11,9 @@ import { ILocationSetting } from '../../interfaces/ILocationSetting';
 	standalone: false,
 })
 export class MapComponent implements OnInit, OnChanges {
-	@Input() allMunros: UserMunro[] | null = null;
+	// Accept either one Munro OR an array of UserMunro
+	@Input() allMunros: Munro | UserMunro[] | null = null;
+
 	@Input() viewLocationSetting: ILocationSetting = {
 		zoom: 8,
 		center: {
@@ -23,21 +25,20 @@ export class MapComponent implements OnInit, OnChanges {
 	private map: L.Map | undefined;
 	private markers: L.Marker[] = [];
 
-	constructor() {}
-
 	ngOnInit(): void {
 		this.initMap();
 		this.addMunroMarkers();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (this.map) {
-			if (changes['viewLocationSetting'] && changes['viewLocationSetting'].currentValue) {
-				// Get the new center and zoom
-				const setting = changes['viewLocationSetting'].currentValue as ILocationSetting;
-				this.map.setView([setting.center.latitude, setting.center.longitude], setting.zoom);
-			}
+		if (!this.map) return;
 
+		if (changes['viewLocationSetting']?.currentValue) {
+			const setting = changes['viewLocationSetting'].currentValue as ILocationSetting;
+			this.map.setView([setting.center.latitude, setting.center.longitude], setting.zoom);
+		}
+
+		if (changes['allMunros']) {
 			this.addMunroMarkers();
 		}
 	}
@@ -48,6 +49,7 @@ export class MapComponent implements OnInit, OnChanges {
 			zoom: this.viewLocationSetting.zoom,
 			zoomControl: false,
 		});
+
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
 	}
 
@@ -58,12 +60,30 @@ export class MapComponent implements OnInit, OnChanges {
 		this.markers.forEach(marker => this.map!.removeLayer(marker));
 		this.markers = [];
 
-		// Otherwise, show all complete/incomplete Munros
-		if (this.allMunros) {
-			this.allMunros.forEach(munro => {
-				this.addMarker(munro, munro.completed ? '#006400' : '#e91e63');
-			});
+		const munros = this.normalizeMunros(this.allMunros);
+
+		munros.forEach(munro => {
+			const color = this.getMarkerColor(munro);
+			this.addMarker(munro, color);
+		});
+	}
+
+	// Turns (Munro | UserMunro[] | null) into a Munro[] you can loop over
+	private normalizeMunros(input: Munro | UserMunro[] | null): Munro[] {
+		if (!input) return [];
+		return Array.isArray(input) ? input : [input];
+	}
+
+	// Only UserMunro will have `completed`; plain Munro will default color
+	private getMarkerColor(munro: Munro): string {
+		if (this.isUserMunro(munro)) {
+			return munro.completed ? '#006400' : '#e91e63';
 		}
+		return '#1e88e5'; // default for plain Munro
+	}
+
+	private isUserMunro(m: Munro): m is UserMunro {
+		return 'completed' in m;
 	}
 
 	private addMarker(munro: Munro, color: string): void {
@@ -73,15 +93,16 @@ export class MapComponent implements OnInit, OnChanges {
 			})
 				.addTo(this.map!)
 				.bindPopup(`<strong>${munro.hill_name}</strong>`);
+
 			this.markers.push(marker);
 		}
 	}
 
 	private createSvgCircleIcon(fillColor: string): L.DivIcon {
 		const svg = `
-        <svg width="20" height="20" viewBox="0 0 20 20">
-            <circle cx="10" cy="10" r="6" fill="${fillColor}" stroke="#fff" stroke-width="2"/>
-        </svg>`;
+      <svg width="20" height="20" viewBox="0 0 20 20">
+        <circle cx="10" cy="10" r="6" fill="${fillColor}" stroke="#fff" stroke-width="2"/>
+      </svg>`;
 
 		return L.divIcon({
 			className: '',
@@ -91,4 +112,3 @@ export class MapComponent implements OnInit, OnChanges {
 		});
 	}
 }
-

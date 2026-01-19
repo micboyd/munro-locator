@@ -7,3 +7,25 @@ body {
 @theme {
   --color-midnight: #183446;
 }
+
+:root {
+  --midnight: #013D5A;   /* primary dark */
+  --lionsmane: #FCF3E3;  /* primary light */
+  --celeste: #BDD3CE;    /* secondary light */
+  --herb: #708C69;       /* secondary green */
+  --marigold: #F4A258;   /* accent */
+}
+
+/* Optional: good default text selection */
+::selection {
+  background: var(--marigold);
+  color: #0b0b0b;
+}
+
+:root {
+  --tw-midnight: 1 61 90;     /* #013D5A */
+  --tw-lionsmane: 252 243 227;/* #FCF3E3 */
+  --tw-celeste: 189 211 206;  /* #BDD3CE */
+  --tw-herb: 112 140 105;     /* #708C69 */
+  --tw-marigold: 244 162 88;  /* #F4A258 */
+}

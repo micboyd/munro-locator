@@ -8,6 +8,7 @@ import { NgModule } from '@angular/core';
 import { RatingComponent } from './components/rating/rating.component';
 import { TabItemComponent } from './components/tabs/tab-item/tab-item.component';
 import { TabsComponent } from './components/tabs/tabs.component';
+import { WeatherComponent } from './components/weather/weather.component';
 
 @NgModule({
 	declarations: [
@@ -17,7 +18,8 @@ import { TabsComponent } from './components/tabs/tabs.component';
 		TabsComponent,
 		LoadingIndicatorComponent,
 		RatingComponent,
-        ContainerComponent
+        ContainerComponent,
+		WeatherComponent
 	],
 	imports: [FontAwesomeModule, CommonModule],
 	exports: [
@@ -27,7 +29,8 @@ import { TabsComponent } from './components/tabs/tabs.component';
 		TabsComponent,
 		LoadingIndicatorComponent,
 		RatingComponent,
-        ContainerComponent
+        ContainerComponent,
+		WeatherComponent
 	],
 })
 export class SharedModule {}

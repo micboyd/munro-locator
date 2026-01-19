@@ -1,84 +1,321 @@
-@if (profileLoading) {
-<app-loading-indicator></app-loading-indicator>
-} @else {
+<!-- Profile page (flatter, less rounded, minimal borders; keep buttons rounded) -->
+<main class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
+	<section class="grid grid-cols-1 gap-6 lg:grid-cols-12">
 
-<!-- Page wrapper -->
-<div class="w-full flex justify-center">
-	<div class="w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-		<!-- Card shell -->
-		<div
-			class="mx-auto max-w-xl bg-white rounded-2xl border border-slate-200 shadow-[0_1px_0_rgba(15,23,42,0.04)] px-5 sm:px-6 py-6">
-			<!-- Heading -->
-			<div class="mb-6 text-center">
-				<h1 class="text-2xl sm:text-3xl font-semibold text-slate-900 tracking-tight">
-					{{ selectedUser.fullname }}
-				</h1>
-				<p class="mt-1 text-sm text-slate-500">Update your profile details and photo</p>
-			</div>
+		<!-- HEADER (light) -->
+		<header class="lg:col-span-12 rounded-2xl bg-zinc-100 p-6">
+			<div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+				<div class="flex items-center gap-5">
+					<div class="relative h-16 w-16 overflow-hidden rounded-2xl bg-white">
+						<img class="h-full w-full object-cover"
+							src="https://images.unsplash.com/photo-1520975682031-ae1f06d9d2a5?auto=format&fit=crop&w=400&q=80"
+							alt="Profile photo" />
+					</div>
 
-			<!-- Profile Image -->
-			<div class="flex justify-center mb-8">
-				<div class="relative w-28 h-28 sm:w-36 sm:h-36">
-					<img
-						[src]="imagePreviewUrl ? imagePreviewUrl : selectedUser.profileImage"
-						alt="Profile"
-						class="w-full h-full object-cover rounded-2xl border border-slate-200 bg-white shadow-[0_10px_30px_rgba(15,23,42,0.10)]" />
+					<div class="min-w-0">
+						<div class="flex flex-wrap items-center gap-3">
+							<h1 class="truncate text-2xl font-semibold text-zinc-950">Alex Morgan</h1>
 
-					<input
-						type="file"
-						id="uploadImage"
-						name="image"
-						accept="image/*"
-						class="hidden"
-						(change)="onImageSelect($event)" />
+							<span
+								class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
+								<i class="fa-solid fa-circle text-[10px] text-emerald-500"></i>
+								Active
+							</span>
 
-					<label
-						for="uploadImage"
-						class="absolute -bottom-2 -right-2 inline-flex items-center justify-center h-11 w-11 rounded-2xl bg-white border border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.12)] text-slate-700 hover:text-slate-900 hover:border-slate-300 hover:shadow-[0_10px_30px_rgba(15,23,42,0.16)] transition cursor-pointer"
-						aria-label="Edit profile picture">
-						<i class="fa-solid fa-pen-to-square text-sm"></i>
-					</label>
+							<span
+								class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
+								<i class="fa-solid fa-bolt"></i>
+								Level 7
+							</span>
+						</div>
+
+						<p class="mt-2 truncate text-base text-zinc-600">
+							London • Weekend hiker • Public profile
+						</p>
+					</div>
+				</div>
+
+				<div class="flex flex-wrap items-center gap-3">
+					<button class="rounded-3xl bg-white px-5 py-3 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
+						type="button">
+						<span class="inline-flex items-center gap-2">
+							<i class="fa-solid fa-pen-to-square"></i>
+							Edit profile
+						</span>
+					</button>
+
+					<button class="rounded-3xl bg-zinc-950 px-5 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
+						type="button">
+						<span class="inline-flex items-center gap-2">
+							<i class="fa-solid fa-paper-plane"></i>
+							Message
+						</span>
+					</button>
 				</div>
 			</div>
 
-			<!-- Form -->
-			<form [formGroup]="userForm" (ngSubmit)="updateUser()" class="space-y-6">
-				<div class="space-y-2">
-					<label class="block text-sm font-semibold text-slate-700">First Name</label>
-					<input
-						class="w-full h-11 sm:h-12 px-4 rounded-xl text-sm sm:text-base text-slate-900 bg-white border border-slate-200 shadow-[0_1px_0_rgba(15,23,42,0.04)] placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-300 transition disabled:bg-slate-50 disabled:text-slate-500"
-						placeholder="First Name"
-						formControlName="firstname"
-						type="text" />
+			<!-- Big stats -->
+			<div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+				<div class="rounded-2xl bg-white p-5">
+					<div class="flex items-center justify-between">
+						<div class="text-sm font-semibold text-zinc-600">Hikes</div>
+						<span class="grid h-10 w-10 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+							<i class="fa-solid fa-person-hiking"></i>
+						</span>
+					</div>
+					<div class="mt-3 text-3xl font-semibold text-zinc-950">42</div>
+					<div class="mt-1 text-sm text-zinc-600">Total logged</div>
 				</div>
 
-				<div class="space-y-2">
-					<label class="block text-sm font-semibold text-slate-700">Last Name</label>
-					<input
-						class="w-full h-11 sm:h-12 px-4 rounded-xl text-sm sm:text-base text-slate-900 bg-white border border-slate-200 shadow-[0_1px_0_rgba(15,23,42,0.04)] placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-300 transition disabled:bg-slate-50 disabled:text-slate-500"
-						placeholder="Last Name"
-						formControlName="lastname"
-						type="text" />
+				<div class="rounded-2xl bg-white p-5">
+					<div class="flex items-center justify-between">
+						<div class="text-sm font-semibold text-zinc-600">Elevation</div>
+						<span class="grid h-10 w-10 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+							<i class="fa-solid fa-mountain"></i>
+						</span>
+					</div>
+					<div class="mt-3 text-3xl font-semibold text-zinc-950">18k</div>
+					<div class="mt-1 text-sm text-zinc-600">Meters climbed</div>
 				</div>
 
-				<div class="space-y-2">
-					<label class="block text-sm font-semibold text-slate-700">Bio</label>
-					<textarea
-						class="w-full px-4 py-3 rounded-2xl text-sm sm:text-base text-slate-900 bg-white border border-slate-200 shadow-[0_1px_0_rgba(15,23,42,0.04)] placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-300 transition resize-none"
-						placeholder="Bio"
-						formControlName="bio"
-						rows="4"></textarea>
+				<div class="rounded-2xl bg-white p-5">
+					<div class="flex items-center justify-between">
+						<div class="text-sm font-semibold text-zinc-600">Avg rating</div>
+						<span class="grid h-10 w-10 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+							<i class="fa-solid fa-star"></i>
+						</span>
+					</div>
+					<div class="mt-3 text-3xl font-semibold text-zinc-950">4.6</div>
+					<div class="mt-1 text-sm text-zinc-600">From recent routes</div>
+				</div>
+			</div>
+		</header>
+
+		<!-- LEFT (light) -->
+		<div class="lg:col-span-7 space-y-6">
+			<!-- Featured -->
+			<section class="rounded-2xl bg-zinc-100 p-4">
+				<article class="overflow-hidden rounded-2xl bg-white">
+					<div class="relative h-72">
+						<img class="h-full w-full object-cover"
+							src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80"
+							alt="Featured route" />
+						<div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+
+						<div class="absolute bottom-6 left-6 right-6">
+							<div class="flex items-end justify-between gap-4">
+								<div class="min-w-0">
+									<div class="truncate text-2xl font-semibold text-white">Featured route</div>
+									<div class="mt-1 truncate text-base text-white/80">Ben Nevis • Lochaber • 1,345m
+									</div>
+								</div>
+
+								<span
+									class="shrink-0 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
+									Spotlight
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="p-6">
+						<div class="flex flex-wrap gap-3">
+							<span
+								class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+								<i class="fa-solid fa-clock"></i>
+								7–9h
+							</span>
+							<span
+								class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+								<i class="fa-solid fa-arrows-up-down"></i>
+								1,320m
+							</span>
+							<span
+								class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900">
+								<i class="fa-solid fa-circle-check"></i>
+								Priority
+							</span>
+						</div>
+
+						<div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+							<div class="flex items-center gap-3 text-sm font-semibold text-zinc-700">
+								<span class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+									<i class="fa-solid fa-chart-line"></i>
+								</span>
+								Personal best attempt: <span class="text-zinc-950">8h 12m</span>
+							</div>
+
+							<button
+								class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
+								type="button">
+								<span class="inline-flex items-center gap-2">
+									<i class="fa-solid fa-bookmark"></i>
+									Save route
+								</span>
+							</button>
+						</div>
+					</div>
+				</article>
+			</section>
+
+			<!-- Recent activity -->
+			<section class="rounded-2xl bg-zinc-100 p-6">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
+							<i class="fa-solid fa-wave-square"></i>
+						</span>
+						<h2 class="text-xl font-semibold text-zinc-950">Recent activity</h2>
+					</div>
+
+					<button class="rounded-3xl bg-white px-5 py-3 text-sm font-semibold text-zinc-800 hover:bg-zinc-50"
+						type="button">
+						<span class="inline-flex items-center gap-2">
+							<i class="fa-solid fa-list"></i>
+							View all
+						</span>
+					</button>
 				</div>
 
-				<button
-					type="submit"
-					[disabled]="userForm.invalid"
-					class="w-full inline-flex items-center justify-center rounded-xl bg-slate-900 text-white py-2.5 sm:py-3 text-sm sm:text-base font-semibold shadow-[0_1px_0_rgba(15,23,42,0.12)] hover:bg-slate-950 hover:shadow-[0_10px_30px_rgba(15,23,42,0.18)] transition disabled:opacity-50 disabled:cursor-not-allowed">
-					Save Changes
-				</button>
-			</form>
+				<div class="mt-6 space-y-3">
+					<div class="flex items-center justify-between gap-4 rounded-2xl bg-white p-5">
+						<div class="flex min-w-0 items-center gap-4">
+							<span class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+								<i class="fa-solid fa-circle-check"></i>
+							</span>
+							<div class="min-w-0">
+								<div class="truncate text-base font-semibold text-zinc-950">Completed: Hampstead Heath
+									loop</div>
+								<div class="mt-1 truncate text-sm text-zinc-600">8.2 km • 2h 05m • 3 days ago</div>
+							</div>
+						</div>
+						<span
+							class="shrink-0 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">4.0</span>
+					</div>
+
+					<div class="flex items-center justify-between gap-4 rounded-2xl bg-white p-5">
+						<div class="flex min-w-0 items-center gap-4">
+							<span class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+								<i class="fa-solid fa-calendar-day"></i>
+							</span>
+							<div class="min-w-0">
+								<div class="truncate text-base font-semibold text-zinc-950">Planned: Seven Sisters day
+									trip</div>
+								<div class="mt-1 truncate text-sm text-zinc-600">14 km • next weekend</div>
+							</div>
+						</div>
+						<span
+							class="shrink-0 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">Sun</span>
+					</div>
+
+					<div class="flex items-center justify-between gap-4 rounded-2xl bg-white p-5">
+						<div class="flex min-w-0 items-center gap-4">
+							<span class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+								<i class="fa-solid fa-bookmark"></i>
+							</span>
+							<div class="min-w-0">
+								<div class="truncate text-base font-semibold text-zinc-950">Saved: Helvellyn via
+									Striding Edge</div>
+								<div class="mt-1 truncate text-sm text-zinc-600">Lake District • When weather clears
+								</div>
+							</div>
+						</div>
+						<span
+							class="shrink-0 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">Saved</span>
+					</div>
+				</div>
+			</section>
 		</div>
-	</div>
-</div>
 
-}
+		<!-- RIGHT (light) -->
+		<div class="lg:col-span-5 space-y-6">
+			<!-- About -->
+			<section class="rounded-2xl bg-zinc-100 p-6">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
+							<i class="fa-solid fa-user"></i>
+						</span>
+						<h2 class="text-xl font-semibold text-zinc-950">About</h2>
+					</div>
+
+					<span class="rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
+						Public
+					</span>
+				</div>
+
+				<p class="mt-5 text-base leading-relaxed text-zinc-700">
+					Outdoors-first weekends. Prefer ridgelines, clear views, and early starts. Tracking routes,
+					elevation, and repeatable plans.
+				</p>
+
+				<div class="mt-6 flex flex-wrap gap-3">
+					<span
+						class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
+						<i class="fa-solid fa-location-dot"></i>
+						London
+					</span>
+					<span
+						class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
+						<i class="fa-solid fa-boot"></i>
+						Steady pace
+					</span>
+					<span
+						class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
+						<i class="fa-solid fa-sunrise"></i>
+						Early starts
+					</span>
+				</div>
+			</section>
+
+			<!-- Goals -->
+			<section class="rounded-2xl bg-zinc-100 p-6">
+				<div class="flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
+							<i class="fa-solid fa-bullseye"></i>
+						</span>
+						<h2 class="text-xl font-semibold text-zinc-950">Goals</h2>
+					</div>
+
+					<span class="rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900">
+						On track
+					</span>
+				</div>
+
+				<div class="mt-6 space-y-4">
+					<div class="rounded-2xl bg-white p-5">
+						<div class="flex items-center justify-between">
+							<div class="text-base font-semibold text-zinc-950">Weekly distance</div>
+							<div class="text-sm font-semibold text-zinc-600">22 / 30 km</div>
+						</div>
+						<div class="mt-3 h-3 overflow-hidden rounded-full bg-zinc-100">
+							<div class="h-full w-[73%] rounded-full bg-zinc-950"></div>
+						</div>
+					</div>
+
+					<div class="rounded-2xl bg-white p-5">
+						<div class="flex items-center justify-between">
+							<div class="text-base font-semibold text-zinc-950">New regions</div>
+							<div class="text-sm font-semibold text-zinc-600">1 / 2</div>
+						</div>
+						<div class="mt-3 h-3 overflow-hidden rounded-full bg-zinc-100">
+							<div class="h-full w-[50%] rounded-full bg-zinc-950"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="mt-6 flex justify-end">
+					<button class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
+						type="button">
+						<span class="inline-flex items-center gap-2">
+							<i class="fa-solid fa-plus"></i>
+							Add goal
+						</span>
+					</button>
+				</div>
+			</section>
+		</div>
+
+	</section>
+</main>

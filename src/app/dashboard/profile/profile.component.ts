@@ -61,8 +61,6 @@ export class ProfileComponent implements OnInit {
 			formData.append('image', this.selectedImageFile, this.selectedImageFile.name);
 		}
 
-		console.log('Form Data:', formData);
-
 		this.userService.updateUser(this.userService.currentUser.id, formData).subscribe(updatedUser => {
 			this.profileLoading = false;
 			this.selectedUser = new User(updatedUser);
