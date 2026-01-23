@@ -1,45 +1,100 @@
-<section class="w-screen h-screen flex flex-col md:flex-row">
-	<!-- Left: Form Section -->
-	<div class="w-full md:w-1/2 text-gray-900 bg-white">
-		<div class="w-full h-screen flex items-center justify-center">
-			<div class="w-11/12 max-w-md">
-				<!-- Header -->
-				<div class="mb-8 text-center">
-					<h1 class="text-4xl font-semibold mb-2 tracking-tight">
-						Munro Manager
-					</h1>
-					<p class="text-sm text-gray-500">Manage and track your mountain climbs</p>
-				</div>
-
-				<!-- Tabs -->
-				<div class="flex mb-8 space-x-6 border-b border-gray-200 text-sm">
-					@for (tab of tabs; track $index; let i = $index) {
-					<button
-						(click)="activeTab = i"
-						class="pb-3 transition-colors duration-200 flex items-center space-x-1 cursor-pointer"
-						[ngClass]="
-							activeTab === i
-								? 'border-b-2 border-black text-black font-medium'
-								: 'border-b-2 border-transparent text-gray-500 hover:text-black hover:border-gray-300'
-						">
-						<span>{{ tab.label }}</span>
-					</button>
-					}
-				</div>
-
-				<!-- Forms -->
-				@if(activeTab === 0) {
-					<app-login></app-login>
-				}
-				@if(activeTab === 1) {
-					<app-register></app-register>
-				}
+<!-- Full screen, true 50/50 split -->
+<section class="h-screen w-screen overflow-hidden bg-white">
+	<div class="grid h-full w-full grid-cols-1 lg:grid-cols-2">
+		<!-- LEFT: Big image + hype content -->
+		<aside class="relative">
+			<!-- Image + overlays -->
+			<div class="absolute inset-0">
+				<img class="h-full w-full object-cover"
+					src="https://res.cloudinary.com/dlg9y5dfv/image/upload/v1754473288/munros/3W2A5466-min_ylrgf0.jpg"
+					alt="Munro landscape" />
+				<div class="absolute inset-0 bg-zinc-950/55"></div>
+				<div class="absolute inset-0 bg-gradient-to-tr from-zinc-950 via-zinc-950/35 to-transparent"></div>
 			</div>
-		</div>
-	</div>
 
-	<!-- Right: Background Image -->
-	<div
-		class="hidden md:flex w-1/2 bg-[url('https://res.cloudinary.com/dlg9y5dfv/image/upload/v1754473288/munros/3W2A5466-min_ylrgf0.jpg')] bg-cover bg-center h-screen">
+			<!-- Content -->
+			<div class="relative flex h-full flex-col justify-between p-6 sm:p-10">
+				<div class="max-w-2xl">
+					<!-- Brand pill -->
+					<div
+						class="inline-flex items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 text-white backdrop-blur">
+						<span class="grid h-11 w-11 place-items-center rounded-xl bg-white/10 text-white">
+							<i class="fa-solid fa-mountain-sun"></i>
+						</span>
+						<div class="min-w-0">
+							<div class="text-base font-semibold leading-tight">Munro Manager</div>
+							<div class="text-sm text-white/70">Track, plan, and celebrate every summit.</div>
+						</div>
+					</div>
+
+					<!-- Hero copy -->
+					<h1 class="mt-10 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+						Munros feel big.<br class="hidden sm:block" />
+						Your tracking shouldn’t.
+					</h1>
+					<p class="mt-4 max-w-xl text-base text-white/70">
+						Build a board, drop in your next hills, and watch your progress stack up.
+						No spreadsheets. No chaos. Just summits.
+					</p>
+
+					<!-- Feature chips -->
+					<div class="mt-7 flex flex-wrap gap-3">
+						<span
+							class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">
+							<i class="fa-solid fa-list-check"></i>
+							Boards
+						</span>
+						<span
+							class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">
+							<i class="fa-solid fa-calendar-days"></i>
+							Planning
+						</span>
+						<span
+							class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">
+							<i class="fa-solid fa-circle-check"></i>
+							Progress
+						</span>
+						<span
+							class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">
+							<i class="fa-solid fa-map-location-dot"></i>
+							Regions
+						</span>
+					</div>
+				</div>
+
+				<!-- Bottom micro-copy -->
+				<p class="mt-8 text-sm font-semibold text-white/60">
+					Tip: You don’t need perfect plans—just your next hill.
+				</p>
+			</div>
+		</aside>
+
+		<!-- RIGHT: Login screen -->
+		<main class="flex h-full items-center justify-center bg-white">
+			<div class="w-full max-w-lg px-5 py-10 sm:px-10">
+				<div class="space-y-6">
+					<!-- Header -->
+					<header class="space-y-2">
+						<h2 class="text-3xl font-semibold tracking-tight text-zinc-950">Welcome back</h2>
+						<p class="text-base text-zinc-600">
+							Sign in to pick up where you left off—your next summit awaits.
+						</p>
+					</header>
+
+					<!-- Auth card -->
+					<section class="rounded-2xl bg-zinc-100 p-6 sm:p-8">
+						<app-login></app-login>
+					</section>
+
+					<!-- Footer -->
+					<p class="text-center text-sm text-zinc-500">
+						By continuing, you agree to our
+						<a class="font-semibold text-zinc-900 hover:underline" href="#">Terms</a>
+						and
+						<a class="font-semibold text-zinc-900 hover:underline" href="#">Privacy Policy</a>.
+					</p>
+				</div>
+			</div>
+		</main>
 	</div>
 </section>

@@ -1,350 +1,18 @@
-<!-- Page -->
-<section class="bg-white text-zinc-950">
-    <div class="mx-auto max-w-7xl px-5 py-6 sm:px-8">
-        <div class="rounded-2xl bg-zinc-100 p-6">
-            <div class="flex items-start justify-between gap-4">
-                <div class="min-w-0">
-                    <div class="flex items-center gap-3">
-                        <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
-                            <i class="fa-solid fa-mountain-sun"></i>
-                        </span>
+<main class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
+    <div class="space-y-6">
 
-                        <div class="min-w-0">
-                            <h1 class="truncate text-xl font-semibold tracking-tight text-zinc-950">
-                                Mountain Manager
-                            </h1>
-                            <p class="mt-1 text-base text-zinc-600">
-                                Plan routes, track progress, and keep your hikes organised in one place.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="bg-white text-zinc-950">
-    <div class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
-        <div class="space-y-6">
-            <!-- Board columns -->
-            <section class="grid grid-cols-1 gap-6 lg:grid-cols-12">
-                <!-- Column -->
-                <section class="lg:col-span-4 rounded-2xl bg-zinc-100 p-4">
-                    <header class="flex items-center justify-between px-2 py-2">
-                        <div class="flex items-center gap-3">
-                            <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
-                                <i class="fa-solid fa-list-check"></i>
-                            </span>
-                            <div>
-                                <h2 class="text-lg font-semibold text-zinc-950">To Do</h2>
-                                <div class="mt-1 text-sm font-semibold text-zinc-600">2 cards</div>
-                            </div>
-                        </div>
-
-                        <button
-                            class="rounded-3xl bg-zinc-950 px-4 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
-                            type="button">
-                            <span class="inline-flex items-center gap-2">
-                                <i class="fa-solid fa-plus"></i>
-                                Add
-                            </span>
-                        </button>
-                    </header>
-
-                    <div class="mt-4 space-y-4">
-                        <!-- Card -->
-                        <article class="overflow-hidden rounded-2xl bg-white">
-                            <div class="relative h-64">
-                                <img class="h-full w-full object-cover"
-                                    src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80"
-                                    alt="Ben Nevis" />
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent">
-                                </div>
-
-                                <div class="absolute bottom-6 left-6 right-6">
-                                    <div class="flex items-end justify-between gap-4">
-                                        <div class="min-w-0">
-                                            <div class="truncate text-2xl font-semibold text-white">Ben Nevis</div>
-                                            <div class="mt-1 truncate text-base text-white/80">Lochaber • 1,345m</div>
-                                        </div>
-
-                                        <span
-                                            class="shrink-0 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
-                                            Region Name
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="p-6">
-                                <div class="flex flex-wrap gap-3">
-                                    <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
-                                        <i class="fa-solid fa-clock"></i>
-                                        7–9h
-                                    </span>
-
-                                    <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
-                                        <i class="fa-solid fa-arrows-up-down"></i>
-                                        1,320m
-                                    </span>
-
-                                    <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900">
-                                        <i class="fa-solid fa-flag"></i>
-                                        Priority
-                                    </span>
-                                </div>
-
-                                <div class="mt-6 flex items-center justify-between">
-                                    <div class="flex items-center gap-3 text-sm font-semibold text-zinc-700">
-                                        <span
-                                            class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
-                                            <i class="fa-solid fa-star"></i>
-                                        </span>
-                                        Rating
-                                    </div>
-                                    <app-rating [readonly]="true" [rating]="2"></app-rating>
-                                </div>
-
-                                <div class="mt-6 flex items-center justify-end">
-                                    <button
-                                        class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
-                                        type="button">
-                                        <span class="inline-flex items-center gap-2">
-                                            <i class="fa-solid fa-arrow-right"></i>
-                                            Move to planned
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </section>
-
-                <!-- Column -->
-                <section class="lg:col-span-4 rounded-2xl bg-zinc-100 p-4">
-                    <header class="flex items-center justify-between px-2 py-2">
-                        <div class="flex items-center gap-3">
-                            <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
-                                <i class="fa-solid fa-calendar-days"></i>
-                            </span>
-                            <div>
-                                <h2 class="text-lg font-semibold text-zinc-950">Planned</h2>
-                                <div class="mt-1 text-sm font-semibold text-zinc-600">1 card</div>
-                            </div>
-                        </div>
-
-                        <button
-                            class="rounded-3xl bg-zinc-950 px-4 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
-                            type="button">
-                            <span class="inline-flex items-center gap-2">
-                                <i class="fa-solid fa-plus"></i>
-                                Add
-                            </span>
-                        </button>
-                    </header>
-
-                    <div class="mt-4 space-y-4">
-                        <article class="overflow-hidden rounded-2xl bg-white">
-                            <div class="relative h-64">
-                                <img class="h-full w-full object-cover"
-                                    src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80"
-                                    alt="Ben Nevis" />
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent">
-                                </div>
-
-                                <div class="absolute bottom-6 left-6 right-6">
-                                    <div class="flex items-end justify-between gap-4">
-                                        <div class="min-w-0">
-                                            <div class="truncate text-2xl font-semibold text-white">Ben Nevis</div>
-                                            <div class="mt-1 truncate text-base text-white/80">Lochaber • 1,345m</div>
-                                        </div>
-
-                                        <span
-                                            class="shrink-0 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
-                                            Region Name
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="p-6">
-                                <div class="flex flex-wrap gap-3">
-                                    <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
-                                        <i class="fa-solid fa-clock"></i>
-                                        7–9h
-                                    </span>
-
-                                    <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
-                                        <i class="fa-solid fa-arrows-up-down"></i>
-                                        1,320m
-                                    </span>
-
-                                    <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900">
-                                        <i class="fa-solid fa-flag"></i>
-                                        Priority
-                                    </span>
-                                </div>
-
-                                <div class="mt-6 flex items-center justify-between">
-                                    <div class="flex items-center gap-3 text-sm font-semibold text-zinc-700">
-                                        <span
-                                            class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
-                                            <i class="fa-solid fa-star"></i>
-                                        </span>
-                                        Rating
-                                    </div>
-                                    <app-rating [readonly]="true" [rating]="2"></app-rating>
-                                </div>
-
-                                <div class="mt-6 flex items-center justify-end">
-                                    <button
-                                        class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
-                                        type="button">
-                                        <span class="inline-flex items-center gap-2">
-                                            <i class="fa-solid fa-arrow-right"></i>
-                                            Move to complete
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </section>
-
-                <!-- Column -->
-                <section class="lg:col-span-4 rounded-2xl bg-zinc-100 p-4">
-                    <header class="flex items-center justify-between px-2 py-2">
-                        <div class="flex items-center gap-3">
-                            <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
-                                <i class="fa-solid fa-circle-check"></i>
-                            </span>
-                            <div>
-                                <h2 class="text-lg font-semibold text-zinc-950">Complete</h2>
-                                <div class="mt-1 text-sm font-semibold text-zinc-600">1 card</div>
-                            </div>
-                        </div>
-
-                        <button
-                            class="rounded-3xl bg-zinc-950 px-4 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
-                            type="button">
-                            <span class="inline-flex items-center gap-2">
-                                <i class="fa-solid fa-plus"></i>
-                                Add
-                            </span>
-                        </button>
-                    </header>
-
-                    <div class="mt-4 space-y-4">
-                        <article class="overflow-hidden rounded-2xl bg-white">
-                            <div class="relative h-64">
-                                <img class="h-full w-full object-cover"
-                                    src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80"
-                                    alt="Ben Nevis" />
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent">
-                                </div>
-
-                                <div class="absolute bottom-6 left-6 right-6">
-                                    <div class="flex items-end justify-between gap-4">
-                                        <div class="min-w-0">
-                                            <div class="truncate text-2xl font-semibold text-white">Ben Nevis</div>
-                                            <div class="mt-1 truncate text-base text-white/80">Lochaber • 1,345m</div>
-                                        </div>
-
-                                        <span
-                                            class="shrink-0 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
-                                            Region Name
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="p-6">
-                                <div class="flex flex-wrap gap-3">
-                                    <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
-                                        <i class="fa-solid fa-clock"></i>
-                                        7–9h
-                                    </span>
-
-                                    <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
-                                        <i class="fa-solid fa-arrows-up-down"></i>
-                                        1,320m
-                                    </span>
-
-                                    <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900">
-                                        <i class="fa-solid fa-flag"></i>
-                                        Priority
-                                    </span>
-                                </div>
-
-                                <div class="mt-6 flex items-center justify-between">
-                                    <div class="flex items-center gap-3 text-sm font-semibold text-zinc-700">
-                                        <span
-                                            class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
-                                            <i class="fa-solid fa-star"></i>
-                                        </span>
-                                        Rating
-                                    </div>
-                                    <app-rating [readonly]="true" [rating]="2"></app-rating>
-                                </div>
-
-                                <div class="mt-6 flex items-center justify-end">
-                                    <button
-                                        class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
-                                        type="button">
-                                        <span class="inline-flex items-center gap-2">
-                                            <i class="fa-solid fa-arrow-right"></i>
-                                            Move to planned
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </section>
-            </section>
-        </div>
-    </div>
-</section>
-
-<section class="bg-white text-zinc-950">
-    <div class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
-        <div class="space-y-6"></div>
-    </div>
-</section>
-
-<section class="bg-zinc-950 text-white">
-    <div class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
-        <div class="space-y-6">
-            <!-- Summary -->
+                <!-- Dark summary section (still uses the same spacing rhythm inside) -->
+        <section class="rounded-2xl bg-zinc-950 p-6 text-white">
             <section class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
-                <!-- Title -->
                 <header class="lg:col-span-5">
                     <div class="flex items-center gap-3">
-                        <span class="grid h-11 w-11 place-items-center rounded-xl bg-white/10 text-white">
-                            <i class="fa-solid fa-table-columns"></i>
-                        </span>
-
                         <div class="min-w-0">
-                            <h1 class="text-xl font-semibold tracking-tight text-white">My Board</h1>
-                            <p class="mt-1 text-base text-white/70">Overview of your cards by status.</p>
+                            <h2 class="text-2xl font-semibold text-white">Dashboard</h2>
+                            <p class="mt-2 text-base text-white/70">See how your Munro journey is going.</p>
                         </div>
                     </div>
                 </header>
 
-                <!-- Summary card -->
                 <div class="lg:col-span-7">
                     <div class="rounded-2xl bg-white/5 p-6">
                         <div class="flex items-start justify-between gap-4">
@@ -357,7 +25,7 @@
                                 class="shrink-0 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">
                                 <span class="inline-flex items-center gap-2">
                                     <i class="fa-solid fa-list-check"></i>
-                                    4 total
+                                    282 total
                                 </span>
                             </span>
                         </div>
@@ -370,8 +38,8 @@
                                         <i class="fa-solid fa-list-check"></i>
                                     </span>
                                 </div>
-                                <div class="mt-3 text-2xl font-semibold text-white">2</div>
-                                <div class="mt-1 text-sm text-white/60">Cards</div>
+                                <div class="mt-3 text-2xl font-semibold text-white">280</div>
+                                <div class="mt-1 text-sm text-white/60">Munros</div>
                             </div>
 
                             <div class="rounded-2xl bg-white/5 p-5">
@@ -382,7 +50,7 @@
                                     </span>
                                 </div>
                                 <div class="mt-3 text-2xl font-semibold text-white">1</div>
-                                <div class="mt-1 text-sm text-white/60">Cards</div>
+                                <div class="mt-1 text-sm text-white/60">Munros</div>
                             </div>
 
                             <div class="rounded-2xl bg-white/5 p-5">
@@ -393,12 +61,292 @@
                                     </span>
                                 </div>
                                 <div class="mt-3 text-2xl font-semibold text-white">1</div>
-                                <div class="mt-1 text-sm text-white/60">Cards</div>
+                                <div class="mt-1 text-sm text-white/60">Munros</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-        </div>
+        </section>
+
+        <!-- Board columns -->
+        <section class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <!-- Column -->
+            <section class="rounded-2xl bg-zinc-100 p-6 lg:col-span-4">
+                <header class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
+                            <i class="fa-solid fa-list-check"></i>
+                        </span>
+
+                        <div>
+                            <h2 class="text-xl font-semibold text-zinc-950">To Do</h2>
+                            <div class="mt-1 text-sm font-semibold text-zinc-600">280 Munros</div>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="mt-6 space-y-4">
+                    <article class="overflow-hidden rounded-2xl bg-white">
+                        <div class="relative h-64">
+                            <img class="h-full w-full object-cover"
+                                src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80"
+                                alt="Ben Nevis" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent">
+                            </div>
+
+                            <div class="absolute bottom-6 left-6 right-6">
+                                <div class="flex items-end justify-between gap-4">
+                                    <div class="min-w-0">
+                                        <div class="truncate text-2xl font-semibold text-white">Ben Nevis</div>
+                                        <div class="mt-1 truncate text-base text-white/80">Lochaber • 1,345m</div>
+                                    </div>
+
+                                    <span
+                                        class="shrink-0 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
+                                        Region Name
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-3">
+                                <span
+                                    class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+                                    <i class="fa-solid fa-clock"></i>
+                                    7–9h
+                                </span>
+
+                                <span
+                                    class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+                                    <i class="fa-solid fa-arrows-up-down"></i>
+                                    1,320m
+                                </span>
+
+                                <span
+                                    class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900">
+                                    <i class="fa-solid fa-flag"></i>
+                                    Priority
+                                </span>
+                            </div>
+
+                            <div class="mt-6 flex items-center justify-between gap-4">
+                                <div class="flex items-center gap-3 text-sm font-semibold text-zinc-700">
+                                    <span
+                                        class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+                                        <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    Rating
+                                </div>
+
+                                <app-rating [readonly]="true" [rating]="2"></app-rating>
+                            </div>
+
+                            <div class="mt-6 flex justify-end">
+                                <button
+                                    class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
+                                    type="button">
+                                    <span class="inline-flex items-center gap-2">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                        Move to planned
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Column -->
+            <section class="rounded-2xl bg-zinc-100 p-6 lg:col-span-4">
+                <header class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </span>
+
+                        <div>
+                            <h2 class="text-xl font-semibold text-zinc-950">Planned</h2>
+                            <div class="mt-1 text-sm font-semibold text-zinc-600">1 Munro</div>
+                        </div>
+                    </div>
+
+                    <button class="rounded-3xl bg-zinc-950 px-5 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
+                        type="button">
+                        <span class="inline-flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            Add
+                        </span>
+                    </button>
+                </header>
+
+                <div class="mt-6 space-y-4">
+                    <article class="overflow-hidden rounded-2xl bg-white">
+                        <div class="relative h-64">
+                            <img class="h-full w-full object-cover"
+                                src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80"
+                                alt="Ben Nevis" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent">
+                            </div>
+
+                            <div class="absolute bottom-6 left-6 right-6">
+                                <div class="flex items-end justify-between gap-4">
+                                    <div class="min-w-0">
+                                        <div class="truncate text-2xl font-semibold text-white">Ben Nevis</div>
+                                        <div class="mt-1 truncate text-base text-white/80">Lochaber • 1,345m</div>
+                                    </div>
+
+                                    <span
+                                        class="shrink-0 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
+                                        Region Name
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-3">
+                                <span
+                                    class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+                                    <i class="fa-solid fa-clock"></i>
+                                    7–9h
+                                </span>
+
+                                <span
+                                    class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+                                    <i class="fa-solid fa-arrows-up-down"></i>
+                                    1,320m
+                                </span>
+
+                                <span
+                                    class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900">
+                                    <i class="fa-solid fa-flag"></i>
+                                    Priority
+                                </span>
+                            </div>
+
+                            <div class="mt-6 flex items-center justify-between gap-4">
+                                <div class="flex items-center gap-3 text-sm font-semibold text-zinc-700">
+                                    <span
+                                        class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+                                        <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    Rating
+                                </div>
+
+                                <app-rating [readonly]="true" [rating]="2"></app-rating>
+                            </div>
+
+                            <div class="mt-6 flex justify-end">
+                                <button
+                                    class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
+                                    type="button">
+                                    <span class="inline-flex items-center gap-2">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                        Move to complete
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Column -->
+            <section class="rounded-2xl bg-zinc-100 p-6 lg:col-span-4">
+                <header class="flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </span>
+
+                        <div>
+                            <h2 class="text-xl font-semibold text-zinc-950">Complete</h2>
+                            <div class="mt-1 text-sm font-semibold text-zinc-600">1 Munro</div>
+                        </div>
+                    </div>
+
+                    <button class="rounded-3xl bg-zinc-950 px-5 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
+                        type="button">
+                        <span class="inline-flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            Add
+                        </span>
+                    </button>
+                </header>
+
+                <div class="mt-6 space-y-4">
+                    <article class="overflow-hidden rounded-2xl bg-white">
+                        <div class="relative h-64">
+                            <img class="h-full w-full object-cover"
+                                src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80"
+                                alt="Ben Nevis" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent">
+                            </div>
+
+                            <div class="absolute bottom-6 left-6 right-6">
+                                <div class="flex items-end justify-between gap-4">
+                                    <div class="min-w-0">
+                                        <div class="truncate text-2xl font-semibold text-white">Ben Nevis</div>
+                                        <div class="mt-1 truncate text-base text-white/80">Lochaber • 1,345m</div>
+                                    </div>
+
+                                    <span
+                                        class="shrink-0 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
+                                        Region Name
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-3">
+                                <span
+                                    class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+                                    <i class="fa-solid fa-clock"></i>
+                                    7–9h
+                                </span>
+
+                                <span
+                                    class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+                                    <i class="fa-solid fa-arrows-up-down"></i>
+                                    1,320m
+                                </span>
+
+                                <span
+                                    class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-900">
+                                    <i class="fa-solid fa-flag"></i>
+                                    Priority
+                                </span>
+                            </div>
+
+                            <div class="mt-6 flex items-center justify-between gap-4">
+                                <div class="flex items-center gap-3 text-sm font-semibold text-zinc-700">
+                                    <span
+                                        class="grid h-11 w-11 place-items-center rounded-xl bg-zinc-100 text-zinc-900">
+                                        <i class="fa-solid fa-star"></i>
+                                    </span>
+                                    Rating
+                                </div>
+
+                                <app-rating [readonly]="true" [rating]="2"></app-rating>
+                            </div>
+
+                            <div class="mt-6 flex justify-end">
+                                <button
+                                    class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
+                                    type="button">
+                                    <span class="inline-flex items-center gap-2">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                        Move to planned
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </section>
     </div>
-</section>
+</main>

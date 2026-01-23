@@ -24,7 +24,7 @@ const routes: Routes = [
 				canActivate: [AuthGuard],
 			},
 			{ path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-			{ path: 'map', component: LocatorComponent, canActivate: [AuthGuard] },
+			// { path: 'map', component: LocatorComponent, canActivate: [AuthGuard] },
 		],
 	},
 	{ path: '**', redirectTo: '/login' },
