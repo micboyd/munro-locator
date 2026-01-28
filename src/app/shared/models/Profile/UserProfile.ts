@@ -27,6 +27,7 @@ export class UserProfile {
 
     createForm(fb: FormBuilder): FormGroup {
         return fb.group({
+            userId: [this.userId ?? ''],
             firstName: [this.firstName ?? ''],
             lastName: [this.lastName ?? ''],
             bio: [this.bio ?? ''],

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { ProfileService } from './profile.service';
 import { UserProfile } from '../../shared/models/Profile/UserProfile';
@@ -9,6 +9,8 @@ import { UserProfile } from '../../shared/models/Profile/UserProfile';
     standalone: false,
 })
 export class ProfileComponent implements OnInit {
+    
+    editMode: boolean = false;
 
     private _selectedUserProfile: UserProfile = null;
 
@@ -22,10 +24,19 @@ export class ProfileComponent implements OnInit {
         this.getUserProfile();
     }
 
+    enableEditMode() {
+        this.editMode = true;
+    }
+
+    closeEditMode() {
+        this.editMode = false;
+    }
+
     getUserProfile() {
         this.profileService.getProfileByUserId().subscribe({
             next: (response) => {
                 this._selectedUserProfile = response;
+                this.editMode = false;
             },
             error: (error) => {
                 if (error.status === 404) {

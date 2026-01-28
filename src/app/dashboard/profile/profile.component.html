@@ -1,4 +1,12 @@
 <main class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
+
+	@if (editMode) {
+	<app-edit-profile 
+		[selectedUserProfile]="selectedUserProfile" 
+		(saved)="getUserProfile()" 
+		(closeEditMode)="closeEditMode()">
+	</app-edit-profile>
+	} @else {
 	<section class="grid grid-cols-1 gap-6 lg:grid-cols-12">
 		<header class="rounded-2xl bg-zinc-100 p-6 lg:col-span-12">
 			<div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -11,13 +19,14 @@
 
 					<div class="min-w-0">
 						<div class="flex flex-wrap items-center gap-3">
-							<h1 class="truncate text-2xl font-semibold text-zinc-950">Michael Boyd</h1>
+							<h1 class="truncate text-2xl font-semibold text-zinc-950">{{ selectedUserProfile.firstName }} {{ selectedUserProfile.lastName }}</h1>
 						</div>
 					</div>
 				</div>
 
 				<div class="flex flex-wrap items-center gap-3">
-					<button class="rounded-3xl bg-zinc-950 px-5 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
+					<button (click)="enableEditMode()"
+						class="rounded-3xl bg-zinc-950 px-5 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
 						type="button">
 						<span class="inline-flex items-center gap-2">
 							<i class="fa-solid fa-pen-to-square"></i>
@@ -199,9 +208,8 @@
 			</section>
 		</div>
 
-		<!-- RIGHT (light) -->
+
 		<div class="space-y-6 lg:col-span-5">
-			<!-- About -->
 			<section class="rounded-2xl bg-zinc-100 p-6">
 				<div class="flex items-center justify-between gap-4">
 					<div class="flex items-center gap-3">
@@ -217,31 +225,13 @@
 				</div>
 
 				<p class="mt-5 text-base leading-relaxed text-zinc-700">
-					Outdoors-first weekends. Prefer ridgelines, clear views, and early starts. Tracking routes,
-					elevation, and repeatable plans.
+					{{ selectedUserProfile.bio }}
 				</p>
-
-				<div class="mt-6 flex flex-wrap gap-3">
-					<span
-						class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
-						<i class="fa-solid fa-location-dot"></i>
-						London
-					</span>
-					<span
-						class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
-						<i class="fa-solid fa-boot"></i>
-						Steady pace
-					</span>
-					<span
-						class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
-						<i class="fa-solid fa-sunrise"></i>
-						Early starts
-					</span>
-				</div>
 			</section>
 
-            <app-goals></app-goals>
+			<app-goals></app-goals>
 
 		</div>
 	</section>
+	}
 </main>

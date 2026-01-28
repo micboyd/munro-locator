@@ -1,0 +1,132 @@
+<section class="rounded-2xl bg-zinc-100 p-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </span>
+            <h2 class="text-xl font-semibold text-zinc-950">Edit profile</h2>
+        </div>
+
+        <span class="rounded-full bg-white px-4 py-2 text-sm font-semibold text-zinc-700">
+            Public
+        </span>
+    </div>
+
+    <!-- Form -->
+    <form class="mt-6 space-y-6" [formGroup]="form" (ngSubmit)="saveProfile()">
+        <!-- Profile image upload -->
+        <div class="rounded-2xl bg-white p-5">
+            <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex items-center gap-5">
+                    <div class="relative h-16 w-16 overflow-hidden rounded-2xl bg-zinc-100">
+                        <img class="h-full w-full object-cover"
+                            src="https://placehold.co/256x256?text=Photo" alt="Profile photo" />
+                    </div>
+
+                    <div class="min-w-0">
+                        <div class="text-base font-semibold text-zinc-950">Profile photo</div>
+                        <div class="mt-1 text-sm text-zinc-600">
+                            Upload a square image for best results
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload control -->
+                <div class="flex flex-col gap-2">
+                    <label for="profileImage"
+                        class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-3xl bg-zinc-100 px-6 py-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-200">
+                        <i class="fa-solid fa-upload"></i>
+                        Upload image
+                    </label>
+
+                    <input id="profileImage" type="file" accept="image/*" class="hidden" />
+
+                    <p class="text-xs text-zinc-500">
+                        JPG, PNG, or WebP • Max 5MB
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Name -->
+        <div class="rounded-2xl bg-white p-5">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                    <label for="firstName" class="text-sm font-semibold text-zinc-800">
+                        First name
+                    </label>
+                    <div class="relative mt-2">
+                        <span
+                            class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-zinc-500">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input id="firstName" type="text" placeholder="Michael" formControlName="firstName"
+                            class="w-full rounded-2xl bg-zinc-100 py-3 pl-11 pr-4 text-sm font-semibold text-zinc-900 outline-none ring-1 ring-transparent focus:bg-white focus:ring-zinc-300" />
+                    </div>
+                </div>
+
+                <div>
+                    <label for="lastName" class="text-sm font-semibold text-zinc-800">
+                        Last name
+                    </label>
+                    <div class="relative mt-2">
+                        <span
+                            class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-zinc-500">
+                            <i class="fa-solid fa-id-card"></i>
+                        </span>
+                        <input id="lastName" type="text" placeholder="Boyd" formControlName="lastName"
+                            class="w-full rounded-2xl bg-zinc-100 py-3 pl-11 pr-4 text-sm font-semibold text-zinc-900 outline-none ring-1 ring-transparent focus:bg-white focus:ring-zinc-300" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="rounded-2xl bg-white p-5">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <label for="bio" class="text-sm font-semibold text-zinc-800">
+                        Bio
+                    </label>
+                    <p class="mt-1 text-sm text-zinc-600">
+                        A short intro that appears on your profile.
+                    </p>
+                </div>
+
+                <span class="shrink-0 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+                    Optional
+                </span>
+            </div>
+
+            <textarea id="bio" rows="5"
+                placeholder="Outdoors-first weekends. Prefer ridgelines, clear views, and early starts..."
+                formControlName="bio"
+                class="mt-4 w-full resize-none rounded-2xl bg-zinc-100 p-4 text-sm font-semibold text-zinc-900 outline-none ring-1 ring-transparent focus:bg-white focus:ring-zinc-300"></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex items-center gap-3 text-sm font-semibold text-zinc-700">
+                <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </span>
+                Changes save to your public profile
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+                <button type="button" (click)="cancelEdit()"
+                    class="rounded-3xl bg-white px-6 py-3 text-sm font-semibold text-zinc-800 hover:bg-zinc-50">
+                    Cancel
+                </button>
+
+                <button type="submit" [disabled]="form?.invalid"
+                    class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900 disabled:cursor-not-allowed disabled:opacity-60">
+                    <span class="inline-flex items-center gap-2">
+                        Save Changes
+                    </span>
+                </button>
+            </div>
+        </div>
+    </form>
+</section>

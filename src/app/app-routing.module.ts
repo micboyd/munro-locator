@@ -7,6 +7,7 @@ import { MountainComponent } from './dashboard/mountain/mountain.component';
 import { MountainManagerComponent } from './dashboard/mountain-manager/mountain-manager.component';
 import { NgModule } from '@angular/core';
 import { ProfileComponent } from './dashboard/profile/profile.component';
+import { EditProfileComponent } from './dashboard/profile/edit-profile/edit-profile.component';
 
 const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -24,7 +25,7 @@ const routes: Routes = [
             {
                 path: 'profile',
                 component: ProfileComponent,
-                canActivate: [AuthGuard]
+                canActivate: [AuthGuard],
             },
             {
                 path: 'mountain/:mountainId',
