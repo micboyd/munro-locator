@@ -1,5 +1,6 @@
 import { Observable, map } from 'rxjs';
 
+import { AuthenticationService } from '../../shared/services/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserProfile } from '../../shared/models/Profile/UserProfile';
@@ -7,22 +8,23 @@ import { UserProfileRequest } from '../../shared/models/Profile/UserProfileReque
 import { UserProfileResponse } from '../../shared/models/Profile/UserProfileResponse';
 import { environment } from '../../../environments/environment';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class ProfileService {
     private readonly _apiUrl = environment.baseApiUrl;
     private readonly _profileUrl = `${this._apiUrl}/profile/user-profile`;
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient,
+        private authService: AuthenticationService
+    ) {}
 
     /**
      * GET /user-profile/:userId
      * Fetch profile by userId (string)
      */
-    getByUserId(userId: string): Observable<UserProfile> {
+    getByUserId(): Observable<UserProfile> {
         return this.http
-            .get<UserProfileResponse>(`${this._profileUrl}/${encodeURIComponent(userId)}`)
+            .get<UserProfileResponse>(`${this._profileUrl}/${encodeURIComponent(this.authService.userId)}`)
             .pipe(map((res) => new UserProfile(res)));
     }
 
@@ -55,35 +57,5 @@ export class ProfileService {
         return this.http.delete<{ message: string; id: string }>(
             `${this._profileUrl}/${encodeURIComponent(id)}`
         );
-    }
-
-    /**
-     * Convenience helper:
-     * "Upsert" behavior using your current API shape:
-     * - try getByUserId
-     * - if 404, create
-     */
-    getOrCreate(request: UserProfileRequest): Observable<UserProfile> {
-        return new Observable<UserProfile>((subscriber) => {
-            this.getByUserId(request.userId).subscribe({
-                next: (profile) => {
-                    subscriber.next(profile);
-                    subscriber.complete();
-                },
-                error: (err) => {
-                    if (err?.status === 404) {
-                        this.create(request).subscribe({
-                            next: (created) => {
-                                subscriber.next(created);
-                                subscriber.complete();
-                            },
-                            error: (createErr) => subscriber.error(createErr),
-                        });
-                    } else {
-                        subscriber.error(err);
-                    }
-                },
-            });
-        });
     }
 }

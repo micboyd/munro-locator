@@ -1,5 +1,4 @@
-@if (authService.userLoaded) {
-    {{ authService.getUserId() }}
+@if (authService.userId) {
     <app-sidebar></app-sidebar>
     <router-outlet></router-outlet>
 }

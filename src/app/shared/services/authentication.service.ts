@@ -18,15 +18,19 @@ export class AuthenticationService {
         return this._userLoaded;
     }
 
+    get userId(): string {
+        return localStorage.getItem('userId');
+    }
+
+    get token(): string {
+        return localStorage.getItem('token');
+    }
+
 	constructor(private http: HttpClient) {}
 
 	setDetails(loginDetails: AuthResponse) {
-
-        console.log(loginDetails);
-
-		localStorage.setItem('id', loginDetails.userId);
+		localStorage.setItem('userId', loginDetails.userId);
 		localStorage.setItem('token', loginDetails.token);
-        this._userLoaded = true;
 	}
 
 	login(payload: AuthRequest): Observable<AuthResponse> {
@@ -35,14 +39,6 @@ export class AuthenticationService {
 
 	clearDetails() {
 		localStorage.clear();
-	}
-
-    getUserId(): string {
-		return localStorage.getItem('id');
-	}
-
-	getToken(): string {
-		return localStorage.getItem('token');
 	}
 
 	isTokenExpired(token: string): boolean {
@@ -57,7 +53,7 @@ export class AuthenticationService {
 	}
 
 	isAuthenticated(): boolean {
-		const token = this.getToken();
+		const token = this.token;
 
 		if (!token) {
 			return false;
