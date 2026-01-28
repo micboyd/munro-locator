@@ -6,27 +6,30 @@ import { UserProfile } from '../../shared/models/Profile/UserProfile';
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.component.html',
-    providers: [ProfileService],
     standalone: false,
 })
 export class ProfileComponent implements OnInit {
 
-    constructor(private profileService: ProfileService) {}
+    private _selectedUserProfile: UserProfile = null;
 
-    private _selectedProfile: UserProfile = null;
+    get selectedUserProfile() {
+        return this._selectedUserProfile;
+    }
+
+    constructor(private profileService: ProfileService) {}
 
     ngOnInit(): void {
         this.getUserProfile();
     }
 
     getUserProfile() {
-        this.profileService.getByUserId().subscribe({
+        this.profileService.getProfileByUserId().subscribe({
             next: (response) => {
-                this._selectedProfile = response;
+                this._selectedUserProfile = response;
             },
             error: (error) => {
                 if (error.status === 404) {
-                    // do something to build profile;
+                    this._selectedUserProfile = new UserProfile();
                 }
             }
         });
