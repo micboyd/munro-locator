@@ -1,8 +1,10 @@
 import * as L from 'leaflet';
+
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+
+import { ILocationSetting } from '../../interfaces/ILocationSetting';
 import { Munro } from '../../models/Munro';
 import { UserMunro } from '../../models/UserMunro';
-import { ILocationSetting } from '../../interfaces/ILocationSetting';
 
 @Component({
 	selector: 'app-map',
@@ -11,7 +13,6 @@ import { ILocationSetting } from '../../interfaces/ILocationSetting';
 	standalone: false,
 })
 export class MapComponent implements OnInit, OnChanges {
-	// Accept either one Munro OR an array of UserMunro
 	@Input() allMunros: Munro | UserMunro[] | null = null;
 
 	@Input() viewLocationSetting: ILocationSetting = {
