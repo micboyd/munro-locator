@@ -1,11 +1,9 @@
-import { AuthUser } from '../models/AuthUser';
+import { AuthRequest } from '../models/Auth/AuthRequest';
+import { AuthResponse } from '../models/Auth/AuthResponse';
 import { HttpClient } from '@angular/common/http';
 import { IJWTPayload } from '../interfaces/IJWTPayload';
 import { Injectable } from '@angular/core';
-import { LoginRequest } from '../models/LoginRequest';
-import { LoginResponse } from '../models/LoginResponse';
 import { Observable } from 'rxjs';
-import { User } from '../models/User';
 import { environment } from '../../../environments/environment';
 import { jwtDecode } from 'jwt-decode';
 
@@ -14,24 +12,33 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class AuthenticationService {
 	private _apiUrl = `${environment.baseApiUrl}/auth`;
+    private _userLoaded = false;
+
+    get userLoaded(): boolean {
+        return this._userLoaded;
+    }
 
 	constructor(private http: HttpClient) {}
 
-	setDetails(loginDetails: LoginResponse) {
-		localStorage.setItem('id', loginDetails.id);
+	setDetails(loginDetails: AuthResponse) {
+
+        console.log(loginDetails);
+
+		localStorage.setItem('id', loginDetails.userId);
 		localStorage.setItem('token', loginDetails.token);
+        this._userLoaded = true;
 	}
 
-	login(payload: LoginRequest): Observable<LoginResponse> {
-		return this.http.post<LoginResponse>(`${this._apiUrl}/login`, payload);
-	}
-
-	register(payload: AuthUser): Observable<string> {
-		return this.http.post<string>(`${this._apiUrl}/register`, payload);
+	login(payload: AuthRequest): Observable<AuthResponse> {
+		return this.http.post<AuthResponse>(`${this._apiUrl}/login`, payload);
 	}
 
 	clearDetails() {
 		localStorage.clear();
+	}
+
+    getUserId(): string {
+		return localStorage.getItem('id');
 	}
 
 	getToken(): string {

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { AuthRequest } from '../../shared/models/Auth/AuthRequest';
 import { AuthenticationService } from '../../shared/services/authentication.service';
-import { LoginRequest } from '../../shared/models/LoginRequest';
 import { Router } from '@angular/router';
 
 @Component({
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
 	onSubmit() {
 		this.loginLoading = true;
 		this.authenticationService
-			.login(new LoginRequest(this.loginForm.value.username, this.loginForm.value.password))
+			.login(new AuthRequest(this.loginForm.value.username, this.loginForm.value.password))
 			.subscribe({
 				next: loginData => {
 					this.authenticationService.setDetails(loginData);

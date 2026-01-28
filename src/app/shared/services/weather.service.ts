@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Observable, map } from 'rxjs';
+
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 export type OpenMeteoResponse = {
     timezone: string;
     hourly: {
         time: string[];
         temperature_2m: number[];
-        wind_speed_10m: number[];              // km/h by default
-        cloud_cover: number[];                 // %
-        visibility: number[];                  // meters
-        precipitation_probability: number[];    // %
-        precipitation: number[];               // mm
+        wind_speed_10m: number[];
+        cloud_cover: number[];
+        visibility: number[];
+        precipitation_probability: number[];
+        precipitation: number[];
     };
     daily: {
         time: string[];
