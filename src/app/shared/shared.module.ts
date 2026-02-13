@@ -2,6 +2,7 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { CommonModule } from '@angular/common';
 import { ContainerComponent } from './components/container/container.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FullscreenLoaderComponent } from './components/fullscreen-loader/fullscreen-loader.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { NgModule } from '@angular/core';
 import { RatingComponent } from './components/rating/rating.component';
@@ -17,7 +18,8 @@ import { WeatherComponent } from './components/weather/weather.component';
 		LoadingIndicatorComponent,
 		RatingComponent,
         ContainerComponent,
-		WeatherComponent
+		WeatherComponent,
+        FullscreenLoaderComponent,
 	],
 	imports: [FontAwesomeModule, CommonModule],
 	exports: [
@@ -27,7 +29,8 @@ import { WeatherComponent } from './components/weather/weather.component';
 		LoadingIndicatorComponent,
 		RatingComponent,
         ContainerComponent,
-		WeatherComponent
+		WeatherComponent,
+        FullscreenLoaderComponent,
 	],
 })
 export class SharedModule {}

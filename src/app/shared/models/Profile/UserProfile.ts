@@ -11,6 +11,7 @@ export class UserProfile {
     profileImage?: string;
     createdAt?: Date;
     updatedAt?: Date;
+    completedMountains: CompletedMountains[]
 
     constructor(response?: UserProfileResponse) {
         if (!response) return;
@@ -36,3 +37,9 @@ export class UserProfile {
     }
 }
 
+class CompletedMountains {
+    mountainId: string;
+    notes: string;
+    dateCompleted: Date;
+    rating: number;
+}

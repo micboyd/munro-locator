@@ -21,7 +21,7 @@
                 <div class="flex items-center gap-5">
                     <div class="relative h-16 w-16 overflow-hidden rounded-2xl bg-zinc-100">
                         <img class="h-full w-full object-cover"
-                            src="https://placehold.co/256x256?text=Photo" alt="Profile photo" />
+                            [src]="previewUrl || 'https://placehold.co/256x256?text=Photo'" alt="Profile photo" />
                     </div>
 
                     <div class="min-w-0">
@@ -40,7 +40,8 @@
                         Upload image
                     </label>
 
-                    <input id="profileImage" type="file" accept="image/*" class="hidden" />
+                    <input id="profileImage" type="file" accept="image/*" class="hidden"
+                        (change)="onFileSelected($event)" />
 
                     <p class="text-xs text-zinc-500">
                         JPG, PNG, or WebP • Max 5MB

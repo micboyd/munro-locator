@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
 			.subscribe({
 				next: loginData => {
 					this.authenticationService.setDetails(loginData);
-					this.router.navigate(['/dashboard/mountain-manager']);
+					this.router.navigate(['/dashboard/board']);
 					this.loginLoading = false;
 				},
 				error: () => {

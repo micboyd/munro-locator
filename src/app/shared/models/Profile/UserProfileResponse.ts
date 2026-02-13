@@ -5,6 +5,7 @@ export class UserProfileResponse {
     lastName: string;
     bio: string;
     profileImage: string;
+    completedMountains: []
     createdAt: Date;
     updatedAt: Date;
 

@@ -9,8 +9,9 @@ import { UserProfile } from '../../shared/models/Profile/UserProfile';
     standalone: false,
 })
 export class ProfileComponent implements OnInit {
-    
+
     editMode: boolean = false;
+    loading: boolean = true;
 
     private _selectedUserProfile: UserProfile = null;
 
@@ -33,10 +34,12 @@ export class ProfileComponent implements OnInit {
     }
 
     getUserProfile() {
+        this.loading = true;
         this.profileService.getProfileByUserId().subscribe({
             next: (response) => {
                 this._selectedUserProfile = response;
                 this.editMode = false;
+                this.loading = false;
             },
             error: (error) => {
                 if (error.status === 404) {

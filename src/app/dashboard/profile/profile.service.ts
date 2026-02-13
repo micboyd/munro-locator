@@ -37,9 +37,9 @@ export class ProfileService {
 
     /**
      * POST /user-profile
-     * Create profile
+     * Create profile (multipart/form-data)
      */
-    createProfile(request: UserProfileRequest): Observable<UserProfile> {
+    createProfile(request: FormData): Observable<UserProfile> {
         return this.http
             .post<UserProfileResponse>(this._profileUrl, request)
             .pipe(map((res) => new UserProfile(res)));
@@ -49,15 +49,9 @@ export class ProfileService {
      * PUT /user-profile/:id
      * Update profile by Mongo _id
      */
-    updateProfileById(
-        id: string,
-        updates: Partial<UserProfileRequest>
-    ): Observable<UserProfile> {
+    updateProfileById(id: string, updates: FormData): Observable<UserProfile> {
         return this.http
-            .put<UserProfileResponse>(
-                `${this._profileUrl}/${encodeURIComponent(id)}`,
-                updates
-            )
+            .put<UserProfileResponse>(`${this._profileUrl}/${encodeURIComponent(id)}`, updates)
             .pipe(map((res) => new UserProfile(res)));
     }
 
