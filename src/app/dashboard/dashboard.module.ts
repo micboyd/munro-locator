@@ -11,6 +11,7 @@ import { ProfileService } from './profile/profile.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { LibraryComponent } from './library/library.component';
 
 @NgModule({
 	declarations: [
@@ -20,7 +21,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
         MountainComponent,
         GoalsComponent,
 		EditProfileComponent,
-        BoardComponent
+        BoardComponent,
+		LibraryComponent
     ],
 	imports: [CommonModule, ReactiveFormsModule, AppRoutingModule, SharedModule],
 	exports: [DashboardComponent],

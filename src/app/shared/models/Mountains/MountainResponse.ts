@@ -1,6 +1,6 @@
 export class MountainResponse {
     name: string;
-    category: string;
+    category: string[];
     country: string;
     meaning: string;
     height: number;

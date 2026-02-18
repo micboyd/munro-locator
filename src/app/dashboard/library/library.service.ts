@@ -18,10 +18,7 @@ export class LibraryService {
      * GET /mountains?category=munro
      * Fetch all mountains (optionally filtered by category)
      */
-    getAll(category?: string): Observable<Mountain[]> {
-        let params = new HttpParams();
-        if (category) params = params.set("category", category);
-
+    getAll(params?: any): Observable<Mountain[]> {
         return this.http
             .get<MountainResponse[]>(this._mountainsUrl, { params })
             .pipe(map((rows) => rows.map((r) => new Mountain(r))));

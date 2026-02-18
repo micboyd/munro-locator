@@ -1,182 +1,303 @@
-<main class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
-    <div class="space-y-6">
-        <!-- Simple header -->
-        <section class="rounded-2xl bg-zinc-950 p-6 text-white">
-            <div class="flex items-start justify-between gap-4">
+<main class="mx-auto max-w-[1400px] px-6 py-10 sm:px-10">
+    <!-- Top command bar -->
+    <section class="mb-8">
+        <div class="rounded-[28px] border border-zinc-200 bg-white p-6 shadow-sm">
+            <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                 <div class="min-w-0">
-                    <h2 class="text-2xl font-semibold text-white">Library</h2>
-                    <p class="mt-2 text-base text-white/70">Mountains grouped by category.</p>
+                    <div class="flex items-center gap-3">
+                        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-zinc-950 text-white">
+                            <i class="fa-solid fa-mountain text-lg"></i>
+                        </span>
+                        <div class="min-w-0">
+                            <h1 class="truncate text-3xl font-semibold tracking-tight text-zinc-950 sm:text-4xl">
+                                Mountain Library
+                            </h1>
+                            <p class="mt-1 text-base text-zinc-600 sm:text-lg">
+                                Explore categories, then browse peaks with a cleaner, faster layout.
+                            </p>
+                        </div>
+                    </div>
 
                     @if (loading) {
-                    <p class="mt-2 text-sm font-semibold text-white/70">Loading mountains…</p>
+                    <div
+                        class="mt-4 inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-base font-semibold text-zinc-700">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        Loading…
+                    </div>
                     }
 
                     @if (error) {
-                    <p class="mt-2 text-sm font-semibold text-red-300">{{ error }}</p>
+                    <div
+                        class="mt-4 inline-flex items-center gap-2 rounded-full bg-red-50 px-4 py-2 text-base font-semibold text-red-700 ring-1 ring-red-200">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        {{ error }}
+                    </div>
                     }
                 </div>
 
-                <span class="shrink-0 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">
-                    <span class="inline-flex items-center gap-2">
-                        <i class="fa-solid fa-mountain"></i>
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
+                    <!-- Search (optional: wire up later) -->
+                    <div class="relative w-full sm:w-[320px]">
+                        <i
+                            class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"></i>
+                        <input type="text" placeholder="Search peaks…"
+                            class="w-full rounded-full border border-zinc-200 bg-white py-3 pl-12 pr-4 text-base font-semibold text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-4 focus:ring-zinc-200" />
+                    </div>
+
+                    <span
+                        class="inline-flex items-center justify-center rounded-full bg-zinc-950 px-5 py-3 text-base font-semibold text-white">
                         {{ totalCount }} total
                     </span>
-                </span>
-            </div>
-        </section>
 
-        <!-- Two-column layout -->
-        <section class="grid grid-cols-1 gap-6 lg:grid-cols-12">
-            <!-- Categories -->
-            <section class="rounded-2xl bg-zinc-100 p-6 lg:col-span-4">
-                <header class="flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </span>
-                        <div>
-                            <h2 class="text-xl font-semibold text-zinc-950">Categories</h2>
-                            <div class="mt-1 text-sm font-semibold text-zinc-600">Select one</div>
-                        </div>
-                    </div>
-                </header>
-
-                <div class="mt-6 space-y-3">
-                    @if (!loading && !error && categories.length === 0) {
-                    <div class="rounded-2xl bg-white p-4 text-sm font-semibold text-zinc-600">
-                        No categories to show.
-                    </div>
-                    }
-
-                    @for (c of categories; track c.key) {
-                    <button type="button" (click)="selectCategory(c.key)"
-                        class="w-full overflow-hidden rounded-2xl bg-white p-4 text-left transition hover:bg-zinc-50"
-                        [class.ring-2]="selectedCategory === c.key" [class.ring-zinc-950]="selectedCategory === c.key"
-                        [attr.aria-current]="selectedCategory === c.key ? 'true' : null">
-                        <div class="flex items-center justify-between gap-4">
-                            <div class="flex min-w-0 items-center gap-3">
-                                <span class="grid h-11 w-11 place-items-center rounded-xl"
-                                    [class.bg-zinc-950]="selectedCategory === c.key"
-                                    [class.text-white]="selectedCategory === c.key"
-                                    [class.bg-zinc-100]="selectedCategory !== c.key"
-                                    [class.text-zinc-900]="selectedCategory !== c.key">
-                                    <i class="fa-solid fa-mountain"></i>
-                                </span>
-
-                                <div class="min-w-0">
-                                    <div class="truncate text-base font-semibold text-zinc-950">{{ c.label }}</div>
-                                    <div class="mt-1 text-sm font-semibold text-zinc-600">{{ c.count }} peaks</div>
-                                </div>
-                            </div>
-
-                            @if (selectedCategory === c.key) {
-                            <span class="shrink-0 rounded-full bg-zinc-950 px-3 py-1 text-xs font-semibold text-white">
-                                Selected
-                            </span>
-                            } @else {
-                            <span class="shrink-0 text-sm font-semibold text-zinc-600 group-hover:text-zinc-900">
-                                View <i class="fa-solid fa-arrow-right ml-1"></i>
-                            </span>
-                            }
-                        </div>
-                    </button>
-                    }
-                </div>
-            </section>
-
-            <!-- Mountain list -->
-            <section class="rounded-2xl bg-zinc-100 p-6 lg:col-span-8">
-                <header class="flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <span class="grid h-11 w-11 place-items-center rounded-xl bg-white text-zinc-900">
-                            <i class="fa-solid fa-list"></i>
-                        </span>
-
-                        <div>
-                            <h2 class="text-xl font-semibold text-zinc-950">{{ selectedCategoryLabel }}</h2>
-                            <div class="mt-1 text-sm font-semibold text-zinc-600">{{ selectedMountains.length }} peaks
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="rounded-3xl bg-zinc-950 px-5 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
-                        type="button" [disabled]="loading">
+                    <button type="button" [disabled]="loading"
+                        class="inline-flex items-center justify-center rounded-full bg-zinc-950 px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-zinc-900 disabled:cursor-not-allowed disabled:opacity-60">
                         <span class="inline-flex items-center gap-2">
                             <i class="fa-solid fa-plus"></i>
-                            Add
+                            Add peak
                         </span>
                     </button>
-                </header>
-
-                @if (loading) {
-                <div class="mt-6 rounded-2xl bg-white p-6 text-sm font-semibold text-zinc-600">
-                    Loading list…
                 </div>
-                } @else if (!error && selectedMountains.length === 0) {
-                <div class="mt-6 rounded-2xl bg-white p-6 text-sm font-semibold text-zinc-600">
-                    No mountains in this category.
-                </div>
-                } @else if (!error) {
-                <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    @for (m of selectedMountains; track m.name) {
-                    <article class="overflow-hidden rounded-2xl bg-white">
-                        <div class="relative h-40">
-                            <img class="h-full w-full object-cover" [src]="imageOrFallback(m.imageUrl)"
-                                [alt]="m.name || 'Mountain'" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent">
-                            </div>
+            </div>
+        </div>
+    </section>
 
-                            <div class="absolute bottom-4 left-4 right-4">
-                                <div class="flex items-end justify-between gap-4">
-                                    <div class="min-w-0">
-                                        <div class="truncate text-2xl font-semibold text-white">{{ m.name || 'Unnamed
-                                            mountain' }}</div>
-                                        <div class="mt-1 truncate text-base text-white/80">
-                                            {{ (m.region || 'Unknown region') }} • {{ formatHeight(m.height) }}
-                                        </div>
+    <!-- New layout: left vertical nav + right content (detail panel + list) -->
+    <section class="grid grid-cols-1 gap-8 lg:grid-cols-12">
+        <!-- Left: Category rail -->
+        <aside class="lg:col-span-3">
+            <div class="sticky top-6 space-y-4">
+                <div class="rounded-[28px] border border-zinc-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <h2 class="text-xl font-semibold tracking-tight text-zinc-950">Categories</h2>
+                            <p class="mt-1 text-base text-zinc-600">Choose a collection.</p>
+                        </div>
+                        <span class="grid h-11 w-11 place-items-center rounded-2xl bg-zinc-100 text-zinc-900">
+                            <i class="fa-solid fa-layer-group text-lg"></i>
+                        </span>
+                    </div>
+
+                    <div class="mt-4 space-y-2">
+                        @if (!loading && !error && categories.length === 0) {
+                        <div class="rounded-2xl bg-zinc-50 p-4 text-base text-zinc-600">
+                            No categories to show.
+                        </div>
+                        }
+
+                        @for (c of categories; track c.key) {
+                        <button type="button" (click)="selectCategory(c.key)"
+                            class="group w-full rounded-2xl px-4 py-4 text-left transition focus:outline-none focus:ring-4 focus:ring-zinc-200"
+                            [class.bg-zinc-950]="selectedCategory === c.key"
+                            [class.text-white]="selectedCategory === c.key"
+                            [class.bg-white]="selectedCategory !== c.key"
+                            [class.hover:bg-zinc-50]="selectedCategory !== c.key"
+                            [attr.aria-current]="selectedCategory === c.key ? 'true' : null">
+
+                            <div class="flex items-center justify-between gap-4">
+                                <div class="min-w-0">
+                                    <div class="truncate text-lg font-semibold tracking-tight"
+                                        [class.text-white]="selectedCategory === c.key"
+                                        [class.text-zinc-950]="selectedCategory !== c.key">
+                                        {{ c.label }}
                                     </div>
-
-                                    <span
-                                        class="shrink-0 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
-                                        {{ m.country || '—' }}
-                                    </span>
+                                    <div class="mt-1 text-base"
+                                        [class.text-zinc-600]="selectedCategory !== c.key">
+                                        {{ c.count }} peaks
+                                    </div>
                                 </div>
+
+                                <span class="shrink-0 rounded-full px-3 py-1 text-sm font-semibold"
+                                    [class.text-white]="selectedCategory === c.key"
+                                    [class.bg-zinc-100]="selectedCategory !== c.key"
+                                    [class.text-zinc-700]="selectedCategory !== c.key">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </span>
+                            </div>
+                        </button>
+                        }
+                    </div>
+                </div>
+
+                <!-- Small helper card -->
+                <div class="rounded-[28px] border border-zinc-200 bg-white p-5 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="grid h-11 w-11 place-items-center rounded-2xl bg-zinc-950 text-white">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </span>
+                        <div>
+                            <div class="text-lg font-semibold text-zinc-950">Tip</div>
+                            <div class="mt-1 text-base text-zinc-600">
+                                Click a peak to focus it in the detail panel.
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
 
-                        <div class="p-6">
-                            <div class="text-sm font-semibold text-zinc-600">Meaning</div>
-                            <div class="mt-1 text-base font-semibold text-zinc-950">{{ m.meaning || '—' }}</div>
+        <!-- Right: Featured detail + list -->
+        <section class="lg:col-span-9">
+            <!-- Featured / detail panel (uses first item as “focused” by default) -->
+            <section class="rounded-[32px] border border-zinc-200 bg-white shadow-sm">
+                <div class="grid grid-cols-1 overflow-hidden lg:grid-cols-12">
+                    <div class="relative lg:col-span-5">
+                        <div class="absolute inset-0">
+                            <img class="h-full w-full object-cover"
+                                [src]="imageOrFallback(selectedMountains?.[0]?.imageUrl)"
+                                [alt]="selectedMountains?.[0]?.name || 'Mountain'" />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                        </div>
 
-                            <div class="mt-4 flex flex-wrap gap-3">
-                                <span
-                                    class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    {{ m.region || '—' }}
-                                </span>
-                                <span
-                                    class="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
-                                    <i class="fa-solid fa-compass"></i>
-                                    {{ formatCoords(m.latitude, m.longitude) }}
-                                </span>
+                        <div class="relative flex h-[260px] flex-col justify-end p-7 sm:h-[320px]">
+                            <div
+                                class="inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
+                                <i class="fa-solid fa-compass"></i>
+                                Featured peak
                             </div>
 
-                            <div class="mt-6 flex justify-end">
-                                <button
-                                    class="rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-900"
-                                    type="button">
+                            <div class="mt-4 min-w-0">
+                                <div class="truncate text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                                    {{ selectedMountains?.[0]?.name || 'Select a mountain' }}
+                                </div>
+                                <div class="mt-2 truncate text-lg text-white/80">
+                                    {{ (selectedMountains?.[0]?.region || 'Unknown region') }} •
+                                    {{ formatHeight(selectedMountains?.[0]?.height) }}
+                                </div>
+                            </div>
+
+                            <div class="mt-5 flex flex-wrap gap-2">
+                                <span class="rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
+                                    {{ selectedMountains?.[0]?.country || '—' }}
+                                </span>
+                                <span class="rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white">
+                                    {{ formatCoords(selectedMountains?.[0]?.latitude, selectedMountains?.[0]?.longitude)
+                                    }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7">
+                        <div class="p-7 sm:p-8">
+                            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                <div class="min-w-0">
+                                    <h2 class="text-2xl font-semibold tracking-tight text-zinc-950 sm:text-3xl">
+                                        {{ selectedCategoryLabel }}
+                                    </h2>
+                                    <p class="mt-1 text-base text-zinc-600 sm:text-lg">
+                                        {{ selectedMountains.length }} peaks in this category.
+                                    </p>
+                                </div>
+
+                                <button type="button"
+                                    class="inline-flex items-center justify-center rounded-full border border-zinc-200 bg-white px-6 py-3 text-base font-semibold text-zinc-900 shadow-sm transition hover:bg-zinc-50">
+                                    <span class="inline-flex items-center gap-2">
+                                        <i class="fa-solid fa-sliders"></i>
+                                        Filters
+                                    </span>
+                                </button>
+                            </div>
+
+                            <div class="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div class="rounded-3xl bg-zinc-50 p-5">
+                                    <div class="text-sm font-semibold uppercase tracking-wide text-zinc-500">Meaning
+                                    </div>
+                                    <div class="mt-2 text-lg font-semibold text-zinc-950">
+                                        {{ selectedMountains?.[0]?.meaning || '—' }}
+                                    </div>
+                                </div>
+
+                                <div class="rounded-3xl bg-zinc-50 p-5">
+                                    <div class="text-sm font-semibold uppercase tracking-wide text-zinc-500">Region
+                                    </div>
+                                    <div class="mt-2 text-lg font-semibold text-zinc-950">
+                                        {{ selectedMountains?.[0]?.region || '—' }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                <div class="inline-flex items-center gap-2 text-base font-semibold text-zinc-600">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                    Click below to browse all peaks.
+                                </div>
+
+                                <button type="button"
+                                    class="inline-flex items-center justify-center rounded-full bg-zinc-950 px-7 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-zinc-900">
                                     <span class="inline-flex items-center gap-2">
                                         <i class="fa-solid fa-book-open"></i>
-                                        View
+                                        View featured
                                     </span>
                                 </button>
                             </div>
                         </div>
-                    </article>
-                    }
+                    </div>
+                </div>
+            </section>
+
+            <!-- List: clean “rows” instead of cards -->
+            <section class="mt-8">
+                @if (loading) {
+                <div class="rounded-[28px] border border-zinc-200 bg-white p-6 text-base text-zinc-600 shadow-sm">
+                    Loading list…
+                </div>
+                } @else if (!error && selectedMountains.length === 0) {
+                <div class="rounded-[28px] border border-zinc-200 bg-white p-6 text-base text-zinc-600 shadow-sm">
+                    No mountains in this category.
+                </div>
+                } @else if (!error) {
+                <div class="overflow-hidden rounded-[28px] border border-zinc-200 bg-white shadow-sm">
+                    <div class="flex items-center justify-between gap-4 border-b border-zinc-200 px-6 py-5">
+                        <div class="text-xl font-semibold tracking-tight text-zinc-950">All peaks</div>
+                        <div class="text-base font-semibold text-zinc-600">
+                            {{ selectedMountains.length }} results
+                        </div>
+                    </div>
+
+                    <div class="divide-y divide-zinc-200">
+                        @for (m of selectedMountains; track m.name) {
+                        <button type="button"
+                            class="group w-full px-6 py-5 text-left transition hover:bg-zinc-50 focus:outline-none focus:ring-4 focus:ring-zinc-200">
+                            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                <div class="flex min-w-0 items-center gap-4">
+                                    <div class="h-14 w-14 overflow-hidden rounded-2xl bg-zinc-100 ring-1 ring-zinc-200">
+                                        <img class="h-full w-full object-cover" [src]="imageOrFallback(m.imageUrl)"
+                                            [alt]="m.name || 'Mountain'" />
+                                    </div>
+
+                                    <div class="min-w-0">
+                                        <div class="truncate text-xl font-semibold tracking-tight text-zinc-950">
+                                            {{ m.name || 'Unnamed mountain' }}
+                                        </div>
+                                        <div class="mt-1 truncate text-base text-zinc-600">
+                                            {{ (m.region || 'Unknown region') }} • {{ formatHeight(m.height) }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center justify-between gap-3 sm:justify-end">
+                                    <span
+                                        class="rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700">
+                                        {{ m.country || '—' }}
+                                    </span>
+                                    <span
+                                        class="hidden rounded-full bg-zinc-100 px-4 py-2 text-sm font-semibold text-zinc-700 sm:inline-flex">
+                                        <i class="fa-solid fa-compass mr-2"></i>
+                                        {{ formatCoords(m.latitude, m.longitude) }}
+                                    </span>
+
+                                    <span
+                                        class="grid h-11 w-11 place-items-center rounded-full bg-zinc-950 text-white transition group-hover:bg-zinc-900">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </button>
+                        }
+                    </div>
                 </div>
                 }
             </section>
         </section>
-    </div>
+    </section>
 </main>

@@ -42,6 +42,7 @@ export class ProfileComponent implements OnInit {
                 this.loading = false;
             },
             error: (error) => {
+                console.log(error)
                 if (error.status === 404) {
                     this._selectedUserProfile = new UserProfile();
                 }

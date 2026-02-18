@@ -2,7 +2,7 @@ import { MountainResponse } from "./MountainResponse";
 
 export class Mountain {
     name: string;
-    category: string;
+    category: string[];
     country: string;
     meaning: string;
     height: number;

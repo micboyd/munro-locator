@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { LibraryService } from './library.service';
 import { Mountain } from '../../shared/models/Mountains/Mountain';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 type CategorySummary = {
-    key: string;        // raw category key from API
-    label: string;      // display label
+    key: string;
+    label: string;
     count: number;
 };
 
@@ -23,45 +25,91 @@ export class LibraryComponent implements OnInit {
 
     selectedCategory: string | null = null;
 
+    // 🔹 Global search (Reactive)
+    globalSearch = new FormControl<string>('', { nonNullable: true });
+
     constructor(private mountainService: LibraryService) { }
 
     ngOnInit(): void {
-        this.fetchMountains();
+        this.fetchMountains(null, null);
+
+        this.globalSearch.valueChanges
+            .pipe(debounceTime(400), distinctUntilChanged())
+            .subscribe((value) => {
+                this.onGlobalSearch(value);
+            });
     }
 
-    fetchMountains(): void {
+    fetchMountains(category?: string | null, searchString?: string | null): void {
         this.loading = true;
         this.error = null;
 
-        this.mountainService.getAll().subscribe({
+        const params: any = {};
+
+        if (category) {
+            params.category = category;
+        }
+
+        if (searchString) {
+            params.search = searchString;
+        }
+
+        this.mountainService.getAll(params).subscribe({
             next: (data) => {
                 this.mountains = data ?? [];
 
-                const first = this.categories[0]?.key ?? null;
-                this.selectedCategory = first;
+                // ✅ keep current selection if it still exists; otherwise pick the first category
+                const cats = this.categories;
+                const first = cats[0]?.key ?? null;
+
+                if (!this.selectedCategory || !cats.some((c) => c.key === this.selectedCategory)) {
+                    this.selectedCategory = first;
+                }
 
                 this.loading = false;
             },
             error: (err) => {
                 this.error =
-                    err?.status === 404
-                        ? 'No mountains found.'
-                        : 'Failed to load mountains.';
+                    err?.status === 404 ? 'No mountains found.' : 'Failed to load mountains.';
                 this.loading = false;
             },
         });
+    }
+
+    onGlobalSearch(value: string): void {
+        this.fetchMountains(null, value);
+    }
+
+    clearGlobalSearch(): void {
+        this.globalSearch.setValue('');
     }
 
     get totalCount(): number {
         return this.mountains.length;
     }
 
+    // ✅ category is now string[]; a mountain with multiple categories counts toward each
     get categories(): CategorySummary[] {
         const map = new Map<string, number>();
 
         for (const m of this.mountains) {
-            const key = (m.category ?? 'Uncategorized').trim() || 'Uncategorized';
-            map.set(key, (map.get(key) ?? 0) + 1);
+            const rawCats = Array.isArray(m.category) ? m.category : [];
+
+            // normalize + de-dupe per mountain
+            const cats = [
+                ...new Set(
+                    rawCats
+                        .map((c) => (c ?? '').trim())
+                        .filter(Boolean)
+                ),
+            ];
+
+            // fallback
+            if (cats.length === 0) cats.push('Uncategorized');
+
+            for (const key of cats) {
+                map.set(key, (map.get(key) ?? 0) + 1);
+            }
         }
 
         return Array.from(map.entries())
@@ -78,19 +126,27 @@ export class LibraryComponent implements OnInit {
         return this.prettyCategory(this.selectedCategory);
     }
 
+    // ✅ a mountain appears in a category if its category[] includes it
+    // ✅ empty category[] maps to "Uncategorized"
     get selectedMountains(): Mountain[] {
         if (!this.selectedCategory) return this.mountains;
 
         const cat = this.selectedCategory;
-        return this.mountains.filter((m) => (m.category ?? 'Uncategorized') === cat);
+
+        return this.mountains.filter((m) => {
+            const rawCats = Array.isArray(m.category) ? m.category : [];
+            const cats = rawCats.map((c) => (c ?? '').trim()).filter(Boolean);
+
+            if (cats.length === 0) return cat === 'Uncategorized';
+            return cats.includes(cat);
+        });
     }
 
     selectCategory(key: string): void {
         this.selectedCategory = key;
     }
 
-    private prettyCategory(key: string): string {
-        // make "munro" => "Munro", "munros" => "Munros"
+    prettyCategory(key: string): string {
         const normalized = (key ?? '').trim();
         if (!normalized) return 'Uncategorized';
         return normalized.charAt(0).toUpperCase() + normalized.slice(1);
@@ -113,7 +169,7 @@ export class LibraryComponent implements OnInit {
         );
     }
 
-    trackByName(_index: number, item: Mountain): string {
-        return item.name ?? `${_index}`;
+    trackByName(index: number, item: Mountain): string {
+        return item.name ?? `${index}`;
     }
 }
