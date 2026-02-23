@@ -5,19 +5,5 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 	templateUrl: './checkbox.component.html',
 	standalone: false,
 })
-export class CheckboxComponent {
-	@Input()
-	checked: boolean = false;
-
-	@Input()
-	label: string = '';
-
-	@Output()
-	checkedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-	toggleCheckbox() {
-		this.checked = !this.checked;
-		this.checkedChange.emit(this.checked);
-	}
-}
+export class CheckboxComponent {}
 

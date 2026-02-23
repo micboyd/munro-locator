@@ -1,11 +1,27 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { Observable, map } from "rxjs";
 
-import { Injectable } from "@angular/core";
+import { environment } from "../../../environments/environment";
+
 import { Mountain } from "../../shared/models/Mountains/Mountain";
 import { MountainRequest } from "../../shared/models/Mountains/MountainRequest";
 import { MountainResponse } from "../../shared/models/Mountains/MountainResponse";
-import { environment } from "../../../environments/environment";
+import { Category } from "../../shared/models/Mountains/Category";
+
+export interface Pagination {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+}
+
+export interface PaginatedResponse<T> {
+    data: T[];
+    pagination: Pagination;
+}
 
 @Injectable()
 export class LibraryService {
@@ -15,41 +31,61 @@ export class LibraryService {
     constructor(private http: HttpClient) { }
 
     /**
-     * GET /mountains?category=munro
-     * Fetch all mountains (optionally filtered by category)
+     * GET /mountains/mountains
+     * Fetch all mountains (optionally filtered/paginated)
+     *
+     * Returns domain models (Mountain) wrapped in PaginatedResponse.
      */
-    getAll(params?: any): Observable<Mountain[]> {
+    getAll(
+        params?: any
+    ): Observable<PaginatedResponse<Mountain>> {
         return this.http
-            .get<MountainResponse[]>(this._mountainsUrl, { params })
-            .pipe(map((rows) => rows.map((r) => new Mountain(r))));
+            .get<PaginatedResponse<MountainResponse>>(this._mountainsUrl, { params })
+            .pipe(
+                map((res) => ({
+                    ...res,
+                    data: res.data.map((dto) => new Mountain(dto)),
+                }))
+            );
     }
 
     /**
-     * POST /mountains
-     * Create a mountain
+     * GET /mountains/mountains/categories
+     * Fetch all mountain categories.
+     */
+    getCategories(): Observable<Category[]> {
+        return this.http
+            .get<string[]>(`${this._mountainsUrl}/categories`)
+            .pipe(map((cats) => cats.map((c) => new Category({ name: c }))));
+    }
+
+    /**
+     * POST /mountains/mountains
+     * Create a mountain.
+     *
+     * Returns domain model (Mountain).
      */
     create(request: MountainRequest): Observable<Mountain> {
         return this.http
             .post<MountainResponse>(this._mountainsUrl, request)
-            .pipe(map((r) => new Mountain(r)));
+            .pipe(map((dto) => new Mountain(dto)));
     }
 
     /**
-     * PUT /mountains/:id
+     * PUT /mountains/mountains/:id
      * Update mountain by Mongo _id
      *
-     * Note:
-     * Your backend supports partial updates (it filters allowed fields),
-     * even though the route is PUT. So we accept Partial<MountainRequest>.
+     * Backend supports partial updates, so we accept Partial<MountainRequest>.
+     * Returns domain model (Mountain).
      */
     updateById(id: string, updates: Partial<MountainRequest>): Observable<Mountain> {
         return this.http
             .put<MountainResponse>(`${this._mountainsUrl}/${encodeURIComponent(id)}`, updates)
-            .pipe(map((r) => new Mountain(r)));
+            .pipe(map((dto) => new Mountain(dto)));
     }
 
     /**
-     * DELETE /mountains/:id
+     * DELETE /mountains/mountains/:id
      * Delete mountain by Mongo _id
      */
     deleteById(id: string): Observable<{ message: string; id: string }> {

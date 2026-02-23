@@ -1,24 +1,38 @@
-import { Component, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
-import { TabItemComponent } from './tab-item/tab-item.component';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
 	selector: 'app-tabs',
 	templateUrl: './tabs.component.html',
 	standalone: false,
 })
-export class TabsComponent implements AfterContentInit {
-	@ContentChildren(TabItemComponent) tabs!: QueryList<TabItemComponent>;
+export class TabsComponent implements OnChanges {
 
-	ngAfterContentInit() {
-		const activeTabs = this.tabs.filter(tab => tab.active);
-		if (activeTabs.length === 0 && this.tabs.length > 0) {
-			this.selectTab(this.tabs.first);
+	@Input() tabs: string[] = [];
+
+	@Input() default: string;
+
+	@Output() activeTabChange = new EventEmitter<string>();
+
+	activeTab: string = '';
+
+	allTabs: string[] = [];
+
+	ngOnChanges(changes: SimpleChanges): void {
+
+		this.allTabs = this.tabs.includes('All')
+			? this.tabs
+			: ['All', ...this.tabs];
+
+		// Set default tab
+		if (this.default) {
+			this.activeTab = this.default;
+		} else {
+			this.activeTab = 'All';
 		}
 	}
 
-	selectTab(tab: TabItemComponent) {
-		this.tabs.forEach(t => (t.active = false));
-		tab.active = true;
+	setActive(tab: string): void {
+		this.activeTab = tab;
+		this.activeTabChange.emit(tab.toLowerCase() === 'all' ? '' : tab);
 	}
 }
-

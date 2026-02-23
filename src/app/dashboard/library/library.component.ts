@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { HttpParams } from '@angular/common/http';
 
-import { LibraryService } from './library.service';
+import { forkJoin, map, Observable, Subject } from 'rxjs';
+import { catchError, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
+
+import { LibraryService, PaginatedResponse } from './library.service';
 import { Mountain } from '../../shared/models/Mountains/Mountain';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-
-type CategorySummary = {
-    key: string;
-    label: string;
-    count: number;
-};
 
 @Component({
     selector: 'app-library',
@@ -18,158 +14,125 @@ type CategorySummary = {
     standalone: false,
 })
 export class LibraryComponent implements OnInit {
-    mountains: Mountain[] = [];
 
-    loading = false;
-    error: string | null = null;
+    mapOpen = false;
 
-    selectedCategory: string | null = null;
+    private _mountains!: PaginatedResponse<Mountain>;
+    private _categories: string[] = [];
 
-    // 🔹 Global search (Reactive)
-    globalSearch = new FormControl<string>('', { nonNullable: true });
+    private _componentLoading = true;
+    private _mountainsLoading = false;
 
-    constructor(private mountainService: LibraryService) { }
+    query: { category: string; page: number; search: string } = {
+        category: '',
+        page: 1,
+        search: '',
+    };
+
+    private readonly reload$ = new Subject<void>();
+
+    constructor(private libraryService: LibraryService) { }
+
+    get componentLoading() {
+        return this._componentLoading;
+    }
+
+    get mountainsLoading() {
+        return this._mountainsLoading;
+    }
+
+    get categories() {
+        return this._categories;
+    }
+
+    get mountains() {
+        return this._mountains;
+    }
+
+    get mountainsCollection() {
+        return (this._mountains?.data ?? []).map((m) => new Mountain(m));
+    }
+
+    get defaultCategory() {
+        return this.categories[0] || '';
+    }
 
     ngOnInit(): void {
-        this.fetchMountains(null, null);
+        forkJoin({
+            mountains: this.getMountains(),
+            categories: this.getCategories(),
+        })
+            .pipe(
+                finalize(() => (this._componentLoading = false)),
+                catchError(() => {
+                    this._mountains = { data: [], pagination: { page: 1, totalPages: 1, totalCount: 0 } } as any;
+                    this._categories = [];
+                    return [];
+                })
+            )
+            .subscribe((result: any) => {
+                if (!result) return;
+                const { mountains, categories } = result;
+                this._mountains = mountains;
+                this._categories = categories;
+            });
 
-        this.globalSearch.valueChanges
-            .pipe(debounceTime(400), distinctUntilChanged())
-            .subscribe((value) => {
-                this.onGlobalSearch(value);
+        this.reload$
+            .pipe(
+                tap(() => (this._mountainsLoading = true)),
+                distinctUntilChanged(() => false),
+                switchMap(() =>
+                    this.getMountains().pipe(
+                        catchError((err) => {
+                            return new Observable<PaginatedResponse<Mountain>>((sub) => {
+                                sub.next({ data: [], pagination: { page: this.query.page, totalPages: 1, totalCount: 0 } } as any);
+                                sub.complete();
+                            });
+                        }),
+                        finalize(() => (this._mountainsLoading = false))
+                    )
+                )
+            )
+            .subscribe((mountains) => {
+                this._mountains = mountains;
             });
     }
 
-    fetchMountains(category?: string | null, searchString?: string | null): void {
-        this.loading = true;
-        this.error = null;
-
-        const params: any = {};
-
-        if (category) {
-            params.category = category;
-        }
-
-        if (searchString) {
-            params.search = searchString;
-        }
-
-        this.mountainService.getAll(params).subscribe({
-            next: (data) => {
-                this.mountains = data ?? [];
-
-                // ✅ keep current selection if it still exists; otherwise pick the first category
-                const cats = this.categories;
-                const first = cats[0]?.key ?? null;
-
-                if (!this.selectedCategory || !cats.some((c) => c.key === this.selectedCategory)) {
-                    this.selectedCategory = first;
-                }
-
-                this.loading = false;
-            },
-            error: (err) => {
-                this.error =
-                    err?.status === 404 ? 'No mountains found.' : 'Failed to load mountains.';
-                this.loading = false;
-            },
-        });
+    onTabChange(category: string): void {
+        this.query.category = category;
+        this.query.page = 1;
+        this.reloadMountains();
     }
 
-    onGlobalSearch(value: string): void {
-        this.fetchMountains(null, value);
+    onPageChange(page: number): void {
+        this.query.page = page;
+        this.reloadMountains();
     }
 
-    clearGlobalSearch(): void {
-        this.globalSearch.setValue('');
+    onSearchChange(term: string): void {
+        this.query.search = term;
+        this.query.page = 1;
+        this.reloadMountains();
     }
 
-    get totalCount(): number {
-        return this.mountains.length;
+    openMap(): void {
+        this.mapOpen = true;
     }
 
-    // ✅ category is now string[]; a mountain with multiple categories counts toward each
-    get categories(): CategorySummary[] {
-        const map = new Map<string, number>();
-
-        for (const m of this.mountains) {
-            const rawCats = Array.isArray(m.category) ? m.category : [];
-
-            // normalize + de-dupe per mountain
-            const cats = [
-                ...new Set(
-                    rawCats
-                        .map((c) => (c ?? '').trim())
-                        .filter(Boolean)
-                ),
-            ];
-
-            // fallback
-            if (cats.length === 0) cats.push('Uncategorized');
-
-            for (const key of cats) {
-                map.set(key, (map.get(key) ?? 0) + 1);
-            }
-        }
-
-        return Array.from(map.entries())
-            .map(([key, count]) => ({
-                key,
-                label: this.prettyCategory(key),
-                count,
-            }))
-            .sort((a, b) => b.count - a.count);
+    closeMap(): void {
+        this.mapOpen = false;
     }
 
-    get selectedCategoryLabel(): string {
-        if (!this.selectedCategory) return 'All';
-        return this.prettyCategory(this.selectedCategory);
+    private getCategories(): Observable<string[]> {
+        return this.libraryService.getCategories().pipe(map((categories) => categories.map((c) => c.name)));
     }
 
-    // ✅ a mountain appears in a category if its category[] includes it
-    // ✅ empty category[] maps to "Uncategorized"
-    get selectedMountains(): Mountain[] {
-        if (!this.selectedCategory) return this.mountains;
-
-        const cat = this.selectedCategory;
-
-        return this.mountains.filter((m) => {
-            const rawCats = Array.isArray(m.category) ? m.category : [];
-            const cats = rawCats.map((c) => (c ?? '').trim()).filter(Boolean);
-
-            if (cats.length === 0) return cat === 'Uncategorized';
-            return cats.includes(cat);
-        });
+    private getMountains(): Observable<PaginatedResponse<Mountain>> {
+        const params = new HttpParams({ fromObject: this.query as any });
+        return this.libraryService.getAll(params);
     }
 
-    selectCategory(key: string): void {
-        this.selectedCategory = key;
-    }
-
-    prettyCategory(key: string): string {
-        const normalized = (key ?? '').trim();
-        if (!normalized) return 'Uncategorized';
-        return normalized.charAt(0).toUpperCase() + normalized.slice(1);
-    }
-
-    formatHeight(height?: number): string {
-        if (height === null || height === undefined) return '—';
-        return `${height.toLocaleString()}m`;
-    }
-
-    formatCoords(lat?: number, lng?: number): string {
-        if (lat === null || lat === undefined || lng === null || lng === undefined) return '—';
-        return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
-    }
-
-    imageOrFallback(url?: string): string {
-        return (
-            url?.trim() ||
-            'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80'
-        );
-    }
-
-    trackByName(index: number, item: Mountain): string {
-        return item.name ?? `${index}`;
+    private reloadMountains(): void {
+        this.reload$.next();
     }
 }

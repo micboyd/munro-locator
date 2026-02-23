@@ -1,6 +1,7 @@
 import { MountainResponse } from "./MountainResponse";
 
 export class Mountain {
+    _id: string;
     name: string;
     category: string[];
     country: string;
@@ -12,6 +13,7 @@ export class Mountain {
     imageUrl: string;
 
     constructor(response: MountainResponse) {
+        this._id = response._id;
         this.name = response.name;
         this.category = response.category;
         this.country = response.country;

@@ -1,0 +1,41 @@
+@if (pagination?.totalPages > 1) {
+<div class="m-12 flex justify-center">
+    <nav class="flex items-center gap-2 text-base">
+
+        <!-- Prev -->
+        <button type="button" (click)="prev()" [disabled]="!pagination?.hasPrevPage"
+            class="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 transition-all duration-150 cursor-pointer"
+            [class.opacity-40]="!pagination?.hasPrevPage" [class.cursor-not-allowed]="!pagination?.hasPrevPage"
+            [class.hover:bg-neutral-800]="pagination?.hasPrevPage">
+            <i class="fa-solid fa-chevron-left text-white"></i>
+        </button>
+
+        @for (item of items; track item) {
+
+        @if (item === 'dots') {
+        <span class="px-2 text-neutral-400 flex items-center">
+            <i class="fa-solid fa-ellipsis"></i>
+        </span>
+        } @else {
+        <button type="button" (click)="goTo(item)"
+            class="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-150 cursor-pointer"
+            [class.bg-neutral-900]="item === pagination.page" [class.text-white]="item === pagination.page"
+            [class.bg-neutral-200]="item !== pagination.page" [class.text-black]="item !== pagination.page"
+            [class.hover:bg-neutral-300]="item !== pagination.page">
+            {{ item }}
+        </button>
+        }
+
+        }
+
+        <!-- Next -->
+        <button type="button" (click)="next()" [disabled]="!pagination?.hasNextPage"
+            class="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 transition-all duration-150 cursor-pointer"
+            [class.opacity-40]="!pagination?.hasNextPage" [class.cursor-not-allowed]="!pagination?.hasNextPage"
+            [class.hover:bg-neutral-800]="pagination?.hasNextPage">
+            <i class="fa-solid fa-chevron-right text-white"></i>
+        </button>
+
+    </nav>
+</div>
+}

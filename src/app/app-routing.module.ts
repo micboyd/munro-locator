@@ -5,7 +5,6 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { BoardComponent } from './dashboard/board/board.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LibraryComponent } from './dashboard/library/library.component';
-import { MountainComponent } from './dashboard/mountain/mountain.component';
 import { NgModule } from '@angular/core';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 
@@ -31,11 +30,6 @@ const routes: Routes = [
                 path: 'library',
                 component: LibraryComponent,
                 canActivate: [AuthGuard],
-            },
-            {
-                path: 'mountain/:mountainId',
-                component: MountainComponent,
-                canActivate: [AuthGuard]
             }
         ],
     },

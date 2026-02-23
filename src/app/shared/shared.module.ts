@@ -6,31 +6,44 @@ import { FullscreenLoaderComponent } from './components/fullscreen-loader/fullsc
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { NgModule } from '@angular/core';
 import { RatingComponent } from './components/rating/rating.component';
-import { TabItemComponent } from './components/tabs/tab-item/tab-item.component';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { WeatherComponent } from './components/weather/weather.component';
+import { HeroComponent } from './components/hero/hero.component';
+import { NavigationComponent } from './navigation/navigation.component';
+import { PagerComponent } from './components/pager/pager.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SearchComponent } from './components/search/search.component';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
 	declarations: [
 		CheckboxComponent,
-		TabItemComponent,
 		TabsComponent,
 		LoadingIndicatorComponent,
 		RatingComponent,
         ContainerComponent,
 		WeatherComponent,
         FullscreenLoaderComponent,
+		HeroComponent,
+		NavigationComponent,
+		PagerComponent,
+		SearchComponent,
+		MapComponent
 	],
-	imports: [FontAwesomeModule, CommonModule],
+	imports: [FontAwesomeModule, CommonModule, FormsModule, ReactiveFormsModule],
 	exports: [
 		CheckboxComponent,
-		TabItemComponent,
 		TabsComponent,
 		LoadingIndicatorComponent,
 		RatingComponent,
         ContainerComponent,
 		WeatherComponent,
         FullscreenLoaderComponent,
+		HeroComponent,
+		NavigationComponent,
+		PagerComponent,
+		SearchComponent,
+		MapComponent
 	],
 })
 export class SharedModule {}

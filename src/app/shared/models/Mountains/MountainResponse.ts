@@ -1,4 +1,5 @@
 export class MountainResponse {
+    _id: string;
     name: string;
     category: string[];
     country: string;

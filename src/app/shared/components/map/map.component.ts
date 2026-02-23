@@ -1,115 +1,109 @@
-// import * as L from 'leaflet';
+import * as L from 'leaflet';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Mountain } from '../../models/Mountains/Mountain';
 
-// import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+@Component({
+    selector: 'app-map',
+    templateUrl: './map.component.html',
+    styleUrls: ['./map.component.css'],
+    standalone: false,
+})
+export class MapComponent implements OnInit, OnChanges {
+    @Input() mountains: Mountain[] = [];
+    @Output() close = new EventEmitter<void>();
 
-// import { ILocationSetting } from '../../interfaces/ILocationSetting';
-// import { Munro } from '../../models/Munro';
-// import { UserMunro } from '../../models/UserMunro';
+    private map?: L.Map;
+    private markers: L.Marker[] = [];
 
-// @Component({
-// 	selector: 'app-map',
-// 	templateUrl: './map.component.html',
-// 	styleUrls: ['./map.component.css'],
-// 	standalone: false,
-// })
-// export class MapComponent implements OnInit, OnChanges {
-// 	@Input() allMunros: Munro | UserMunro[] | null = null;
+    ngOnInit(): void {
+        queueMicrotask(() => {
+            this.initMap();
+            this.renderMountains();
+        });
+    }
 
-// 	@Input() viewLocationSetting: ILocationSetting = {
-// 		zoom: 8,
-// 		center: {
-// 			latitude: 56.8493796,
-// 			longitude: -4.5336288,
-// 		},
-// 	};
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!this.map) return;
+        if (changes['mountains']) this.renderMountains();
+    }
 
-// 	private map: L.Map | undefined;
-// 	private markers: L.Marker[] = [];
+    ngOnDestroy(): void {
+        this.clearMarkers();
+        this.map?.remove();
+        this.map = undefined;
+    }
 
-// 	ngOnInit(): void {
-// 		this.initMap();
-// 		this.addMunroMarkers();
-// 	}
+    onClose(): void {
+        this.close.emit();
+    }
 
-// 	ngOnChanges(changes: SimpleChanges): void {
-// 		if (!this.map) return;
+    private initMap(): void {
+        if (this.map) return;
 
-// 		if (changes['viewLocationSetting']?.currentValue) {
-// 			const setting = changes['viewLocationSetting'].currentValue as ILocationSetting;
-// 			this.map.setView([setting.center.latitude, setting.center.longitude], setting.zoom);
-// 		}
+        this.map = L.map('map-fullscreen', {
+            center: [56.8493796, -4.5336288],
+            zoom: 8,
+            zoomControl: false,
+        });
 
-// 		if (changes['allMunros']) {
-// 			this.addMunroMarkers();
-// 		}
-// 	}
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(this.map);
+    }
 
-// 	private initMap(): void {
-// 		this.map = L.map('map', {
-// 			center: [this.viewLocationSetting.center.latitude, this.viewLocationSetting.center.longitude],
-// 			zoom: this.viewLocationSetting.zoom,
-// 			zoomControl: false,
-// 		});
+    private renderMountains(): void {
+        if (!this.map) return;
 
-// 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map);
-// 	}
+        this.clearMarkers();
 
-// 	private addMunroMarkers(): void {
-// 		if (!this.map) return;
+        const points: [number, number][] = [];
 
-// 		// Remove existing markers
-// 		this.markers.forEach(marker => this.map!.removeLayer(marker));
-// 		this.markers = [];
+        for (const mtn of this.mountains ?? []) {
+            if (typeof mtn.latitude !== 'number' || typeof mtn.longitude !== 'number') continue;
 
-// 		const munros = this.normalizeMunros(this.allMunros);
+            const latlng: [number, number] = [mtn.latitude, mtn.longitude];
+            points.push(latlng);
 
-// 		munros.forEach(munro => {
-// 			const color = this.getMarkerColor(munro);
-// 			this.addMarker(munro, color);
-// 		});
-// 	}
+            const marker = L.marker(latlng, {
+                icon: this.createSvgCircleIcon('#1e88e5'),
+            })
+                .addTo(this.map)
+                .bindPopup(`<strong>${this.escapeHtml(mtn.name)}</strong>`);
 
-// 	// Turns (Munro | UserMunro[] | null) into a Munro[] you can loop over
-// 	private normalizeMunros(input: Munro | UserMunro[] | null): Munro[] {
-// 		if (!input) return [];
-// 		return Array.isArray(input) ? input : [input];
-// 	}
+            this.markers.push(marker);
+        }
+    }
 
-// 	// Only UserMunro will have `completed`; plain Munro will default color
-// 	private getMarkerColor(munro: Munro): string {
-// 		if (this.isUserMunro(munro)) {
-// 			return munro.completed ? '#006400' : '#e91e63';
-// 		}
-// 		return '#1e88e5'; // default for plain Munro
-// 	}
+    private clearMarkers(): void {
+        for (const m of this.markers) m.remove();
+        this.markers = [];
+    }
 
-// 	private isUserMunro(m: Munro): m is UserMunro {
-// 		return 'completed' in m;
-// 	}
+    // existing svg dot
+    private createSvgCircleIcon(fillColor: string): L.DivIcon {
+        const svg = `
+      <svg width="20" height="20" viewBox="0 0 20 20">
+        <circle cx="10" cy="10" r="6" fill="${fillColor}" stroke="#fff" stroke-width="2"/>
+      </svg>`;
 
-// 	private addMarker(munro: Munro, color: string): void {
-// 		if (munro.latitude && munro.longitude) {
-// 			const marker = L.marker([munro.latitude, munro.longitude], {
-// 				icon: this.createSvgCircleIcon(color),
-// 			})
-// 				.addTo(this.map!)
-// 				.bindPopup(`<strong>${munro.hill_name}</strong>`);
+        return L.divIcon({
+            className: '',
+            html: svg,
+            iconAnchor: [10, 10],
+            popupAnchor: [0, -10],
+        });
+    }
 
-// 			this.markers.push(marker);
-// 		}
-// 	}
-
-// 	private createSvgCircleIcon(fillColor: string): L.DivIcon {
-// 		const svg = `
-//       <svg width="20" height="20" viewBox="0 0 20 20">
-//         <circle cx="10" cy="10" r="6" fill="${fillColor}" stroke="#fff" stroke-width="2"/>
-//       </svg>`;
-
-// 		return L.divIcon({
-// 			className: '',
-// 			html: svg,
-// 			iconAnchor: [10, 10],
-// 			popupAnchor: [0, -10],
-// 		});
-// 	}
-// }
+    private escapeHtml(text: string): string {
+        return (text ?? '').replace(/[&<>"']/g, ch => {
+            switch (ch) {
+                case '&': return '&amp;';
+                case '<': return '&lt;';
+                case '>': return '&gt;';
+                case '"': return '&quot;';
+                case "'": return '&#39;';
+                default: return ch;
+            }
+        });
+    }
+}
