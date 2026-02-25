@@ -1,4 +1,4 @@
 export const environment = {
-    baseApiUrl: 'https://munro-api-780f51427c56.herokuapp.com/api',
+    baseApiUrl: 'https://munro-app-5e671249297e.herokuapp.com/api',
     production: false,
 };
