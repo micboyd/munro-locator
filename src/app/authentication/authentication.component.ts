@@ -6,11 +6,6 @@ import { Component } from '@angular/core';
 	standalone: false,
 })
 export class AuthenticationComponent {
-	activeTab = 0;
-	tabs = [];
-
-	constructor() {
-		this.tabs = [{ label: 'Login' }];
-	}
+	constructor() {}
 }
 

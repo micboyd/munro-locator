@@ -1,28 +1,28 @@
-<section class="mb-14">
-    <div class="relative group">
-        <input id="search" type="text" [formControl]="searchControl" placeholder="Search mountains by name..." class="relative w-full rounded-2xl border border-zinc-200 bg-white
-             pl-14 pr-24 py-4
-             text-zinc-900 placeholder:text-zinc-400
-             shadow-sm
-             transition-all duration-200
-             focus:border-zinc-900
-             focus:ring-4 focus:ring-zinc-900/10
-             focus:shadow-md
-             outline-none" />
+<section class="my-8">
+    <div class="mx-auto">
 
-        @if ((searchControl.value ?? '').length) {
-        <button type="button" (click)="searchControl.setValue('')" class="absolute right-3 top-1/2 -translate-y-1/2
-               inline-flex items-center gap-2
-               rounded-full px-4 py-2
-               text-sm font-medium
-               text-zinc-600
-               bg-zinc-100/70
-               hover:bg-zinc-200
-               hover:text-zinc-900
-               transition-all duration-200">
-            ✕
-            <span class="hidden sm:inline">Clear</span>
-        </button>
-        }
+        <div class="relative">
+
+            <!-- Left icon -->
+            <i
+                class="fa-solid fa-magnifying-glass pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">
+            </i>
+
+            <!-- Input -->
+            <input id="search" type="text" [formControl]="searchControl" placeholder="Search mountains…" class="w-full rounded-2xl border border-neutral-200 bg-white pl-12 pr-12 py-3 text-sm text-neutral-900 placeholder:text-neutral-500
+               transition-colors duration-200
+               focus:border-neutral-400 focus:ring-2 focus:ring-neutral-200
+               outline-none" />
+
+            <!-- Clear -->
+            @if ((searchControl.value ?? '').length) {
+            <button type="button" (click)="searchControl.setValue('')" aria-label="Clear search" class="absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-8 w-8 items-center justify-center rounded-lg
+                 text-neutral-400 hover:text-neutral-900 transition-colors duration-200">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+            }
+
+        </div>
+
     </div>
 </section>

@@ -1,86 +1,127 @@
 <app-container>
-
-    @if(componentLoading) {
-    <app-loading-indicator></app-loading-indicator>
-    }
-    @else {
-    <div class="flex items-center gap-3">
-        <div class="flex-1 min-w-0 overflow-x-auto">
-            <app-tabs [tabs]="categories" (activeTabChange)="onTabChange($event)">
-            </app-tabs>
+    <app-hero heroTitle="Mountain Library" heroSubtitle="Find your next mountain adventure"></app-hero>
+    <div class="mb-30">
+        @if(componentLoading) {
+        <app-loading-indicator></app-loading-indicator>
+        }
+        @else {
+        <!-- Tabs row -->
+        <div class="mt-2">
+            <div class="-mx-2 px-2 overflow-x-auto whitespace-nowrap [-webkit-overflow-scrolling:touch]">
+                <app-tabs [tabs]="categories" (activeTabChange)="onTabChange($event)">
+                </app-tabs>
+            </div>
         </div>
 
-        <button class="shrink-0 px-4 py-2 bg-blue-600 text-white rounded-md" (click)="openMap()">
-            Map
-        </button>
-    </div>
-    <app-search (searchTerm)="onSearchChange($event)"></app-search>
+        <!-- Controls row -->
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-8">
 
-    @if (mountainsLoading) {
-    <app-loading-indicator></app-loading-indicator>
-    } @else {
+            <!-- Left controls -->
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
 
-    @if (!mountainsCollection || mountainsCollection.length === 0) {
-    <div class="py-16 text-center rounded-3xl border border-neutral-200 bg-white shadow-sm">
-        <h3 class="text-xl font-semibold text-neutral-900">No results found</h3>
-        <p class="mt-2 text-neutral-600">Try a different search term or category.</p>
-    </div>
-    } @else {
-    <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-3">
-        @for (item of mountainsCollection; track item._id) {
-        <article
-            class="group overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-            <div class="relative aspect-[4/5] bg-neutral-200 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Mount Everest"
-                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <div
-                    class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 via-black/40 to-transparent">
+                <!-- Sort -->
+                <div class="relative w-full sm:w-auto">
+                    <select [value]="query.sort" (change)="onSortChange(sortSelect.value)" #sortSelect
+                        class="w-full sm:w-64 appearance-none pl-10 pr-10 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800 hover:bg-neutral-50 transition-colors duration-200 cursor-pointer">
+                        <option value="height_desc">Height high → low</option>
+                        <option value="height_asc">Height low → high</option>
+                    </select>
+
+                    <i
+                        class="fa-solid fa-arrow-up-wide-short absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 text-sm pointer-events-none"></i>
+                    <i
+                        class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 text-xs pointer-events-none"></i>
                 </div>
 
-                <div class="absolute top-5 left-5 flex gap-2 flex-wrap">
-                    @for (category of item.category; track category) {
-                    <span
-                        class="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-medium tracking-wide text-white">
-                        {{ category }}
-                    </span>
-                    }
-                </div>
-
-                <div class="absolute bottom-6 left-6 right-6 text-white">
-                    <h2 class="text-2xl font-semibold tracking-tight">{{ item.name }}</h2>
-                </div>
-            </div>
-
-            <div class="p-6 space-y-6">
-                <div class="flex items-center gap-3 flex-wrap">
-                    <div
-                        class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 text-neutral-700 text-sm font-medium">
-                        <i class="fa-solid fa-arrow-up text-neutral-400 text-xs"></i>{{ item.height }} m
-                    </div>
-                    <div
-                        class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 text-neutral-700 text-sm font-medium">
-                        <i class="fa-solid fa-location-dot text-neutral-400 text-xs"></i>{{ item.latitude }}° N, {{
-                        item.longitude }}° E
-                    </div>
-                </div>
-
-                <button
-                    class="w-full px-5 py-3 cursor-pointer rounded-full bg-neutral-900 text-white font-medium transition-all duration-200 hover:bg-neutral-800">
-                    Mark As Complete
+                <!-- Map -->
+                <button (click)="openMap()"
+                    class="w-full sm:w-auto px-5 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800 hover:bg-neutral-50 transition-colors duration-200 cursor-pointer inline-flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-map-location-dot text-sm"></i>
+                    Map
                 </button>
+
             </div>
-        </article>
+
+            <!-- Results meta (styled like a control) -->
+            <div class="w-full sm:w-auto px-5 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800
+         inline-flex items-center justify-center gap-2" aria-live="polite">
+                <i class="fa-solid fa-mountain text-neutral-400 text-sm"></i>
+                <span class="text-neutral-600">Total</span>
+                <span class="font-semibold tabular-nums text-neutral-900">
+                    {{ mountainsCount }}
+                </span>
+            </div>
+        </div>
+
+        <app-search (searchTerm)="onSearchChange($event)"></app-search>
+
+        @if (!mountainsCollection || mountainsCollection.length === 0) {
+        <div class="py-16 text-center rounded-3xl border border-neutral-200 bg-white shadow-sm">
+            <h3 class="text-xl font-semibold text-neutral-900">No results found</h3>
+            <p class="mt-2 text-neutral-600">Try a different search term or category.</p>
+        </div>
+        }
+        @else {
+        <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 xl:grid-cols-3">
+            @for (item of mountainsCollection; track item._id) {
+            <article
+                class="group bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg shadow-sm">
+
+                <!-- Image -->
+                <div class="relative aspect-[7/5] bg-neutral-200 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Mountain image"
+                        class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+                </div>
+
+                <!-- Content -->
+                <div class="p-5 space-y-3">
+
+                    <!-- Categories -->
+                    <div class="flex flex-wrap gap-2 text-xs text-neutral-500 font-medium">
+                        @for (category of item.category; track category) {
+                        <span class="bg-neutral-100 px-2.5 py-1 rounded-md">
+                            {{ category }}
+                        </span>
+                        }
+                    </div>
+
+                    <!-- Title + Height -->
+                    <div class="flex items-start justify-between gap-3">
+                        <h2 class="text-base font-semibold text-neutral-900 leading-snug">
+                            {{ item.name }}
+                        </h2>
+
+                        <span class="text-sm font-medium text-neutral-600 whitespace-nowrap">
+                            {{ item.height }} m
+                        </span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex gap-3 pt-2">
+                        <button
+                            class="w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200 cursor-pointer">
+                            Mark As Complete
+                        </button>
+
+                        <button (click)="openMap(item)"
+                            class="px-5 py-3 rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors duration-200 cursor-pointer">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </article>
+            }
+        </div>
+
+        @if (mountains?.pagination.totalPages > 1) {
+        <app-pager (pageChange)="onPageChange($event)" [pagination]="mountains.pagination"></app-pager>
+        }
+        }
         }
     </div>
-
-    @if (mountains?.pagination.totalPages > 1) {
-    <app-pager (pageChange)="onPageChange($event)" [pagination]="mountains.pagination"></app-pager>
-    }
-    }
-    }
-    }
 </app-container>
 
 @if (mapOpen) {
-<app-map [mountains]="mountainsCollection" (close)="closeMap()"></app-map>
+<app-map [mountains]="mapMountainsCollection" [loading]="mapMountainsLoading" (close)="closeMap()"></app-map>
 }

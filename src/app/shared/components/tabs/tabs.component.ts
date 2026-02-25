@@ -1,38 +1,38 @@
-import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+
+import { Category } from '../../models/Mountains/Category';
 
 @Component({
-	selector: 'app-tabs',
-	templateUrl: './tabs.component.html',
-	standalone: false,
+    selector: 'app-tabs',
+    templateUrl: './tabs.component.html',
+    standalone: false,
 })
 export class TabsComponent implements OnChanges {
 
-	@Input() tabs: string[] = [];
+    @Input() tabs: Category[] = [];
+    @Input() default: string;
+    @Output() activeTabChange = new EventEmitter<string>();
 
-	@Input() default: string;
+    activeTab: string = '';
 
-	@Output() activeTabChange = new EventEmitter<string>();
+    allTabs: Category[] = [];
 
-	activeTab: string = '';
+    ngOnChanges(changes: SimpleChanges): void {
 
-	allTabs: string[] = [];
+        const hasAll = this.tabs.some(t => t.name === 'All');
 
-	ngOnChanges(changes: SimpleChanges): void {
+        this.allTabs = hasAll
+            ? this.tabs
+            : [
+                new Category({ name: 'All', count: this.tabs.reduce((acc, t) => acc + t.count, 0) }),
+                ...this.tabs
+            ];
 
-		this.allTabs = this.tabs.includes('All')
-			? this.tabs
-			: ['All', ...this.tabs];
+        this.activeTab = this.default || 'All';
+    }
 
-		// Set default tab
-		if (this.default) {
-			this.activeTab = this.default;
-		} else {
-			this.activeTab = 'All';
-		}
-	}
-
-	setActive(tab: string): void {
-		this.activeTab = tab;
-		this.activeTabChange.emit(tab.toLowerCase() === 'all' ? '' : tab);
-	}
+    setActive(tab: Category): void {
+        this.activeTab = tab.name;
+        this.activeTabChange.emit(tab.name.toLowerCase() === 'all' ? '' : tab.name);
+    }
 }

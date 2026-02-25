@@ -8,6 +8,7 @@ import { Mountain } from "../../shared/models/Mountains/Mountain";
 import { MountainRequest } from "../../shared/models/Mountains/MountainRequest";
 import { MountainResponse } from "../../shared/models/Mountains/MountainResponse";
 import { Category } from "../../shared/models/Mountains/Category";
+import { CategoryResponse } from "../../shared/models/Mountains/CategoryResponse";
 
 export interface Pagination {
     total: number;
@@ -55,8 +56,8 @@ export class LibraryService {
      */
     getCategories(): Observable<Category[]> {
         return this.http
-            .get<string[]>(`${this._mountainsUrl}/categories`)
-            .pipe(map((cats) => cats.map((c) => new Category({ name: c }))));
+            .get<CategoryResponse[]>(`${this._mountainsUrl}/categories`)
+            .pipe(map((cats) => cats.map((c) => new Category({ name: c.name, count: c.count }))));
     }
 
     /**
