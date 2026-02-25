@@ -1,4 +1,3 @@
-import { AuthenticationService } from '../../services/authentication.service';
 import { Component } from '@angular/core';
 import { ProfileService } from '../../../dashboard/profile/profile.service';
 import { UserProfile } from '../../models/Profile/UserProfile';
@@ -6,7 +5,6 @@ import { UserProfile } from '../../models/Profile/UserProfile';
 @Component({
 	selector: 'app-navigation',
 	templateUrl: 'navigation.component.html',
-    providers: [ProfileService, AuthenticationService],
 	standalone: false,
 })
 export class NavigationComponent {

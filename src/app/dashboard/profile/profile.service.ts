@@ -11,7 +11,9 @@ import { UserProfileRequest } from '../../shared/models/Profile/UserProfileReque
 import { UserProfileResponse } from '../../shared/models/Profile/UserProfileResponse';
 import { environment } from '../../../environments/environment';
 
-@Injectable()
+@Injectable(
+    { providedIn: 'root' }
+)
 export class ProfileService {
     private readonly _apiUrl = environment.baseApiUrl;
 
