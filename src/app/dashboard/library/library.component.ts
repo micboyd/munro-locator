@@ -139,9 +139,7 @@ export class LibraryComponent implements OnInit {
         if (this.mapOpen) this.refreshMapData();
     }
 
-    // New: sort handler
     onSortChange(sort: string): void {
-        // Guard to keep only supported values
         const allowed: SortOption[] = ['height_desc', 'height_asc'];
         this.query.sort = (allowed.includes(sort as SortOption) ? (sort as SortOption) : 'height_desc');
 
@@ -167,6 +165,11 @@ export class LibraryComponent implements OnInit {
         }
     }
 
+    selectedMountain(mountain: Mountain): void {
+        console.log('Selected mountain from map:', mountain);
+        this.closeMap();
+    }
+
     closeMap(): void {
         this.mapOpen = false;
     }
@@ -178,7 +181,6 @@ export class LibraryComponent implements OnInit {
     }
 
     private getMountains(): Observable<PaginatedResponse<Mountain>> {
-        // Include sort param in request
         const params = new HttpParams({ fromObject: this.query as any });
         return this.libraryService.getAll(params);
     }

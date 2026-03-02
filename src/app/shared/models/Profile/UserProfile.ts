@@ -1,7 +1,7 @@
 import { FormBuilder, FormGroup } from "@angular/forms";
 
-import { UserProfileResponse } from "./UserProfileResponse";
 import { CompletedMountain } from "./CompletedMountain";
+import { UserProfileResponse } from "./UserProfileResponse";
 
 export class UserProfile {
     id?: string = null;
@@ -12,7 +12,6 @@ export class UserProfile {
     profileImage?: string;
     createdAt?: Date;
     updatedAt?: Date;
-    completedMountain: CompletedMountain[] = [];
 
     constructor(response?: UserProfileResponse) {
         if (!response) return;
@@ -25,10 +24,6 @@ export class UserProfile {
         this.profileImage = response.profileImage;
         this.createdAt = response.createdAt;
         this.updatedAt = response.updatedAt;
-        
-        if (response.completedMountain) {
-            this.completedMountain = response.completedMountain.map((cm) => new CompletedMountain(cm)) || [];
-        }
     }
 
     createForm(fb: FormBuilder): FormGroup {

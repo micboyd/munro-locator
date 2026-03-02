@@ -69,7 +69,7 @@
 
                 <!-- Image -->
                 <div class="relative aspect-[7/5] bg-neutral-200 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Mountain image"
+                    <img [src]="item.imageUrl" alt="Mountain image"
                         class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
                 </div>
 
@@ -100,7 +100,7 @@
                     <div class="flex gap-3 pt-2">
                         <button
                             class="w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200 cursor-pointer">
-                            Mark As Complete
+                            Add To Planner
                         </button>
 
                         <button (click)="openMap(item)"
@@ -123,5 +123,5 @@
 </app-container>
 
 @if (mapOpen) {
-<app-map [mountains]="mapMountainsCollection" [loading]="mapMountainsLoading" (close)="closeMap()"></app-map>
+<app-map (viewMountain)="selectedMountain($event)" [mountains]="mapMountainsCollection" [loading]="mapMountainsLoading" (close)="closeMap()"></app-map>
 }

@@ -1,14 +1,17 @@
 import * as L from 'leaflet';
+
 import {
     Component,
     EventEmitter,
     Input,
+    NgZone,
     OnChanges,
     OnDestroy,
     OnInit,
     Output,
-    SimpleChanges
+    SimpleChanges,
 } from '@angular/core';
+
 import { Mountain } from '../../models/Mountains/Mountain';
 
 @Component({
@@ -22,14 +25,16 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     @Input() loading = false;
 
     @Output() close = new EventEmitter<void>();
+    @Output() viewMountain = new EventEmitter<Mountain>(); // 🔥 new event
 
     private map?: L.Map;
     private markers: L.Marker[] = [];
 
+    constructor(private zone: NgZone) { }
+
     ngOnInit(): void {
         queueMicrotask(() => {
             this.initMap();
-            // Only render if not loading
             if (!this.loading) this.renderMountains();
         });
     }
@@ -40,18 +45,15 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         const loadingChanged = !!changes['loading'];
         const mountainsChanged = !!changes['mountains'];
 
-        // If we just finished loading, render (even if mountains didn't "change" ref)
         if (loadingChanged && this.loading === false) {
             this.renderMountains();
             return;
         }
 
-        // If mountains changed while not loading, render
         if (mountainsChanged && this.loading === false) {
             this.renderMountains();
         }
 
-        // If loading became true, clear markers so you don't show stale dots
         if (loadingChanged && this.loading === true) {
             this.clearMarkers();
         }
@@ -82,32 +84,35 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private renderMountains(): void {
-        if (!this.map) return;
-        if (this.loading) return;
+        if (!this.map || this.loading) return;
 
         this.clearMarkers();
-
-        const points: L.LatLngExpression[] = [];
 
         for (const mtn of this.mountains ?? []) {
             if (typeof mtn.latitude !== 'number' || typeof mtn.longitude !== 'number') continue;
 
-            const latlng: L.LatLngExpression = [mtn.latitude, mtn.longitude];
-            points.push(latlng);
-
-            const marker = L.marker(latlng, {
+            const marker = L.marker([mtn.latitude, mtn.longitude], {
                 icon: this.createSvgCircleIcon('#1e88e5'),
             })
                 .addTo(this.map)
-                .bindPopup(`<strong>${this.escapeHtml(mtn.name)}</strong>`);
+                .bindPopup(this.buildPopupCardHtml(mtn), {
+                    maxWidth: 320,
+                });
+
+            // 🔥 Attach click handler when popup opens
+            marker.on('popupopen', () => {
+                const btn = document.getElementById(`view-btn-${mtn._id}`);
+                if (!btn) return;
+
+                btn.onclick = () => {
+                    // Re-enter Angular zone
+                    this.zone.run(() => {
+                        this.viewMountain.emit(mtn);
+                    });
+                };
+            });
 
             this.markers.push(marker);
-        }
-
-        // Fit bounds nicely if we have points
-        if (points.length) {
-            const bounds = L.latLngBounds(points as any);
-            this.map.fitBounds(bounds, { padding: [40, 40] });
         }
     }
 
@@ -118,9 +123,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
     private createSvgCircleIcon(fillColor: string): L.DivIcon {
         const svg = `
-      <svg width="20" height="20" viewBox="0 0 20 20">
-        <circle cx="10" cy="10" r="6" fill="${fillColor}" stroke="#fff" stroke-width="2"/>
-      </svg>`;
+            <svg width="20" height="20" viewBox="0 0 20 20">
+                <circle cx="10" cy="10" r="6" fill="${fillColor}" stroke="#fff" stroke-width="2"/>
+            </svg>`;
 
         return L.divIcon({
             className: '',
@@ -128,6 +133,69 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
             iconAnchor: [10, 10],
             popupAnchor: [0, -10],
         });
+    }
+
+    private buildPopupCardHtml(mtn: Mountain): string {
+        const name = this.escapeHtml(mtn.name);
+        const height = `${Math.round(mtn.height)} m`;
+        const region = this.escapeHtml(mtn.region);
+        const country = this.escapeHtml(mtn.country);
+
+        const categories = (mtn.category || [])
+            .map(c => this.categoryBadgeHtml(c))
+            .join('');
+
+        const imageBlock = mtn.imageUrl
+            ? `
+            <div class="h-32 w-full overflow-hidden rounded-t-2xl">
+            <img
+                src="${this.escapeHtml(mtn.imageUrl)}"
+                alt="${name}"
+                class="h-full w-full object-cover"
+            />
+            </div>
+        `
+            : '';
+
+        return `
+        <div class="w-[280px]">
+            <div class="rounded-2xl bg-white shadow-xl ring-1 ring-black/5 overflow-hidden">
+
+            ${imageBlock}
+
+            <div class="p-4 space-y-3">
+                <div>
+                <div class="text-base font-semibold text-slate-900">${name}</div>
+                <div class="text-xs text-slate-500">${region} • ${country}</div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                <div class="text-sm font-medium text-slate-700">${height}</div>
+                <div class="flex flex-wrap gap-1">
+                    ${categories}
+                </div>
+                </div>
+
+<button
+  id="view-btn-${mtn._id}"
+  class="w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200 cursor-pointer"
+>
+  View Details
+</button>
+
+            </div>
+            </div>
+        </div>
+        `;
+    }
+
+    private categoryBadgeHtml(category: string): string {
+        const safe = this.escapeHtml(category);
+        return `
+      <span class="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
+        ${safe}
+      </span>
+    `;
     }
 
     private escapeHtml(text: string): string {

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { Pagination } from '../../models/Shared/PaginatedCollection';
 
 type PageItem = number | 'dots';
@@ -32,14 +33,13 @@ export class PagerComponent {
         this.goTo(this.pagination.page + 1);
     }
 
-    // Simple pager window with first/last and dots when needed
     get items(): PageItem[] {
         const p = this.pagination;
         if (!p || p.totalPages <= 1) return [];
 
         const total = p.totalPages;
         const current = p.page;
-        const windowSize = 3; // pages around current
+        const windowSize = 3;
 
         const start = Math.max(2, current - windowSize);
         const end = Math.min(total - 1, current + windowSize);
@@ -54,7 +54,6 @@ export class PagerComponent {
 
         if (total > 1) out.push(total);
 
-        // If total is small, just show all
         if (total <= 7) {
             return Array.from({ length: total }, (_, i) => i + 1);
         }
