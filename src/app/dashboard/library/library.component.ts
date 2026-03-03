@@ -6,6 +6,7 @@ import { catchError, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs
 import { Category } from '../../shared/models/Mountains/Category';
 import { HttpParams } from '@angular/common/http';
 import { Mountain } from '../../shared/models/Mountains/Mountain';
+import { PlannedMountainsService } from '../../shared/services/planned-mountains.service';
 
 type SortOption = 'height_desc' | 'height_asc';
 
@@ -38,7 +39,11 @@ export class LibraryComponent implements OnInit {
 
     private readonly reload$ = new Subject<void>();
 
-    constructor(private libraryService: LibraryService) { }
+    constructor(
+        private libraryService: LibraryService,
+        private plannedMountainService: PlannedMountainsService
+    )
+         { }
 
     get componentLoading() {
         return this._componentLoading;
@@ -166,8 +171,12 @@ export class LibraryComponent implements OnInit {
     }
 
     selectedMountain(mountain: Mountain): void {
-        console.log('Selected mountain from map:', mountain);
-        this.closeMap();
+
+        this.addPlannedMountain(mountain);
+
+        if (this.mapOpen) {
+            this.closeMap();
+        }
     }
 
     closeMap(): void {
@@ -213,4 +222,10 @@ export class LibraryComponent implements OnInit {
                 error: () => (this._mapMountains = []),
             });
     }
+
+    addPlannedMountain(mountain: Mountain) {
+        this.plannedMountainService.createPlannedMountain(mountain._id, new Date()).subscribe((response) => {
+            console.log(response);
+        });
+    };
 }

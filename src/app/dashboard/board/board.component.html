@@ -3,30 +3,29 @@
     </app-hero>
 
     <div class="mb-30">
-
         <!-- Controls row -->
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-8">
-
             <!-- Add button -->
-            <button
+            <a routerLink="/dashboard/library"
                 class="w-full sm:w-auto px-5 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800 hover:bg-neutral-50 transition-colors duration-200 inline-flex items-center justify-center gap-2">
                 <i class="fa-solid fa-plus text-sm"></i>
                 Add mountain
-            </button>
+            </a>
 
             <!-- Total -->
             <div
                 class="w-full sm:w-auto px-5 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800 inline-flex items-center justify-center gap-2">
                 <i class="fa-solid fa-mountain text-neutral-400 text-sm"></i>
                 <span class="text-neutral-600">Total</span>
-                <span class="font-semibold tabular-nums text-neutral-900">4</span>
+                <span class="font-semibold tabular-nums text-neutral-900">
+                    {{ plannedMountains.length }}
+                </span>
             </div>
         </div>
 
         <!-- Board -->
         <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
-
-            <!-- Planned Column -->
+            <!-- Planned Column (dynamic) -->
             <section>
                 <header class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
@@ -34,19 +33,24 @@
                         <h2 class="text-base font-semibold text-neutral-900">Planned</h2>
                         <span
                             class="text-xs font-semibold tabular-nums text-neutral-600 bg-neutral-100 px-2.5 py-1 rounded-md">
-                            2
+                            {{ plannedMountains.length }}
                         </span>
                     </div>
                 </header>
 
                 <div class="space-y-6">
+                    @if (plannedMountains.length === 0) {
+                    <div class="rounded-xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
+                        No planned mountains yet. Add one from the library.
+                    </div>
+                    }
 
-                    <!-- Card -->
+                    @for (pm of plannedMountains; track pm.mountain?._id) {
                     <article
                         class="group bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg shadow-sm">
 
                         <div class="relative aspect-[7/5] bg-neutral-200 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Ben Nevis"
+                            <img [src]="pm.mountain?.imageUrl" [alt]="pm.mountain?.name"
                                 class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
 
                             <div class="absolute top-3 left-3">
@@ -59,96 +63,47 @@
 
                         <div class="p-5 space-y-3">
                             <div class="flex flex-wrap gap-2 text-xs text-neutral-500 font-medium">
-                                <span class="bg-neutral-100 px-2.5 py-1 rounded-md">Munro</span>
-                                <span class="bg-neutral-100 px-2.5 py-1 rounded-md">Scotland</span>
+                                @for (cat of (pm.mountain?.category ?? []); track cat) {
+                                <span class="bg-neutral-100 px-2.5 py-1 rounded-md">{{ cat }}</span>
+                                }
+                                <span class="bg-neutral-100 px-2.5 py-1 rounded-md">{{ pm.mountain?.country }}</span>
                             </div>
 
                             <div class="flex items-start justify-between gap-3">
                                 <h2 class="text-base font-semibold text-neutral-900 leading-snug">
-                                    Ben Nevis
+                                    {{ pm.mountain?.name }}
                                 </h2>
                                 <span class="text-sm font-medium text-neutral-600 whitespace-nowrap">
-                                    1345 m
+                                    {{ pm.mountain?.height }} m
                                 </span>
                             </div>
 
                             <div class="text-sm text-neutral-600">
                                 <div class="flex items-center gap-2">
                                     <i class="fa-regular fa-calendar text-neutral-400"></i>
-                                    <span>Target: Apr 2026</span>
+                                    <span>Target: {{ pm.plannedDate | date:'MMM yyyy' }}</span>
                                 </div>
                             </div>
 
                             <div class="flex gap-3 pt-2">
-                                <button
+                                <button type="button"
                                     class="w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200">
                                     Start
                                 </button>
 
-                                <button
-                                    class="px-5 py-3 rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors duration-200">
+                                <a class="px-5 py-3 rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors duration-200 inline-flex items-center justify-center"
+                                    [href]="'https://www.google.com/maps?q=' + pm.mountain?.latitude + ',' + pm.mountain?.longitude"
+                                    target="_blank" rel="noopener">
                                     <i class="fa-solid fa-location-dot"></i>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </article>
-
-                    <!-- Card -->
-                    <article
-                        class="group bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg shadow-sm">
-
-                        <div class="relative aspect-[7/5] bg-neutral-200 overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e" alt="Piz Bernina"
-                                class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
-
-                            <div class="absolute top-3 left-3">
-                                <span
-                                    class="text-xs font-semibold bg-white/90 text-neutral-800 px-2.5 py-1 rounded-md border border-neutral-200">
-                                    Planned
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="p-5 space-y-3">
-                            <div class="flex flex-wrap gap-2 text-xs text-neutral-500 font-medium">
-                                <span class="bg-neutral-100 px-2.5 py-1 rounded-md">Alpine</span>
-                                <span class="bg-neutral-100 px-2.5 py-1 rounded-md">Switzerland</span>
-                            </div>
-
-                            <div class="flex items-start justify-between gap-3">
-                                <h2 class="text-base font-semibold text-neutral-900 leading-snug">
-                                    Piz Bernina
-                                </h2>
-                                <span class="text-sm font-medium text-neutral-600 whitespace-nowrap">
-                                    4049 m
-                                </span>
-                            </div>
-
-                            <div class="text-sm text-neutral-600">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-regular fa-calendar text-neutral-400"></i>
-                                    <span>Target: Aug 2026</span>
-                                </div>
-                            </div>
-
-                            <div class="flex gap-3 pt-2">
-                                <button
-                                    class="w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200">
-                                    Start
-                                </button>
-
-                                <button
-                                    class="px-5 py-3 rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors duration-200">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-
+                    }
                 </div>
             </section>
 
-            <!-- Completed Column -->
+            <!-- Completed Column (static for now) -->
             <section>
                 <header class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
@@ -156,13 +111,12 @@
                         <h2 class="text-base font-semibold text-neutral-900">Completed</h2>
                         <span
                             class="text-xs font-semibold tabular-nums text-neutral-600 bg-neutral-100 px-2.5 py-1 rounded-md">
-                            2
+                            1
                         </span>
                     </div>
                 </header>
 
                 <div class="space-y-6">
-
                     <article
                         class="group bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg shadow-sm">
 
@@ -202,22 +156,20 @@
                             </div>
 
                             <div class="flex gap-3 pt-2">
-                                <button
+                                <button type="button"
                                     class="w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200">
                                     View notes
                                 </button>
 
-                                <button
+                                <button type="button"
                                     class="px-5 py-3 rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors duration-200">
                                     <i class="fa-solid fa-location-dot"></i>
                                 </button>
                             </div>
                         </div>
                     </article>
-
                 </div>
             </section>
-
         </div>
     </div>
 </app-container>

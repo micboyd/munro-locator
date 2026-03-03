@@ -1,6 +1,5 @@
 import { FormBuilder, FormGroup } from "@angular/forms";
 
-import { CompletedMountain } from "./CompletedMountain";
 import { UserProfileResponse } from "./UserProfileResponse";
 
 export class UserProfile {

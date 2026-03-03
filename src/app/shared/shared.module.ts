@@ -4,6 +4,7 @@ import { AppRoutingModule } from "../app-routing.module";
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { CommonModule } from '@angular/common';
 import { ContainerComponent } from './components/container/container.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FullscreenLoaderComponent } from './components/fullscreen-loader/fullscreen-loader.component';
 import { HeroComponent } from './components/hero/hero.component';
@@ -30,7 +31,8 @@ import { WeatherComponent } from './components/weather/weather.component';
 		NavigationComponent,
 		PagerComponent,
 		SearchComponent,
-		MapComponent
+		MapComponent,
+        DialogComponent
 	],
 	imports: [FontAwesomeModule, CommonModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
 	exports: [
@@ -45,7 +47,8 @@ import { WeatherComponent } from './components/weather/weather.component';
 		NavigationComponent,
 		PagerComponent,
 		SearchComponent,
-		MapComponent
+		MapComponent,
+        DialogComponent
 	],
 })
 export class SharedModule {}

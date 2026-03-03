@@ -1,0 +1,19 @@
+@if (dialogService.dialogOpen) {
+<!-- Static overlay dialog (absolute) -->
+<div class="absolute inset-0 z-50">
+    <!-- Darkened backdrop -->
+    <div class="absolute inset-0 bg-neutral-900/60"></div>
+
+    <!-- Dialog -->
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+        <section role="dialog" aria-modal="true" aria-labelledby="dialog-title" class="
+          w-[70vw] max-w-[70vw]
+          max-h-[70vh]
+          overflow-y-auto
+          bg-white rounded-xl shadow-lg border border-neutral-200
+        ">
+            <ng-content></ng-content>
+        </section>
+    </div>
+</div>
+}
