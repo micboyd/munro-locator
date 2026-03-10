@@ -9,6 +9,7 @@ import { MountainRequest } from "../../shared/models/Mountains/MountainRequest";
 import { MountainResponse } from "../../shared/models/Mountains/MountainResponse";
 import { Category } from "../../shared/models/Mountains/Category";
 import { CategoryResponse } from "../../shared/models/Mountains/CategoryResponse";
+import { AuthenticationService } from "../../shared/services/authentication.service";
 
 export interface Pagination {
     total: number;
@@ -29,7 +30,10 @@ export class LibraryService {
     private readonly _apiUrl = environment.baseApiUrl;
     private readonly _mountainsUrl = `${this._apiUrl}/mountains/mountains`;
 
-    constructor(private http: HttpClient) { }
+    constructor(
+        private http: HttpClient,
+        private authService: AuthenticationService
+    ) { }
 
     /**
      * GET /mountains/mountains
@@ -38,10 +42,13 @@ export class LibraryService {
      * Returns domain models (Mountain) wrapped in PaginatedResponse.
      */
     getAll(
-        params?: any
+        params?: HttpParams
     ): Observable<PaginatedResponse<Mountain>> {
+        const paramsWithUser = (params ?? new HttpParams())
+            .set('userId', this.authService.userId);
+
         return this.http
-            .get<PaginatedResponse<MountainResponse>>(this._mountainsUrl, { params })
+            .get<PaginatedResponse<MountainResponse>>(this._mountainsUrl, { params: paramsWithUser })
             .pipe(
                 map((res) => ({
                     ...res,

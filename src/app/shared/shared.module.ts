@@ -2,6 +2,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from "../app-routing.module";
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { ToastComponent } from './components/toast/toast.component';
 import { CommonModule } from '@angular/common';
 import { ContainerComponent } from './components/container/container.component';
 import { DialogComponent } from './components/dialog/dialog.component';
@@ -20,6 +21,7 @@ import { WeatherComponent } from './components/weather/weather.component';
 
 @NgModule({
 	declarations: [
+		ToastComponent,
 		CheckboxComponent,
 		TabsComponent,
 		LoadingIndicatorComponent,
@@ -36,6 +38,7 @@ import { WeatherComponent } from './components/weather/weather.component';
 	],
 	imports: [FontAwesomeModule, CommonModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
 	exports: [
+		ToastComponent,
 		CheckboxComponent,
 		TabsComponent,
 		LoadingIndicatorComponent,

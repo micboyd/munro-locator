@@ -9,4 +9,5 @@ export class MountainResponse {
     longitude: number;
     region: string;
     imageUrl: string;
+    status: string;
 }

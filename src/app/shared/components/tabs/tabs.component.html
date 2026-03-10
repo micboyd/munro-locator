@@ -1,29 +1,11 @@
-<div class="mb-8 -mx-2">
-    <div class="px-2 flex items-center gap-3 overflow-x-auto whitespace-nowrap [-webkit-overflow-scrolling:touch]">
-
-        @for (tab of allTabs; track tab.name) {
-        <button type="button" (click)="setActive(tab)"
-            class="shrink-0 inline-flex items-center gap-3 rounded-full px-5 py-3 text-base font-medium transition-all duration-200 cursor-pointer"
-            [ngClass]="
-                activeTab === tab.name
-                    ? 'bg-neutral-900 text-white shadow-sm'
-                    : 'text-neutral-700 bg-neutral-100 hover:bg-neutral-200'
-            ">
-
-            <span class="truncate max-w-[14rem] sm:max-w-none">
-                {{ tab.name }}
-            </span>
-
-            <!-- <span class="inline-flex items-center justify-center min-w-8 h-6 px-2.5 rounded-full text-sm" [ngClass]="
-                    activeTab === tab.name
-                        ? 'bg-white/15 text-white'
-                        : 'bg-white text-neutral-700'
-                ">
-                {{ tab.count }}
-            </span> -->
-
-        </button>
-        }
-
-    </div>
-</div>
+<nav class="flex flex-wrap gap-3 mb-6">
+	@for (tab of tabs; track track) {
+	<button type="button" (click)="setActive(tab)"
+		class="px-6 py-3 rounded-full text-base font-medium transition-colors duration-200 cursor-pointer"
+		[class.bg-neutral-900]="tab === activeTab" [class.text-white]="tab === activeTab"
+		[class.bg-neutral-100]="tab !== activeTab" [class.text-neutral-800]="tab !== activeTab"
+		[class.hover:bg-neutral-200]="tab !== activeTab" [class.hover:bg-neutral-800]="tab === activeTab">
+		{{ tab }}
+	</button>
+	}
+</nav>

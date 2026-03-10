@@ -71,6 +71,16 @@
                 <div class="relative aspect-[7/5] bg-neutral-200 overflow-hidden">
                     <img [src]="item.imageUrl" alt="Mountain image"
                         class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+
+                    @if (item.status === 'completed') {
+                        <span class="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-[#708C69] px-3 py-1 text-xs font-semibold text-white shadow">
+                            <i class="fa-solid fa-check"></i> Completed
+                        </span>
+                    } @else if (item.status === 'planned' || addedMountainIds.has(item._id)) {
+                        <span class="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-[#F4A258] px-3 py-1 text-xs font-semibold text-white shadow">
+                            <i class="fa-solid fa-calendar-days"></i> Planned
+                        </span>
+                    }
                 </div>
 
                 <!-- Content -->
@@ -100,8 +110,19 @@
                     <div class="flex gap-3 pt-2">
                         <button
                             (click)="selectedMountain(item)"
-                            class="w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200 cursor-pointer">
-                            Add To Planner
+                            [disabled]="item.status || addedMountainIds.has(item._id)"
+                            [class]="item.status === 'completed'
+                                ? 'w-full px-5 py-3 rounded-full text-white text-sm font-medium inline-flex items-center justify-center gap-2 transition-colors duration-200 bg-[#708C69] cursor-default'
+                                : (item.status === 'planned' || addedMountainIds.has(item._id))
+                                    ? 'w-full px-5 py-3 rounded-full text-white text-sm font-medium inline-flex items-center justify-center gap-2 transition-colors duration-200 bg-[#F4A258] cursor-default'
+                                    : 'w-full px-5 py-3 rounded-full text-white text-sm font-medium inline-flex items-center justify-center gap-2 transition-colors duration-200 bg-neutral-900 hover:bg-neutral-800 cursor-pointer'">
+                            @if (item.status === 'completed') {
+                                <i class="fa-solid fa-check"></i> Completed
+                            } @else if (item.status === 'planned' || addedMountainIds.has(item._id)) {
+                                <i class="fa-solid fa-calendar-days"></i> Planned
+                            } @else {
+                                Add To Planner
+                            }
                         </button>
 
                         <button (click)="openMap(item)"

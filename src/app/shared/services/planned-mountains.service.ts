@@ -43,7 +43,8 @@ export class PlannedMountainsService {
     getPlannedMountainsForCurrentUserPaged(
         page = 1,
         limit = 10,
-        sort: 'date_asc' | 'date_desc' | 'newest' | 'oldest' = 'date_desc'
+        sort: 'date_asc' | 'date_desc' | 'newest' | 'oldest' = 'date_desc',
+        search = ''
     ): Observable<{
         data: PlannedMountain[];
         pagination: {
@@ -56,6 +57,7 @@ export class PlannedMountainsService {
         };
     }> {
         const userId = encodeURIComponent(this.authService.userId);
+        const searchParam = search ? `&search=${encodeURIComponent(search)}` : '';
 
         return this.http
             .get<{
@@ -69,9 +71,7 @@ export class PlannedMountainsService {
                     hasPrevPage: boolean;
                 };
             }>(
-                `${this._plannedMountainsUrl}?userId=${userId}&page=${page}&limit=${limit}&sort=${encodeURIComponent(
-                    sort
-                )}`
+                `${this._plannedMountainsUrl}?userId=${userId}&page=${page}&limit=${limit}&sort=${encodeURIComponent(sort)}${searchParam}`
             )
             .pipe(
                 map((res) => ({

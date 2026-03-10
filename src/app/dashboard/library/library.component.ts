@@ -7,6 +7,7 @@ import { Category } from '../../shared/models/Mountains/Category';
 import { HttpParams } from '@angular/common/http';
 import { Mountain } from '../../shared/models/Mountains/Mountain';
 import { PlannedMountainsService } from '../../shared/services/planned-mountains.service';
+import { ToastService } from '../../shared/services/toast.service';
 
 type SortOption = 'height_desc' | 'height_asc';
 
@@ -19,6 +20,7 @@ type SortOption = 'height_desc' | 'height_asc';
 export class LibraryComponent implements OnInit {
 
     mapOpen = false;
+    addedMountainIds = new Set<string>();
 
     private _mountains: PaginatedResponse<Mountain>;
     private _categories: Category[] = [];
@@ -41,9 +43,9 @@ export class LibraryComponent implements OnInit {
 
     constructor(
         private libraryService: LibraryService,
-        private plannedMountainService: PlannedMountainsService
-    )
-         { }
+        private plannedMountainService: PlannedMountainsService,
+        private toastService: ToastService
+    ) { }
 
     get componentLoading() {
         return this._componentLoading;
@@ -62,7 +64,7 @@ export class LibraryComponent implements OnInit {
     }
 
     get categories() {
-        return this._categories;
+        return ['All', ...this._categories.map(x => x.name)];
     }
 
     get mountains() {
@@ -125,6 +127,9 @@ export class LibraryComponent implements OnInit {
 
     onTabChange(category: string): void {
         this.query.category = category;
+        if (this.query.category === 'All') {
+            this.query.category = '';
+        }
         this.query.page = 1;
         this.reloadMountains();
 
@@ -171,7 +176,6 @@ export class LibraryComponent implements OnInit {
     }
 
     selectedMountain(mountain: Mountain): void {
-
         this.addPlannedMountain(mountain);
 
         if (this.mapOpen) {
@@ -182,6 +186,15 @@ export class LibraryComponent implements OnInit {
     closeMap(): void {
         this.mapOpen = false;
     }
+
+    addPlannedMountain(mountain: Mountain) {
+        this.plannedMountainService.createPlannedMountain(mountain._id, new Date()).subscribe({
+            next: () => {
+                this.addedMountainIds.add(mountain._id);
+                this.toastService.show(`${mountain.name} added to your planner!`);
+            }
+        });
+    };
 
     private getCategories(): Observable<Category[]> {
         return this.libraryService.getCategories().pipe(
@@ -222,10 +235,4 @@ export class LibraryComponent implements OnInit {
                 error: () => (this._mapMountains = []),
             });
     }
-
-    addPlannedMountain(mountain: Mountain) {
-        this.plannedMountainService.createPlannedMountain(mountain._id, new Date()).subscribe((response) => {
-            console.log(response);
-        });
-    };
 }

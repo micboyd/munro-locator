@@ -11,6 +11,7 @@ export class Mountain {
     longitude: number;
     region: string;
     imageUrl: string;
+    status: string;
 
     constructor(response: MountainResponse) {
         this._id = response._id;
@@ -23,5 +24,6 @@ export class Mountain {
         this.longitude = response.longitude;
         this.region = response.region;
         this.imageUrl = response.imageUrl;
+        this.status = response.status;
     }
 }
