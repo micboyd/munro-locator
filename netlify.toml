@@ -1,5 +1,5 @@
 [build]
-  command = "sed -i \"s|YOUR_MAPBOX_TOKEN_HERE|$MAPBOX_TOKEN|g\" src/environments/environment.prod.ts && npm run build"
+  command = "[ -z \"$MAPBOX_TOKEN\" ] && echo 'ERROR: MAPBOX_TOKEN env var is not set in Netlify' && exit 1 || sed -i \"s|YOUR_MAPBOX_TOKEN_HERE|$MAPBOX_TOKEN|g\" src/environments/environment.prod.ts && npm run build"
   publish = "dist/munro-locator/browser"
 
 [[redirects]]
