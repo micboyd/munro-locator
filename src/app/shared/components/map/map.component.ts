@@ -74,7 +74,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
         this.map = L.map('map-fullscreen', {
             center: [56.8493796, -4.5336288],
-            zoom: 8,
+            zoom: 6,
             zoomControl: false,
         });
 
@@ -88,9 +88,11 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
         this.clearMarkers();
 
-        for (const mtn of this.mountains ?? []) {
-            if (typeof mtn.latitude !== 'number' || typeof mtn.longitude !== 'number') continue;
+        const validMountains = (this.mountains ?? []).filter(
+            mtn => typeof mtn.latitude === 'number' && typeof mtn.longitude === 'number'
+        );
 
+        for (const mtn of validMountains) {
             const marker = L.marker([mtn.latitude, mtn.longitude], {
                 icon: this.createSvgCircleIcon('#1e88e5'),
             })
@@ -99,13 +101,11 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
                     maxWidth: 320,
                 });
 
-            // 🔥 Attach click handler when popup opens
             marker.on('popupopen', () => {
                 const btn = document.getElementById(`view-btn-${mtn._id}`);
                 if (!btn) return;
 
                 btn.onclick = () => {
-                    // Re-enter Angular zone
                     this.zone.run(() => {
                         this.viewMountain.emit(mtn);
                     });
@@ -113,6 +113,13 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
             });
 
             this.markers.push(marker);
+        }
+
+        if (validMountains.length === 1) {
+            this.map.setView([validMountains[0].latitude, validMountains[0].longitude], 12);
+        } else if (validMountains.length > 1) {
+            const bounds = L.latLngBounds(validMountains.map(mtn => [mtn.latitude, mtn.longitude]));
+            this.map.fitBounds(bounds, { padding: [48, 48] });
         }
     }
 

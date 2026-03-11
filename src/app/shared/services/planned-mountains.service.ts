@@ -23,7 +23,7 @@ export class PlannedMountainsService {
      * Fetch ALL planned mountains for current user (returns populated mountain)
      */
     getPlannedMountainsForCurrentUser(
-        sort: 'date_asc' | 'date_desc' | 'newest' | 'oldest' = 'date_desc'
+        sort: 'date_asc' | 'date_desc' | 'newest' | 'oldest' | 'height_desc' | 'height_asc' = 'date_desc'
     ): Observable<PlannedMountain[]> {
         const userId = encodeURIComponent(this.authService.userId);
 
@@ -43,7 +43,7 @@ export class PlannedMountainsService {
     getPlannedMountainsForCurrentUserPaged(
         page = 1,
         limit = 10,
-        sort: 'date_asc' | 'date_desc' | 'newest' | 'oldest' = 'date_desc',
+        sort: 'date_asc' | 'date_desc' | 'newest' | 'oldest' | 'height_desc' | 'height_asc' = 'height_desc',
         search = ''
     ): Observable<{
         data: PlannedMountain[];

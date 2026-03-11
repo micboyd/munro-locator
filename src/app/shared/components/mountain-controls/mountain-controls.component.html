@@ -1,0 +1,39 @@
+<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-8">
+
+    <!-- Left controls -->
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+
+        <!-- Sort -->
+        <div class="relative w-full sm:w-auto">
+            <select [value]="sortValue" (change)="sortChange.emit(sortSelect.value)" #sortSelect
+                class="w-full sm:w-64 appearance-none pl-10 pr-10 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800 hover:bg-neutral-50 transition-colors duration-200 cursor-pointer">
+                @for (option of sortOptions; track option.value) {
+                    <option [value]="option.value">{{ option.label }}</option>
+                }
+            </select>
+            <i class="fa-solid fa-arrow-up-wide-short absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 text-sm pointer-events-none"></i>
+            <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 text-xs pointer-events-none"></i>
+        </div>
+
+        <!-- Map -->
+        @if (showMap) {
+        <button (click)="mapClick.emit()"
+            class="w-full sm:w-auto px-5 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800 hover:bg-neutral-50 transition-colors duration-200 cursor-pointer inline-flex items-center justify-center gap-2">
+            <i class="fa-solid fa-map-location-dot text-sm"></i>
+            Map
+        </button>
+        }
+
+    </div>
+
+    <!-- Total -->
+    <div class="w-full sm:w-auto px-5 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800
+         inline-flex items-center justify-center gap-2" aria-live="polite">
+        <i class="fa-solid fa-mountain text-neutral-400 text-sm"></i>
+        <span class="text-neutral-600">Total</span>
+        <span class="font-semibold tabular-nums text-neutral-900">{{ total }}</span>
+    </div>
+
+</div>
+
+<app-search (searchTerm)="searchChange.emit($event)"></app-search>

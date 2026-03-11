@@ -10,7 +10,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FullscreenLoaderComponent } from './components/fullscreen-loader/fullscreen-loader.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
+import { DriveTimeComponent } from './components/drive-time/drive-time.component';
 import { MapComponent } from './components/map/map.component';
+import { MountainControlsComponent } from './components/mountain-controls/mountain-controls.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { NgModule } from '@angular/core';
 import { PagerComponent } from './components/pager/pager.component';
@@ -34,6 +36,8 @@ import { WeatherComponent } from './components/weather/weather.component';
 		PagerComponent,
 		SearchComponent,
 		MapComponent,
+        MountainControlsComponent,
+        DriveTimeComponent,
         DialogComponent
 	],
 	imports: [FontAwesomeModule, CommonModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
@@ -51,6 +55,8 @@ import { WeatherComponent } from './components/weather/weather.component';
 		PagerComponent,
 		SearchComponent,
 		MapComponent,
+        MountainControlsComponent,
+        DriveTimeComponent,
         DialogComponent
 	],
 })

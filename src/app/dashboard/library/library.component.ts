@@ -20,6 +20,7 @@ type SortOption = 'height_desc' | 'height_asc';
 export class LibraryComponent implements OnInit {
 
     mapOpen = false;
+    driveTimeMountain: Mountain | null = null;
     addedMountainIds = new Set<string>();
 
     private _mountains: PaginatedResponse<Mountain>;
@@ -81,6 +82,13 @@ export class LibraryComponent implements OnInit {
 
     get defaultCategory() {
         return this.categories[0] || '';
+    }
+
+    get sortOptions() {
+        return [
+            { value: 'height_desc', label: 'Height high → low' },
+            { value: 'height_asc', label: 'Height low → high' },
+        ];
     }
 
     ngOnInit(): void {

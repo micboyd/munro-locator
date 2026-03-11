@@ -11,6 +11,7 @@ export class NavigationComponent {
 
     private _profileLoading: boolean = false;
     private _profile: UserProfile = null;
+    mobileOpen = false;
 
     get profileLoading() {
         return this._profileLoading;
@@ -30,6 +31,14 @@ export class NavigationComponent {
             this._profile = profile;
             this._profileLoading = false;
         });
+    }
+
+    toggleMobile(): void {
+        this.mobileOpen = !this.mobileOpen;
+    }
+
+    closeMobile(): void {
+        this.mobileOpen = false;
     }
 }
 

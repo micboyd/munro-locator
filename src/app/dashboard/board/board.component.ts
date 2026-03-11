@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
 
 import { DialogService } from '../../shared/components/dialog/dialog.service';
+import { Mountain } from '../../shared/models/Mountains/Mountain';
 import { PlannedMountain } from '../../shared/models/Mountains/PlannedMountain';
 import { PlannedMountainsService } from '../../shared/services/planned-mountains.service';
 import { Pagination } from '../../shared/models/Shared/PaginatedCollection';
 
-type SortOption = 'date_desc' | 'date_asc' | 'newest' | 'oldest';
+type SortOption = 'height_desc' | 'height_asc';
 
 @Component({
     selector: 'app-board',
@@ -24,11 +25,15 @@ export class BoardComponent implements OnInit {
     private _loading = false;
     private readonly reload$ = new Subject<void>();
 
+    mapOpen = false;
+    private _mapMountains: Mountain[] = [];
+    private _mapMountainsLoading = false;
+
     activeTab = 'Planned';
 
     query: { page: number; sort: SortOption; search: string } = {
         page: 1,
-        sort: 'date_desc',
+        sort: 'height_desc',
         search: '',
     };
 
@@ -48,8 +53,23 @@ export class BoardComponent implements OnInit {
         return this._loading;
     }
 
+    get mapMountainsCollection() {
+        return this._mapMountains;
+    }
+
+    get mapMountainsLoading() {
+        return this._mapMountainsLoading;
+    }
+
     get cateogries() {
         return ['Planned', 'Completed'];
+    }
+
+    get sortOptions() {
+        return [
+            { value: 'height_desc', label: 'Height high → low' },
+            { value: 'height_asc', label: 'Height low → high' },
+        ];
     }
 
     ngOnInit(): void {
@@ -60,7 +80,7 @@ export class BoardComponent implements OnInit {
                 switchMap(() =>
                     this.plannedMountainService.getPlannedMountainsForCurrentUserPaged(
                         this.query.page,
-                        10,
+                        9,
                         this.query.sort,
                         this.query.search
                     ).pipe(finalize(() => (this._loading = false)))
@@ -79,8 +99,8 @@ export class BoardComponent implements OnInit {
     }
 
     onSortChange(sort: string): void {
-        const allowed: SortOption[] = ['date_desc', 'date_asc', 'newest', 'oldest'];
-        this.query.sort = allowed.includes(sort as SortOption) ? (sort as SortOption) : 'date_desc';
+        const allowed: SortOption[] = ['height_desc', 'height_asc'];
+        this.query.sort = allowed.includes(sort as SortOption) ? (sort as SortOption) : 'height_desc';
         this.query.page = 1;
         this.reload$.next();
     }
@@ -94,6 +114,21 @@ export class BoardComponent implements OnInit {
     onPageChange(page: number): void {
         this.query.page = page;
         this.reload$.next();
+    }
+
+    openMap(): void {
+        this.mapOpen = true;
+        this._mapMountainsLoading = true;
+        this.plannedMountainService.getPlannedMountainsForCurrentUser()
+            .pipe(finalize(() => (this._mapMountainsLoading = false)))
+            .subscribe({
+                next: (data) => (this._mapMountains = data.map(pm => pm.mountain)),
+                error: () => (this._mapMountains = []),
+            });
+    }
+
+    closeMap(): void {
+        this.mapOpen = false;
     }
 
     deletedPlannedMountain(mountainId: string) {

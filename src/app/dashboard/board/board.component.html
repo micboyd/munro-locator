@@ -6,25 +6,6 @@
 
         <app-tabs [tabs]="cateogries" (activeTabChange)="changeTab($event)"></app-tabs>
 
-        <!-- Top controls row: Add button (always visible) -->
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-8">
-            <a routerLink="/dashboard/library"
-                class="w-full sm:w-auto px-5 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800 hover:bg-neutral-50 transition-colors duration-200 inline-flex items-center justify-center gap-2">
-                <i class="fa-solid fa-plus text-sm"></i>
-                Add mountain
-            </a>
-
-            <!-- Total -->
-            <div
-                class="w-full sm:w-auto px-5 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800 inline-flex items-center justify-center gap-2">
-                <i class="fa-solid fa-mountain text-neutral-400 text-sm"></i>
-                <span class="text-neutral-600">Total</span>
-                <span class="font-semibold tabular-nums text-neutral-900">
-                    {{ activeTab === 'Planned' ? (pagination?.total ?? 0) : 1 }}
-                </span>
-            </div>
-        </div>
-
         <!-- Board -->
         <div>
 
@@ -32,20 +13,15 @@
             @if (activeTab === 'Planned') {
             <section>
 
-                <!-- Sort + count controls -->
-                <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-8">
-                    <div class="relative w-full sm:w-auto">
-                        <select [value]="query.sort" (change)="onSortChange(sortSelect.value)" #sortSelect
-                            class="w-full sm:w-64 appearance-none pl-10 pr-10 py-3 rounded-lg border border-neutral-200 bg-white text-sm font-medium text-neutral-800 hover:bg-neutral-50 transition-colors duration-200 cursor-pointer">
-                            <option value="date_desc">Date new → old</option>
-                            <option value="date_asc">Date old → new</option>
-                        </select>
-                        <i class="fa-solid fa-arrow-up-wide-short absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 text-sm pointer-events-none"></i>
-                        <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 text-xs pointer-events-none"></i>
-                    </div>
-                </div>
-
-                <app-search (searchTerm)="onSearchChange($event)"></app-search>
+                <app-mountain-controls
+                    [sortOptions]="sortOptions"
+                    [sortValue]="query.sort"
+                    [showMap]="true"
+                    [total]="pagination?.total ?? 0"
+                    (sortChange)="onSortChange($event)"
+                    (searchChange)="onSearchChange($event)"
+                    (mapClick)="openMap()">
+                </app-mountain-controls>
 
                 @if (plannedMountains.length === 0) {
                 <div class="rounded-xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
@@ -209,3 +185,7 @@
         </div>
     </div>
 </app-container>
+
+@if (mapOpen) {
+<app-map (viewMountain)="closeMap()" [mountains]="mapMountainsCollection" [loading]="mapMountainsLoading" (close)="closeMap()"></app-map>
+}
