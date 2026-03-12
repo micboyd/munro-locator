@@ -22,12 +22,13 @@
                     (mapClick)="openMap()">
                 </app-mountain-controls>
 
-                @if (plannedMountains.length === 0) {
+                @if (loading) {
+                <app-loading-indicator></app-loading-indicator>
+                } @else if (plannedMountains.length === 0) {
                 <div class="rounded-xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
                     No planned mountains yet. Add one from the library.
                 </div>
-                }
-
+                } @else {
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                     @for (pm of plannedMountains; track track) {
                     <article
@@ -106,6 +107,7 @@
                     </article>
                     }
                 </div>
+                }
 
                 @if (pagination && pagination.totalPages > 1) {
                 <app-pager (pageChange)="onPageChange($event)" [pagination]="pagination"></app-pager>
@@ -129,12 +131,7 @@
                 </app-mountain-controls>
 
                 @if (completedLoading) {
-                <div class="rounded-xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-circle-notch animate-spin text-neutral-400"></i>
-                        Loading completed mountains…
-                    </div>
-                </div>
+                <app-loading-indicator></app-loading-indicator>
                 } @else if (completedMountains.length === 0) {
                 <div class="rounded-xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
                     No completed mountains yet. Hit Start on a planned mountain to log your first summit!
