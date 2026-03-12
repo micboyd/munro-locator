@@ -121,10 +121,11 @@
                 <app-mountain-controls
                     [sortOptions]="completedSortOptions"
                     [sortValue]="completedQuery.sort"
-                    [showMap]="false"
+                    [showMap]="true"
                     [total]="completedPagination?.total ?? 0"
                     (sortChange)="onCompletedSortChange($event)"
-                    (searchChange)="onCompletedSearchChange($event)">
+                    (searchChange)="onCompletedSearchChange($event)"
+                    (mapClick)="openCompletedMap()">
                 </app-mountain-controls>
 
                 @if (completedLoading) {
