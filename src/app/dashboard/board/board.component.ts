@@ -246,6 +246,7 @@ export class BoardComponent implements OnInit {
     onCompleteSaved(): void {
         const planned = this.completingMountain;
         this.completingMountain = null;
+        this.activeTab = 'Completed';
         this.completedReload$.next();
 
         if (planned) {
