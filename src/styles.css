@@ -45,3 +45,7 @@ Or explicitly match your app font
 .leaflet-popup-content button {
     cursor: pointer;
 }
+
+button {
+    cursor: pointer;
+}

@@ -1,6 +1,7 @@
 import { AppRoutingModule } from '../app-routing.module';
 import { BoardComponent } from './board/board.component';
 import { CommonModule } from '@angular/common';
+import { CompleteMountainComponent } from './board/complete-mountain/complete-mountain.component';
 import { DashboardComponent } from './dashboard.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import { GoalsComponent } from './profile/goals/goals.component';
@@ -18,6 +19,7 @@ import { LibraryComponent } from './library/library.component';
         GoalsComponent,
 		EditProfileComponent,
         BoardComponent,
+        CompleteMountainComponent,
 		LibraryComponent
     ],
 	imports: [CommonModule, ReactiveFormsModule, AppRoutingModule, SharedModule],

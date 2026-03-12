@@ -1,0 +1,177 @@
+<!-- Full-screen overlay -->
+<div class="fixed inset-0 z-50 overflow-y-auto bg-black/60">
+    <div class="flex min-h-full items-center justify-center p-4">
+
+        <section role="dialog" aria-modal="true"
+            class="w-full max-w-2xl rounded-3xl border border-neutral-200 bg-neutral-50 shadow-xl">
+
+            <!-- Header -->
+            <div class="flex items-start justify-between gap-4 border-b border-neutral-200 px-6 py-5">
+                <div class="flex items-center gap-4">
+                    @if (mountain?.imageUrl) {
+                    <div class="h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-neutral-200">
+                        <img [src]="mountain.imageUrl" [alt]="mountain.name"
+                            class="h-full w-full object-cover" />
+                    </div>
+                    }
+                    <div>
+                        <h2 class="text-lg font-semibold text-neutral-900">{{ mountain?.name }}</h2>
+                        <p class="text-sm text-neutral-500">{{ mountain?.region }} &bull;
+                            {{ mountain?.height }} m</p>
+                    </div>
+                </div>
+
+                <button type="button" (click)="onClose()" aria-label="Close"
+                    class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-500 hover:bg-neutral-100 transition-colors duration-200">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form [formGroup]="form" (ngSubmit)="save()" class="space-y-4 p-6">
+
+                <!-- Date completed -->
+                <div class="rounded-2xl border border-neutral-200 bg-white p-5">
+                    <label for="dateCompleted" class="text-sm font-semibold text-neutral-800">Date completed</label>
+
+                    <div class="relative mt-2">
+                        <span
+                            class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-500">
+                            <i class="fa-regular fa-calendar"></i>
+                        </span>
+                        <input id="dateCompleted" type="date" formControlName="dateCompleted"
+                            class="w-full rounded-2xl border border-neutral-200 bg-white py-3 pl-11 pr-4 text-sm font-semibold text-neutral-900 outline-none transition-colors duration-200 focus:border-neutral-300 disabled:opacity-60" />
+                    </div>
+                </div>
+
+                <!-- Rating -->
+                <div class="rounded-2xl border border-neutral-200 bg-white p-5">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-sm font-semibold text-neutral-800">Rating</div>
+                            <p class="mt-1 text-sm text-neutral-500">How would you rate this summit?</p>
+                        </div>
+                        <app-rating [rating]="rating" (ratingChange)="onRatingChange($event)"></app-rating>
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="rounded-2xl border border-neutral-200 bg-white p-5">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <label for="notes" class="text-sm font-semibold text-neutral-800">Notes</label>
+                            <p class="mt-1 text-sm text-neutral-500">Conditions, memories, things to remember.</p>
+                        </div>
+                        @if (!readonly) {
+                        <span
+                            class="shrink-0 rounded-full bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-700">
+                            Optional
+                        </span>
+                        }
+                    </div>
+
+                    <textarea id="notes" rows="4" formControlName="notes"
+                        placeholder="Clear skies, strong wind on the ridge. Worth every step..."
+                        class="mt-4 w-full resize-none rounded-2xl border border-neutral-200 bg-white p-4 text-sm font-semibold text-neutral-900 outline-none transition-colors duration-200 focus:border-neutral-300 disabled:opacity-60"></textarea>
+                </div>
+
+                <!-- Summit photos -->
+                <div class="rounded-2xl border border-neutral-200 bg-white p-5">
+                    <div class="flex items-start justify-between gap-4">
+                        <div>
+                            <div class="text-sm font-semibold text-neutral-800">Summit photos</div>
+                            <p class="mt-1 text-sm text-neutral-500">
+                                @if (readonly) { Photos from your summit. }
+                                @else { Add photos from your summit. }
+                            </p>
+                        </div>
+                        @if (!readonly) {
+                        <span
+                            class="shrink-0 rounded-full bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-700">
+                            Optional
+                        </span>
+                        }
+                    </div>
+
+                    <!-- Existing saved photos (non-removable) -->
+                    @if (existingPhotoUrls.length > 0) {
+                    <div class="mt-4 grid grid-cols-3 gap-3">
+                        @for (url of existingPhotoUrls; track url) {
+                        <div class="relative aspect-square overflow-hidden rounded-xl bg-neutral-100">
+                            <img [src]="url" alt="Summit photo" class="h-full w-full object-cover" />
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    <!-- New photo previews (edit mode only) -->
+                    @if (!readonly && previewUrls.length > 0) {
+                    <div class="mt-4 grid grid-cols-3 gap-3">
+                        @for (url of previewUrls; track url; let i = $index) {
+                        <div class="relative aspect-square overflow-hidden rounded-xl bg-neutral-100">
+                            <img [src]="url" alt="Summit photo" class="h-full w-full object-cover" />
+                            <button type="button" (click)="removePhoto(i)" aria-label="Remove photo"
+                                class="absolute right-1.5 top-1.5 grid h-6 w-6 place-items-center rounded-full bg-black/60 text-white hover:bg-black/80 transition-colors duration-150">
+                                <i class="fa-solid fa-xmark text-xs"></i>
+                            </button>
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    <!-- Empty state in readonly -->
+                    @if (readonly && existingPhotoUrls.length === 0) {
+                    <p class="mt-4 text-sm text-neutral-400">No photos added.</p>
+                    }
+
+                    <!-- Upload button (edit mode only) -->
+                    @if (!readonly) {
+                    <div class="mt-4 flex items-center gap-3">
+                        <label for="summitPhotos"
+                            class="inline-flex cursor-pointer items-center gap-2 rounded-2xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors duration-200">
+                            <i class="fa-solid fa-upload"></i>
+                            Upload photos
+                        </label>
+                        <input id="summitPhotos" type="file" accept="image/*" multiple class="hidden"
+                            (change)="onPhotosSelected($event)" />
+                        <p class="text-xs text-neutral-500">JPG, PNG, or WebP &bull; Max 5MB each</p>
+                    </div>
+                    }
+                </div>
+
+                <!-- Footer -->
+                <div class="flex flex-wrap justify-end gap-3 pt-2">
+                    @if (readonly) {
+                    <button type="button" (click)="onClose()"
+                        class="rounded-2xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors duration-200">
+                        Close
+                    </button>
+                    } @else {
+                    <button type="button" (click)="onClose()"
+                        class="rounded-2xl border border-neutral-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-800 hover:bg-neutral-50 transition-colors duration-200">
+                        Cancel
+                    </button>
+
+                    <button type="submit" [disabled]="form.invalid || saving"
+                        class="rounded-2xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60">
+                        <span class="inline-flex items-center gap-2">
+                            @if (saving) {
+                                <i class="fa-solid fa-circle-notch animate-spin"></i>
+                                Saving…
+                            } @else if (isNew) {
+                                <i class="fa-solid fa-flag-checkered"></i>
+                                Mark as completed
+                            } @else {
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                Save changes
+                            }
+                        </span>
+                    </button>
+                    }
+                </div>
+
+            </form>
+        </section>
+
+    </div>
+</div>

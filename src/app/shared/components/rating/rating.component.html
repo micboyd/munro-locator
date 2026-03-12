@@ -1,6 +1,7 @@
 <div class="flex space-x-1">
 	<ng-container *ngFor="let star of stars">
 		<button
+			type="button"
 			[disabled]="readonly"
 			class="text-xl cursor-pointer select-none transition-colors duration-150"
 			(click)="setRating(star)">

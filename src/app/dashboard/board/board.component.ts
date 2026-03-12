@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
 
+import { CompletedMountain } from '../../shared/models/Mountains/CompletedMountain';
+import { CompletedMountainsService } from '../../shared/services/completed-mountains.service';
 import { DialogService } from '../../shared/components/dialog/dialog.service';
 import { Mountain } from '../../shared/models/Mountains/Mountain';
 import { PlannedMountain } from '../../shared/models/Mountains/PlannedMountain';
@@ -18,16 +20,26 @@ type SortOption = 'height_desc' | 'height_asc';
 })
 export class BoardComponent implements OnInit {
 
-    constructor(public plannedMountainService: PlannedMountainsService) {}
+    constructor(
+        public plannedMountainService: PlannedMountainsService,
+        private completedMountainsService: CompletedMountainsService,
+    ) {}
 
     private _plannedMountains: PlannedMountain[] = [];
     private _pagination: Pagination | null = null;
     private _loading = false;
     private readonly reload$ = new Subject<void>();
 
+    private _completedMountains: CompletedMountain[] = [];
+    private _completedLoading = false;
+    private _completedLoaded = false;
+
     mapOpen = false;
     private _mapMountains: Mountain[] = [];
     private _mapMountainsLoading = false;
+
+    completingMountain: PlannedMountain | null = null;
+    viewingMountain: CompletedMountain | null = null;
 
     activeTab = 'Planned';
 
@@ -51,6 +63,14 @@ export class BoardComponent implements OnInit {
 
     get loading() {
         return this._loading;
+    }
+
+    get completedMountains() {
+        return this._completedMountains;
+    }
+
+    get completedLoading() {
+        return this._completedLoading;
     }
 
     get mapMountainsCollection() {
@@ -96,6 +116,22 @@ export class BoardComponent implements OnInit {
 
     changeTab(tab: string) {
         this.activeTab = tab;
+
+        if (tab === 'Completed' && !this._completedLoaded) {
+            this.loadCompletedMountains();
+        }
+    }
+
+    private loadCompletedMountains(): void {
+        this._completedLoading = true;
+        this._completedLoaded = true;
+
+        this.completedMountainsService.getCompletedMountainsForCurrentUser()
+            .pipe(finalize(() => (this._completedLoading = false)))
+            .subscribe({
+                next: (data) => (this._completedMountains = data),
+                error: () => (this._completedMountains = []),
+            });
     }
 
     onSortChange(sort: string): void {
@@ -116,8 +152,14 @@ export class BoardComponent implements OnInit {
         this.reload$.next();
     }
 
-    openMap(): void {
+    openMap(single?: Mountain): void {
         this.mapOpen = true;
+
+        if (single) {
+            this._mapMountains = [single];
+            return;
+        }
+
         this._mapMountainsLoading = true;
         this.plannedMountainService.getPlannedMountainsForCurrentUser()
             .pipe(finalize(() => (this._mapMountainsLoading = false)))
@@ -129,6 +171,21 @@ export class BoardComponent implements OnInit {
 
     closeMap(): void {
         this.mapOpen = false;
+    }
+
+    startMountain(pm: PlannedMountain): void {
+        this.completingMountain = pm;
+    }
+
+    viewMountain(cm: CompletedMountain): void {
+        this.viewingMountain = cm;
+    }
+
+    onCompleteSaved(): void {
+        this.completingMountain = null;
+        this.reload$.next();
+        // Force a refresh of the completed list next time it's viewed
+        this._completedLoaded = false;
     }
 
     deletedPlannedMountain(mountainId: string) {
