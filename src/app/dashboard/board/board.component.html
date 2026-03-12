@@ -48,10 +48,15 @@
 
                             <!-- Status badge -->
                             <div class="absolute top-3 left-3">
-                                <span
-                                    class="text-xs font-semibold bg-white/90 text-neutral-800 px-2.5 py-1 rounded-md border border-neutral-200">
+                                @if (pm.mountain?.status === 'completed') {
+                                <span class="text-xs font-semibold bg-[#708C69] text-white px-2.5 py-1 rounded-md">
+                                    <i class="fa-solid fa-check mr-1"></i>Completed
+                                </span>
+                                } @else {
+                                <span class="text-xs font-semibold bg-white/90 text-neutral-800 px-2.5 py-1 rounded-md border border-neutral-200">
                                     Planned
                                 </span>
+                                }
                             </div>
 
                             <!-- Country badge -->
@@ -93,9 +98,17 @@
 
                             <!-- Actions -->
                             <div class="flex gap-3 pt-2">
-                                <button type="button" (click)="startMountain(pm)"
-                                    class="w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200">
-                                    Start
+                                <button type="button"
+                                    (click)="pm.mountain?.status !== 'completed' && startMountain(pm)"
+                                    [disabled]="pm.mountain?.status === 'completed'"
+                                    [class]="pm.mountain?.status === 'completed'
+                                        ? 'w-full px-5 py-3 rounded-full bg-[#708C69] text-white text-sm font-medium inline-flex items-center justify-center gap-2 cursor-default transition-colors duration-200'
+                                        : 'w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200'">
+                                    @if (pm.mountain?.status === 'completed') {
+                                        <i class="fa-solid fa-check"></i> Completed
+                                    } @else {
+                                        Start
+                                    }
                                 </button>
                                 <button type="button" (click)="openMap(pm.mountain)"
                                     class="px-5 py-3 rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors duration-200 inline-flex items-center justify-center">
@@ -140,7 +153,14 @@
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
                     @for (cm of completedMountains; track cm._id) {
                     <article
-                        class="group bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg shadow-sm">
+                        class="group relative bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg shadow-sm">
+
+                        <!-- Delete button -->
+                        <button type="button"
+                            (click)="deleteCompletedMountain(cm._id)"
+                            class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 border border-neutral-200 text-neutral-500 hover:text-red-500 hover:border-red-200 flex items-center justify-center transition">
+                            <i class="fa-solid fa-trash text-xs"></i>
+                        </button>
 
                         <!-- Image -->
                         <div class="relative aspect-[7/5] bg-neutral-200 overflow-hidden">
@@ -149,9 +169,8 @@
 
                             <!-- Status badge -->
                             <div class="absolute top-3 left-3">
-                                <span
-                                    class="text-xs font-semibold bg-white/90 text-neutral-800 px-2.5 py-1 rounded-md border border-neutral-200">
-                                    Completed
+                                <span class="text-xs font-semibold bg-[#708C69] text-white px-2.5 py-1 rounded-md">
+                                    <i class="fa-solid fa-check mr-1"></i>Completed
                                 </span>
                             </div>
 

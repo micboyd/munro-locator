@@ -254,4 +254,11 @@ export class BoardComponent implements OnInit {
             this.reload$.next();
         });
     }
+
+    deleteCompletedMountain(id: string): void {
+        this.completedMountainsService.deleteCompletedMountainById(id).subscribe(() => {
+            this.completedReload$.next();
+            this.reload$.next(); // refresh planned list so mountain statuses update
+        });
+    }
 }
