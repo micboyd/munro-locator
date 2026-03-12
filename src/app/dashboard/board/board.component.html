@@ -118,18 +118,14 @@
             @if (activeTab === 'Completed') {
             <section>
 
-                <header class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-2">
-                        <span class="h-2.5 w-2.5 rounded-full bg-neutral-400"></span>
-                        <h2 class="text-base font-semibold text-neutral-900">Completed</h2>
-                        @if (!completedLoading) {
-                        <span
-                            class="text-xs font-semibold tabular-nums text-neutral-600 bg-neutral-100 px-2.5 py-1 rounded-md">
-                            {{ completedMountains.length }}
-                        </span>
-                        }
-                    </div>
-                </header>
+                <app-mountain-controls
+                    [sortOptions]="completedSortOptions"
+                    [sortValue]="completedQuery.sort"
+                    [showMap]="false"
+                    [total]="completedPagination?.total ?? 0"
+                    (sortChange)="onCompletedSortChange($event)"
+                    (searchChange)="onCompletedSearchChange($event)">
+                </app-mountain-controls>
 
                 @if (completedLoading) {
                 <div class="rounded-xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
@@ -222,6 +218,10 @@
                     </article>
                     }
                 </div>
+                }
+
+                @if (completedPagination && completedPagination.totalPages > 1) {
+                <app-pager (pageChange)="onCompletedPageChange($event)" [pagination]="completedPagination"></app-pager>
                 }
 
             </section>
