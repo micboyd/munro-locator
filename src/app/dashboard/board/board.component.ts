@@ -244,9 +244,16 @@ export class BoardComponent implements OnInit {
     }
 
     onCompleteSaved(): void {
+        const planned = this.completingMountain;
         this.completingMountain = null;
-        this.reload$.next();
         this.completedReload$.next();
+
+        if (planned) {
+            this.plannedMountainService.deletePlannedMountainById(planned._id)
+                .subscribe(() => this.reload$.next());
+        } else {
+            this.reload$.next();
+        }
     }
 
     deletedPlannedMountain(mountainId: string) {
