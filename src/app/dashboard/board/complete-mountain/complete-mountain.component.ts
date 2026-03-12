@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ import { ToastService } from '../../../shared/services/toast.service';
     templateUrl: './complete-mountain.component.html',
     standalone: false,
 })
-export class CompleteMountainComponent implements OnInit {
+export class CompleteMountainComponent implements OnInit, OnDestroy {
     @Input() plannedMountain?: PlannedMountain;
     @Input() existingRecord?: CompletedMountain;
     @Input() readonly = false;
@@ -47,6 +47,8 @@ export class CompleteMountainComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        document.body.classList.add('overflow-hidden');
+
         const record = this.existingRecord ?? new CompletedMountain();
         this.form = record.createForm(this.fb);
         this.rating = record.rating ?? 0;
@@ -54,6 +56,10 @@ export class CompleteMountainComponent implements OnInit {
         if (this.readonly) {
             this.form.disable();
         }
+    }
+
+    ngOnDestroy(): void {
+        document.body.classList.remove('overflow-hidden');
     }
 
     onRatingChange(value: number): void {
