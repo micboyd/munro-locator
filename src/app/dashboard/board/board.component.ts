@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
+import { Subject, of } from 'rxjs';
+import { catchError, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
 
 import { CompletedMountain } from '../../shared/models/Mountains/CompletedMountain';
 import { CompletedMountainsService } from '../../shared/services/completed-mountains.service';
@@ -103,7 +103,10 @@ export class BoardComponent implements OnInit {
                         9,
                         this.query.sort,
                         this.query.search
-                    ).pipe(finalize(() => (this._loading = false)))
+                    ).pipe(
+                        finalize(() => (this._loading = false)),
+                        catchError(() => of({ data: [], pagination: this._pagination }))
+                    )
                 )
             )
             .subscribe((res) => {

@@ -27,6 +27,10 @@ export class EditProfileComponent implements OnInit {
         private formBuilder: FormBuilder
     ) { }
 
+    get isNew(): boolean {
+        return !this.selectedUserProfile?.id;
+    }
+
     ngOnInit(): void {
         this.form = this.selectedUserProfile.createForm(this.formBuilder);
         this.previewUrl = this.selectedUserProfile.profileImage ?? null;

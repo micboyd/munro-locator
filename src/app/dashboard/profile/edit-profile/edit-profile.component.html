@@ -7,8 +7,13 @@
                 <i class="fa-solid fa-pen-to-square"></i>
             </span>
             <div>
+                @if (isNew) {
+                <h2 class="text-xl font-semibold text-neutral-900">Set up your profile</h2>
+                <p class="mt-1 text-sm text-neutral-600">Welcome! Tell us a bit about yourself to get started.</p>
+                } @else {
                 <h2 class="text-xl font-semibold text-neutral-900">Edit profile</h2>
                 <p class="mt-1 text-sm text-neutral-600">Update how your profile appears to others.</p>
+                }
             </div>
         </div>
 
@@ -113,16 +118,18 @@
             </div>
 
             <div class="flex flex-wrap gap-3">
+                @if (!isNew) {
                 <button type="button" (click)="cancelEdit()"
                     class="rounded-2xl border border-neutral-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-800 hover:bg-neutral-50 transition-colors duration-200">
                     Cancel
                 </button>
+                }
 
                 <button type="submit" [disabled]="form?.invalid"
                     class="rounded-2xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60">
                     <span class="inline-flex items-center gap-2">
                         <i class="fa-solid fa-floppy-disk"></i>
-                        Save changes
+                        @if (isNew) { Create profile } @else { Save changes }
                     </span>
                 </button>
             </div>
