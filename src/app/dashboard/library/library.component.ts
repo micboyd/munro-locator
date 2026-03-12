@@ -4,6 +4,7 @@ import { Observable, Subject, forkJoin, map } from 'rxjs';
 import { catchError, distinctUntilChanged, finalize, switchMap, tap } from 'rxjs/operators';
 
 import { Category } from '../../shared/models/Mountains/Category';
+import { CompletedMountainsService } from '../../shared/services/completed-mountains.service';
 import { HttpParams } from '@angular/common/http';
 import { Mountain } from '../../shared/models/Mountains/Mountain';
 import { PlannedMountainsService } from '../../shared/services/planned-mountains.service';
@@ -22,6 +23,7 @@ export class LibraryComponent implements OnInit {
     mapOpen = false;
     driveTimeMountain: Mountain | null = null;
     addedMountainIds = new Set<string>();
+    completedMountainIds = new Set<string>();
 
     private _mountains: PaginatedResponse<Mountain>;
     private _categories: Category[] = [];
@@ -45,6 +47,7 @@ export class LibraryComponent implements OnInit {
     constructor(
         private libraryService: LibraryService,
         private plannedMountainService: PlannedMountainsService,
+        private completedMountainsService: CompletedMountainsService,
         private toastService: ToastService
     ) { }
 
@@ -92,6 +95,11 @@ export class LibraryComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.completedMountainsService.getCompletedMountainsForCurrentUser()
+            .subscribe({
+                next: (data) => data.forEach(cm => this.completedMountainIds.add(cm.mountainId)),
+            });
+
         forkJoin({
             mountains: this.getMountains(),
             categories: this.getCategories(),
