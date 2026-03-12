@@ -220,6 +220,17 @@ export class BoardComponent implements OnInit {
             });
     }
 
+    openCompletedMap(): void {
+        this.mapOpen = true;
+        this._mapMountainsLoading = true;
+        this.completedMountainsService.getCompletedMountainsForCurrentUser()
+            .pipe(finalize(() => (this._mapMountainsLoading = false)))
+            .subscribe({
+                next: (data) => (this._mapMountains = data.map(cm => cm.mountain)),
+                error: () => (this._mapMountains = []),
+            });
+    }
+
     closeMap(): void {
         this.mapOpen = false;
     }
