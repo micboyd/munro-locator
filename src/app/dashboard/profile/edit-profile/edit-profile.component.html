@@ -1,132 +1,99 @@
-<!-- EDIT PROFILE (restyled to match Profile page) -->
-<section class="rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm">
-    <!-- Header -->
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-center gap-3">
-            <span class="grid h-11 w-11 place-items-center rounded-xl bg-neutral-100 text-neutral-800">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </span>
-            <div>
-                @if (isNew) {
-                <h2 class="text-xl font-semibold text-neutral-900">Set up your profile</h2>
-                <p class="mt-1 text-sm text-neutral-600">Welcome! Tell us a bit about yourself to get started.</p>
-                } @else {
-                <h2 class="text-xl font-semibold text-neutral-900">Edit profile</h2>
-                <p class="mt-1 text-sm text-neutral-600">Update how your profile appears to others.</p>
-                }
-            </div>
-        </div>
+<div class="space-y-6 pb-24">
 
-        <span class="shrink-0 rounded-full bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-700">
-            Public
-        </span>
+    <!-- Header -->
+    <div class="flex items-center justify-between gap-4">
+        <div>
+            <h2 class="text-2xl font-bold text-neutral-900">
+                @if (isNew) { Set up your profile } @else { Edit profile }
+            </h2>
+            <p class="mt-1.5 text-base text-neutral-500">
+                @if (isNew) { Welcome! Tell us a bit about yourself. } @else { Update how your profile appears. }
+            </p>
+        </div>
+        <span class="rounded-full bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-600">Public</span>
     </div>
 
     <!-- Form -->
-    <form class="mt-8 space-y-6" [formGroup]="form" (ngSubmit)="saveProfile()">
-        <!-- Profile image upload -->
-        <div class="rounded-2xl border border-neutral-200 bg-white p-5">
+    <form class="space-y-5" [formGroup]="form" (ngSubmit)="saveProfile()">
+
+        <!-- Profile image -->
+        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
             <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div class="flex items-center gap-5">
-                    <div class="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-neutral-100">
+                    <div class="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-neutral-100 ring-1 ring-black/5">
                         <img class="h-full w-full object-cover"
                             [src]="previewUrl || 'https://placehold.co/256x256?text=Photo'" alt="Profile photo" />
                     </div>
-
-                    <div class="min-w-0">
+                    <div>
                         <div class="text-base font-semibold text-neutral-900">Profile photo</div>
-                        <div class="mt-1 text-sm text-neutral-600">Upload a square image for best results</div>
+                        <div class="mt-1 text-sm text-neutral-500">Square image recommended</div>
                     </div>
                 </div>
-
                 <div class="flex flex-col gap-2 sm:items-end">
                     <label for="profileImage"
-                        class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-2xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors duration-200">
+                        class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-neutral-900 px-5 py-3 text-base font-semibold text-white transition-colors duration-150 hover:bg-neutral-700">
                         <i class="fa-solid fa-upload"></i>
-                        Upload image
+                        Upload
                     </label>
-
-                    <input id="profileImage" type="file" accept="image/*" class="hidden"
-                        (change)="onFileSelected($event)" />
-
-                    <p class="text-xs text-neutral-500">JPG, PNG, or WebP • Max 5MB</p>
+                    <input id="profileImage" type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
+                    <p class="text-sm text-neutral-400">JPG, PNG, WebP · Max 5MB</p>
                 </div>
             </div>
         </div>
 
         <!-- Name -->
-        <div class="rounded-2xl border border-neutral-200 bg-white p-5">
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <!-- First name -->
+        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <div>
-                    <label for="firstName" class="text-sm font-semibold text-neutral-800">First name</label>
-
-                    <div class="relative mt-2">
-                        <span
-                            class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-500">
+                    <label for="firstName" class="text-xs font-semibold uppercase tracking-wide text-neutral-500">First name</label>
+                    <div class="relative mt-2.5">
+                        <span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
                             <i class="fa-solid fa-user"></i>
                         </span>
-
                         <input id="firstName" type="text" placeholder="Michael" formControlName="firstName"
-                            class="w-full rounded-2xl border border-neutral-200 bg-white py-3 pl-11 pr-4 text-sm font-semibold text-neutral-900 outline-none transition-colors duration-200 focus:border-neutral-300" />
+                            class="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-3 pl-11 pr-4 text-base font-semibold text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200" />
                     </div>
                 </div>
-
-                <!-- Last name -->
                 <div>
-                    <label for="lastName" class="text-sm font-semibold text-neutral-800">Last name</label>
-
-                    <div class="relative mt-2">
-                        <span
-                            class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-500">
+                    <label for="lastName" class="text-xs font-semibold uppercase tracking-wide text-neutral-500">Last name</label>
+                    <div class="relative mt-2.5">
+                        <span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
                             <i class="fa-solid fa-id-card"></i>
                         </span>
-
                         <input id="lastName" type="text" placeholder="Boyd" formControlName="lastName"
-                            class="w-full rounded-2xl border border-neutral-200 bg-white py-3 pl-11 pr-4 text-sm font-semibold text-neutral-900 outline-none transition-colors duration-200 focus:border-neutral-300" />
+                            class="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-3 pl-11 pr-4 text-base font-semibold text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200" />
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Bio -->
-        <div class="rounded-2xl border border-neutral-200 bg-white p-5">
+        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
             <div class="flex items-start justify-between gap-4">
-                <div>
-                    <label for="bio" class="text-sm font-semibold text-neutral-800">Bio</label>
-                    <p class="mt-1 text-sm text-neutral-600">A short intro that appears on your profile.</p>
-                </div>
-
-                <span class="shrink-0 rounded-full bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-700">
-                    Optional
-                </span>
+                <label for="bio" class="text-xs font-semibold uppercase tracking-wide text-neutral-500">Bio</label>
+                <span class="rounded-full bg-neutral-100 px-3 py-1.5 text-sm font-semibold text-neutral-500">Optional</span>
             </div>
-
-            <textarea id="bio" rows="5"
+            <textarea id="bio" rows="4"
                 placeholder="Outdoors-first weekends. Prefer ridgelines, clear views, and early starts..."
                 formControlName="bio"
-                class="mt-4 w-full resize-none rounded-2xl border border-neutral-200 bg-white p-4 text-sm font-semibold text-neutral-900 outline-none transition-colors duration-200 focus:border-neutral-300"></textarea>
+                class="mt-4 w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 p-4 text-base text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200"></textarea>
         </div>
 
-        <!-- Footer / Actions -->
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div class="flex items-center gap-3 text-sm font-semibold text-neutral-700">
-                <span class="grid h-11 w-11 place-items-center rounded-xl bg-neutral-100 text-neutral-800">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </span>
-                Changes save to your public profile
+        <!-- Footer -->
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-2 text-base text-neutral-500">
+                <i class="fa-solid fa-shield-halved text-neutral-300"></i>
+                Saves to your public profile
             </div>
-
-            <div class="flex flex-wrap gap-3">
+            <div class="flex gap-3">
                 @if (!isNew) {
                 <button type="button" (click)="cancelEdit()"
-                    class="rounded-2xl border border-neutral-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-800 hover:bg-neutral-50 transition-colors duration-200">
+                    class="rounded-full border border-neutral-200 bg-white px-6 py-3 text-base font-semibold text-neutral-700 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50">
                     Cancel
                 </button>
                 }
-
                 <button type="submit" [disabled]="form?.invalid"
-                    class="rounded-2xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white hover:bg-neutral-800 transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60">
+                    class="rounded-full bg-neutral-900 px-6 py-3 text-base font-semibold text-white transition-colors duration-150 hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-50">
                     <span class="inline-flex items-center gap-2">
                         <i class="fa-solid fa-floppy-disk"></i>
                         @if (isNew) { Create profile } @else { Save changes }
@@ -134,5 +101,6 @@
                 </button>
             </div>
         </div>
+
     </form>
-</section>
+</div>

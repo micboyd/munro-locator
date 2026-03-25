@@ -7,7 +7,6 @@ import { AuthenticationService } from '../services/authentication.service';
 	providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-	jwtHelper: any;
 	constructor(private authenticationService: AuthenticationService, private router: Router) {}
 
 	canActivate(): boolean {

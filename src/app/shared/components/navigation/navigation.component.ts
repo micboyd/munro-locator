@@ -27,9 +27,14 @@ export class NavigationComponent {
 
     loadProfile() {
         this._profileLoading = true;
-        this.profileService.getProfileByUserId().subscribe((profile) => {
-            this._profile = profile;
-            this._profileLoading = false;
+        this.profileService.getProfileByUserId().subscribe({
+            next: (profile) => {
+                this._profile = profile;
+                this._profileLoading = false;
+            },
+            error: () => {
+                this._profileLoading = false;
+            }
         });
     }
 

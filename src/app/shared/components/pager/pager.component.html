@@ -1,39 +1,37 @@
 @if (pagination?.totalPages > 1) {
-<div class="my-8 sm:my-12 flex justify-center">
-    <nav class="flex items-center gap-2 text-base">
+<div class="my-12 flex justify-center">
+    <nav class="flex items-center gap-2">
 
         <!-- Prev -->
         <button type="button" (click)="prev()" [disabled]="!pagination?.hasPrevPage"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 transition-all duration-150 cursor-pointer"
-            [class.opacity-40]="!pagination?.hasPrevPage" [class.cursor-not-allowed]="!pagination?.hasPrevPage"
-            [class.hover:bg-neutral-800]="pagination?.hasPrevPage">
-            <i class="fa-solid fa-chevron-left text-white"></i>
+            class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-600 transition-all duration-150 hover:border-neutral-300 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
         </button>
 
         @for (item of items; track item) {
-
         @if (item === 'dots') {
-        <span class="px-2 text-neutral-400 flex items-center">
+        <span class="inline-flex h-11 w-11 items-center justify-center text-neutral-400">
             <i class="fa-solid fa-ellipsis"></i>
         </span>
         } @else {
         <button type="button" (click)="goTo(item)"
-            class="w-10 h-10 flex items-center justify-center rounded-full transition-all duration-150 cursor-pointer"
-            [class.bg-neutral-900]="item === pagination.page" [class.text-white]="item === pagination.page"
-            [class.bg-neutral-200]="item !== pagination.page" [class.text-black]="item !== pagination.page"
-            [class.hover:bg-neutral-300]="item !== pagination.page">
+            class="inline-flex h-11 w-11 items-center justify-center rounded-full text-base font-semibold transition-all duration-150 cursor-pointer"
+            [class.bg-neutral-900]="item === pagination.page"
+            [class.text-white]="item === pagination.page"
+            [class.border]="item !== pagination.page"
+            [class.border-neutral-200]="item !== pagination.page"
+            [class.bg-white]="item !== pagination.page"
+            [class.text-neutral-600]="item !== pagination.page"
+            [class.hover:bg-neutral-50]="item !== pagination.page">
             {{ item }}
         </button>
         }
-
         }
 
         <!-- Next -->
         <button type="button" (click)="next()" [disabled]="!pagination?.hasNextPage"
-            class="w-10 h-10 flex items-center justify-center rounded-full bg-neutral-900 transition-all duration-150 cursor-pointer"
-            [class.opacity-40]="!pagination?.hasNextPage" [class.cursor-not-allowed]="!pagination?.hasNextPage"
-            [class.hover:bg-neutral-800]="pagination?.hasNextPage">
-            <i class="fa-solid fa-chevron-right text-white"></i>
+            class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-600 transition-all duration-150 hover:border-neutral-300 hover:bg-neutral-50 disabled:opacity-40 disabled:cursor-not-allowed">
+            <i class="fa-solid fa-chevron-right text-sm"></i>
         </button>
 
     </nav>

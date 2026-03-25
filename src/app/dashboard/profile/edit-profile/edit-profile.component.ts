@@ -61,14 +61,16 @@ export class EditProfileComponent implements OnInit {
         }
 
         if (this.selectedUserProfile.id) {
-            this.profileService.updateProfileById(this.selectedUserProfile.id, fd).subscribe((p) => {
-                this.saved.emit(p);
+            this.profileService.updateProfileById(this.selectedUserProfile.id, fd).subscribe({
+                next: (p) => this.saved.emit(p),
+                error: () => {}
             });
         } else {
             fd.append('userId', this.authService.userId);
 
-            this.profileService.createProfile(fd).subscribe((p) => {
-                this.saved.emit(p);
+            this.profileService.createProfile(fd).subscribe({
+                next: (p) => this.saved.emit(p),
+                error: () => {}
             });
         }
     }

@@ -57,10 +57,6 @@ export class BoardComponent implements OnInit {
         search: '',
     };
 
-    get track() {
-        return Math.random();
-    }
-
     get plannedMountains() {
         return this._plannedMountains;
     }

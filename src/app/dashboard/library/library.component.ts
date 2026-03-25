@@ -98,6 +98,7 @@ export class LibraryComponent implements OnInit {
         this.completedMountainsService.getCompletedMountainsForCurrentUser()
             .subscribe({
                 next: (data) => data.forEach(cm => this.completedMountainIds.add(cm.mountainId)),
+                error: () => {}
             });
 
         forkJoin({

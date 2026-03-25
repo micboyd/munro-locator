@@ -1,249 +1,235 @@
 <app-container>
-    <app-hero heroTitle="Your Dashboard" heroSubtitle="Plan & Complete mountains"></app-hero>
-    <div class="mb-30">
+    <app-hero heroTitle="Your Board" heroSubtitle="Plan mountains and track every summit"></app-hero>
+    <div class="pb-24">
 
-        <app-tabs [tabs]="cateogries" (activeTabChange)="changeTab($event)"></app-tabs>
+        <app-tabs [tabs]="cateogries" [selectedTab]="activeTab" (activeTabChange)="changeTab($event)"></app-tabs>
 
-        <!-- Board -->
-        <div>
+        <!-- Planned -->
+        @if (activeTab === 'Planned') {
+        <section>
+            <app-mountain-controls
+                [sortOptions]="sortOptions"
+                [sortValue]="query.sort"
+                [showMap]="true"
+                [total]="pagination?.total ?? 0"
+                (sortChange)="onSortChange($event)"
+                (searchChange)="onSearchChange($event)"
+                (mapClick)="openMap()">
+            </app-mountain-controls>
 
-            <!-- Planned (dynamic) -->
-            @if (activeTab === 'Planned') {
-            <section>
-
-                <app-mountain-controls
-                    [sortOptions]="sortOptions"
-                    [sortValue]="query.sort"
-                    [showMap]="true"
-                    [total]="pagination?.total ?? 0"
-                    (sortChange)="onSortChange($event)"
-                    (searchChange)="onSearchChange($event)"
-                    (mapClick)="openMap()">
-                </app-mountain-controls>
-
-                @if (loading) {
-                <app-loading-indicator></app-loading-indicator>
-                } @else if (plannedMountains.length === 0) {
-                <div class="rounded-xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
-                    No planned mountains yet. Add one from the library.
+            @if (loading) {
+            <app-loading-indicator></app-loading-indicator>
+            } @else if (plannedMountains.length === 0) {
+            <div class="rounded-2xl bg-white px-8 py-16 text-center shadow-sm ring-1 ring-black/5">
+                <div class="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-neutral-100 text-neutral-400 text-2xl">
+                    <i class="fa-solid fa-mountain"></i>
                 </div>
-                } @else {
-                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                    @for (pm of plannedMountains; track track) {
-                    <article
-                        class="group relative bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg shadow-sm">
+                <p class="text-lg font-semibold text-neutral-900">No planned mountains yet</p>
+                <p class="mt-2 text-base text-neutral-500">Head to the Library to add your first hill.</p>
+            </div>
+            } @else {
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                @for (pm of plannedMountains; track pm._id) {
+                <article class="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
 
-                        <!-- Delete button -->
-                        <button type="button"
-                            (click)="deletedPlannedMountain(pm._id)"
-                            class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 border border-neutral-200 text-neutral-500 hover:text-red-500 hover:border-red-200 flex items-center justify-center transition">
-                            <i class="fa-solid fa-trash text-xs"></i>
-                        </button>
+                    <!-- Delete button -->
+                    <button type="button"
+                        (click)="deletedPlannedMountain(pm._id)"
+                        class="absolute top-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/90 text-neutral-400 shadow-sm ring-1 ring-black/10 transition-colors duration-150 hover:text-red-500 hover:ring-red-200">
+                        <i class="fa-solid fa-trash text-sm"></i>
+                    </button>
 
-                        <!-- Image -->
-                        <div class="relative aspect-[7/5] bg-neutral-200 overflow-hidden">
-                            <img [src]="pm.mountain?.imageUrl" [alt]="pm.mountain?.name"
-                                class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+                    <!-- Image -->
+                    <div class="relative aspect-[7/5] overflow-hidden bg-neutral-100">
+                        <img [src]="pm.mountain?.imageUrl" [alt]="pm.mountain?.name"
+                            class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
 
-                            <!-- Status badge -->
-                            <div class="absolute top-3 left-3">
+                        <!-- Status badge -->
+                        <div class="absolute top-3 left-3">
+                            @if (pm.mountain?.status === 'completed') {
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-[#708C69] px-3 py-1.5 text-sm font-semibold text-white shadow-sm">
+                                <i class="fa-solid fa-check text-xs"></i> Completed
+                            </span>
+                            } @else {
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-sm font-semibold text-neutral-700 shadow-sm ring-1 ring-black/10 backdrop-blur-sm">
+                                <i class="fa-solid fa-calendar text-xs"></i> Planned
+                            </span>
+                            }
+                        </div>
+
+                        <!-- Country -->
+                        <div class="absolute bottom-3 right-3">
+                            <span class="rounded-full bg-black/60 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
+                                {{ pm.mountain?.country }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="flex flex-1 flex-col gap-4 p-6">
+
+                        <!-- Categories -->
+                        <div class="flex flex-wrap gap-2">
+                            @for (cat of (pm.mountain?.category ?? []); track cat) {
+                            <span class="rounded-full bg-neutral-100 px-3 py-1 text-sm font-medium text-neutral-500">{{ cat }}</span>
+                            }
+                        </div>
+
+                        <!-- Title + height -->
+                        <div class="flex items-start justify-between gap-3">
+                            <h2 class="text-lg font-bold text-neutral-900 leading-snug">{{ pm.mountain?.name }}</h2>
+                            <span class="shrink-0 rounded-full bg-brand/10 px-3 py-1 text-sm font-semibold text-brand">{{ pm.mountain?.height }}m</span>
+                        </div>
+
+                        <!-- Planned date -->
+                        <div class="flex items-center gap-2 text-base text-neutral-500">
+                            <i class="fa-regular fa-calendar text-brand/40 text-sm"></i>
+                            <span>Target: {{ pm.plannedDate | date:'MMM yyyy' }}</span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="mt-auto flex gap-3 pt-1">
+                            <button type="button"
+                                (click)="pm.mountain?.status !== 'completed' && startMountain(pm)"
+                                [disabled]="pm.mountain?.status === 'completed'"
+                                [class]="pm.mountain?.status === 'completed'
+                                    ? 'flex-1 rounded-full bg-[#708C69] py-3 text-base font-semibold text-white cursor-default transition-colors duration-150'
+                                    : 'flex-1 rounded-full bg-brand py-3 text-base font-semibold text-white transition-colors duration-150 hover:bg-[#012d42]'">
                                 @if (pm.mountain?.status === 'completed') {
-                                <span class="text-xs font-semibold bg-[#708C69] text-white px-2.5 py-1 rounded-md">
-                                    <i class="fa-solid fa-check mr-1"></i>Completed
-                                </span>
+                                    <span class="flex items-center justify-center gap-2"><i class="fa-solid fa-check text-sm"></i> Completed</span>
                                 } @else {
-                                <span class="text-xs font-semibold bg-white/90 text-neutral-800 px-2.5 py-1 rounded-md border border-neutral-200">
-                                    Planned
-                                </span>
+                                    Start
                                 }
-                            </div>
-
-                            <!-- Country badge -->
-                            <div class="absolute bottom-3 right-3">
-                                <span
-                                    class="text-xs font-medium bg-black/70 text-white px-2.5 py-1 rounded-md backdrop-blur">
-                                    {{ pm.mountain?.country }}
-                                </span>
-                            </div>
+                            </button>
+                            <button type="button" (click)="openMap(pm.mountain)"
+                                class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-400 transition-colors duration-150 hover:border-brand/30 hover:bg-brand/5 hover:text-brand">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </button>
                         </div>
 
-                        <!-- Content -->
-                        <div class="p-5 space-y-3">
-
-                            <!-- Categories -->
-                            <div class="flex flex-wrap gap-2 text-xs text-neutral-500 font-medium">
-                                @for (cat of (pm.mountain?.category ?? []); track cat) {
-                                <span class="bg-neutral-100 px-2.5 py-1 rounded-md">{{ cat }}</span>
-                                }
-                            </div>
-
-                            <!-- Title + height -->
-                            <div class="flex items-start justify-between gap-3">
-                                <h2 class="text-base font-semibold text-neutral-900 leading-snug">
-                                    {{ pm.mountain?.name }}
-                                </h2>
-                                <span class="text-sm font-medium text-neutral-600 whitespace-nowrap">
-                                    {{ pm.mountain?.height }} m
-                                </span>
-                            </div>
-
-                            <!-- Planned date -->
-                            <div class="text-sm text-neutral-600">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-regular fa-calendar text-neutral-400"></i>
-                                    <span>Target: {{ pm.plannedDate | date:'MMM yyyy' }}</span>
-                                </div>
-                            </div>
-
-                            <!-- Actions -->
-                            <div class="flex gap-3 pt-2">
-                                <button type="button"
-                                    (click)="pm.mountain?.status !== 'completed' && startMountain(pm)"
-                                    [disabled]="pm.mountain?.status === 'completed'"
-                                    [class]="pm.mountain?.status === 'completed'
-                                        ? 'w-full px-5 py-3 rounded-full bg-[#708C69] text-white text-sm font-medium inline-flex items-center justify-center gap-2 cursor-default transition-colors duration-200'
-                                        : 'w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200'">
-                                    @if (pm.mountain?.status === 'completed') {
-                                        <i class="fa-solid fa-check"></i> Completed
-                                    } @else {
-                                        Start
-                                    }
-                                </button>
-                                <button type="button" (click)="openMap(pm.mountain)"
-                                    class="px-5 py-3 rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors duration-200 inline-flex items-center justify-center">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                </button>
-                            </div>
-
-                        </div>
-                    </article>
-                    }
-                </div>
+                    </div>
+                </article>
                 }
-
-                @if (pagination && pagination.totalPages > 1) {
-                <app-pager (pageChange)="onPageChange($event)" [pagination]="pagination"></app-pager>
-                }
-
-            </section>
+            </div>
             }
 
-            <!-- Completed (dynamic) -->
-            @if (activeTab === 'Completed') {
-            <section>
+            @if (pagination && pagination.totalPages > 1) {
+            <app-pager (pageChange)="onPageChange($event)" [pagination]="pagination"></app-pager>
+            }
+        </section>
+        }
 
-                <app-mountain-controls
-                    [sortOptions]="completedSortOptions"
-                    [sortValue]="completedQuery.sort"
-                    [showMap]="true"
-                    [total]="completedPagination?.total ?? 0"
-                    (sortChange)="onCompletedSortChange($event)"
-                    (searchChange)="onCompletedSearchChange($event)"
-                    (mapClick)="openCompletedMap()">
-                </app-mountain-controls>
+        <!-- Completed -->
+        @if (activeTab === 'Completed') {
+        <section>
+            <app-mountain-controls
+                [sortOptions]="completedSortOptions"
+                [sortValue]="completedQuery.sort"
+                [showMap]="true"
+                [total]="completedPagination?.total ?? 0"
+                (sortChange)="onCompletedSortChange($event)"
+                (searchChange)="onCompletedSearchChange($event)"
+                (mapClick)="openCompletedMap()">
+            </app-mountain-controls>
 
-                @if (completedLoading) {
-                <app-loading-indicator></app-loading-indicator>
-                } @else if (completedMountains.length === 0) {
-                <div class="rounded-xl border border-neutral-200 bg-white p-6 text-sm text-neutral-600">
-                    No completed mountains yet. Hit Start on a planned mountain to log your first summit!
+            @if (completedLoading) {
+            <app-loading-indicator></app-loading-indicator>
+            } @else if (completedMountains.length === 0) {
+            <div class="rounded-2xl bg-white px-8 py-16 text-center shadow-sm ring-1 ring-black/5">
+                <div class="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-neutral-100 text-neutral-400 text-2xl">
+                    <i class="fa-solid fa-flag-checkered"></i>
                 </div>
-                } @else {
-                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                    @for (cm of completedMountains; track cm._id) {
-                    <article
-                        class="group relative bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg shadow-sm">
+                <p class="text-lg font-semibold text-neutral-900">No completed mountains yet</p>
+                <p class="mt-2 text-base text-neutral-500">Hit Start on a planned mountain to log your first summit!</p>
+            </div>
+            } @else {
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                @for (cm of completedMountains; track cm._id) {
+                <article class="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
 
-                        <!-- Delete button -->
-                        <button type="button"
-                            (click)="deleteCompletedMountain(cm._id)"
-                            class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/90 border border-neutral-200 text-neutral-500 hover:text-red-500 hover:border-red-200 flex items-center justify-center transition">
-                            <i class="fa-solid fa-trash text-xs"></i>
-                        </button>
+                    <!-- Delete button -->
+                    <button type="button"
+                        (click)="deleteCompletedMountain(cm._id)"
+                        class="absolute top-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-white/90 text-neutral-400 shadow-sm ring-1 ring-black/10 transition-colors duration-150 hover:text-red-500 hover:ring-red-200">
+                        <i class="fa-solid fa-trash text-sm"></i>
+                    </button>
 
-                        <!-- Image -->
-                        <div class="relative aspect-[7/5] bg-neutral-200 overflow-hidden">
-                            <img [src]="cm.mountain?.imageUrl" [alt]="cm.mountain?.name"
-                                class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+                    <!-- Image -->
+                    <div class="relative aspect-[7/5] overflow-hidden bg-neutral-100">
+                        <img [src]="cm.mountain?.imageUrl" [alt]="cm.mountain?.name"
+                            class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
 
-                            <!-- Status badge -->
-                            <div class="absolute top-3 left-3">
-                                <span class="text-xs font-semibold bg-[#708C69] text-white px-2.5 py-1 rounded-md">
-                                    <i class="fa-solid fa-check mr-1"></i>Completed
-                                </span>
+                        <!-- Status badge -->
+                        <div class="absolute top-3 left-3">
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-[#708C69] px-3 py-1.5 text-sm font-semibold text-white shadow-sm">
+                                <i class="fa-solid fa-check text-xs"></i> Completed
+                            </span>
+                        </div>
+
+                        <!-- Country -->
+                        @if (cm.mountain?.country) {
+                        <div class="absolute bottom-3 right-3">
+                            <span class="rounded-full bg-black/60 px-3 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
+                                {{ cm.mountain?.country }}
+                            </span>
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Content -->
+                    <div class="flex flex-1 flex-col gap-4 p-6">
+
+                        <!-- Categories -->
+                        <div class="flex flex-wrap gap-2">
+                            @for (cat of (cm.mountain?.category ?? []); track cat) {
+                            <span class="rounded-full bg-neutral-100 px-3 py-1 text-sm font-medium text-neutral-500">{{ cat }}</span>
+                            }
+                        </div>
+
+                        <!-- Title + height -->
+                        <div class="flex items-start justify-between gap-3">
+                            <h2 class="text-lg font-bold text-neutral-900 leading-snug">{{ cm.mountain?.name }}</h2>
+                            <span class="shrink-0 rounded-full bg-brand/10 px-3 py-1 text-sm font-semibold text-brand">{{ cm.mountain?.height }}m</span>
+                        </div>
+
+                        <!-- Date + rating -->
+                        <div class="space-y-1.5 text-base text-neutral-500">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-regular fa-calendar text-neutral-300 text-sm"></i>
+                                <span>{{ cm.dateCompleted | date:'MMM d, yyyy' }}</span>
                             </div>
-
-                            <!-- Country badge -->
-                            @if (cm.mountain?.country) {
-                            <div class="absolute bottom-3 right-3">
-                                <span
-                                    class="text-xs font-medium bg-black/70 text-white px-2.5 py-1 rounded-md backdrop-blur">
-                                    {{ cm.mountain?.country }}
-                                </span>
+                            @if (cm.rating > 0) {
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-star text-amber-400 text-sm"></i>
+                                <span class="font-semibold text-neutral-700">{{ cm.rating }}<span class="font-normal text-neutral-400">/5</span></span>
                             </div>
                             }
                         </div>
 
-                        <!-- Content -->
-                        <div class="p-5 space-y-3">
-
-                            <!-- Categories -->
-                            <div class="flex flex-wrap gap-2 text-xs text-neutral-500 font-medium">
-                                @for (cat of (cm.mountain?.category ?? []); track cat) {
-                                <span class="bg-neutral-100 px-2.5 py-1 rounded-md">{{ cat }}</span>
-                                }
-                            </div>
-
-                            <!-- Title + height -->
-                            <div class="flex items-start justify-between gap-3">
-                                <h2 class="text-base font-semibold text-neutral-900 leading-snug">
-                                    {{ cm.mountain?.name }}
-                                </h2>
-                                <span class="text-sm font-medium text-neutral-600 whitespace-nowrap">
-                                    {{ cm.mountain?.height }} m
-                                </span>
-                            </div>
-
-                            <!-- Date + rating -->
-                            <div class="space-y-1 text-sm text-neutral-600">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-regular fa-calendar text-neutral-400"></i>
-                                    <span>Completed: {{ cm.dateCompleted | date:'MMM yyyy' }}</span>
-                                </div>
-                                @if (cm.rating > 0) {
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-solid fa-star text-amber-400 text-xs"></i>
-                                    <span>{{ cm.rating }} / 5</span>
-                                </div>
-                                }
-                            </div>
-
-                            <!-- Actions -->
-                            <div class="flex gap-3 pt-2">
-                                <button type="button" (click)="viewMountain(cm)"
-                                    class="w-full px-5 py-3 rounded-full bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 transition-colors duration-200">
-                                    View log
-                                </button>
-                                <button type="button" (click)="openMap(cm.mountain)"
-                                    class="px-5 py-3 rounded-full bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors duration-200 inline-flex items-center justify-center">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                </button>
-                            </div>
-
+                        <!-- Actions -->
+                        <div class="mt-auto flex gap-3 pt-1">
+                            <button type="button" (click)="viewMountain(cm)"
+                                class="flex-1 rounded-full bg-brand py-3 text-base font-semibold text-white transition-colors duration-150 hover:bg-[#012d42]">
+                                View log
+                            </button>
+                            <button type="button" (click)="openMap(cm.mountain)"
+                                class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-400 transition-colors duration-150 hover:border-brand/30 hover:bg-brand/5 hover:text-brand">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </button>
                         </div>
-                    </article>
-                    }
-                </div>
-                }
 
-                @if (completedPagination && completedPagination.totalPages > 1) {
-                <app-pager (pageChange)="onCompletedPageChange($event)" [pagination]="completedPagination"></app-pager>
+                    </div>
+                </article>
                 }
-
-            </section>
+            </div>
             }
 
-        </div>
+            @if (completedPagination && completedPagination.totalPages > 1) {
+            <app-pager (pageChange)="onCompletedPageChange($event)" [pagination]="completedPagination"></app-pager>
+            }
+        </section>
+        }
+
     </div>
 </app-container>
 

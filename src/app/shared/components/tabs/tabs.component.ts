@@ -1,24 +1,23 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, Output } from "@angular/core";
 
 @Component({
 	selector: "app-tabs",
 	standalone: false,
 	templateUrl: "./tabs.component.html",
 })
-export class TabsComponent {
+export class TabsComponent implements OnChanges {
 	@Input() tabs: string[] = [];
+	@Input() selectedTab = "";
 	@Output() activeTabChange = new EventEmitter<string>();
 
 	activeTab = "";
 
 	ngOnChanges(): void {
-		if (this.tabs.length && !this.activeTab) {
+		if (this.selectedTab && this.selectedTab !== this.activeTab) {
+			this.activeTab = this.selectedTab;
+		} else if (this.tabs.length && !this.activeTab) {
 			this.setActive(this.tabs[0]);
 		}
-	}
-
-	get track() {
-		return Math.random();
 	}
 
 	setActive(tab: string): void {

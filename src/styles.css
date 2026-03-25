@@ -2,41 +2,48 @@
 
 body {
     font-family: 'basic-sans', sans-serif;
+    background-color: #F7F8FA;
+    color: #111827;
 }
 
 @theme {
   --color-midnight: #183446;
+  --color-brand: #013D5A;
+  --color-herb: #708C69;
+  --color-marigold: #F4A258;
+}
+
+.nav-link-active {
+    color: #013D5A;
+    border-color: #013D5A;
 }
 
 :root {
-  --midnight: #013D5A;   /* primary dark */
-  --lionsmane: #FCF3E3;  /* primary light */
-  --celeste: #BDD3CE;    /* secondary light */
-  --herb: #708C69;       /* secondary green */
-  --marigold: #F4A258;   /* accent */
+  --midnight: #013D5A;
+  --lionsmane: #FCF3E3;
+  --celeste: #BDD3CE;
+  --herb: #708C69;
+  --marigold: #F4A258;
 }
 
-/* Optional: good default text selection */
 ::selection {
   background: var(--marigold);
   color: #0b0b0b;
 }
 
 :root {
-  --tw-midnight: 1 61 90;     /* #013D5A */
-  --tw-lionsmane: 252 243 227;/* #FCF3E3 */
-  --tw-celeste: 189 211 206;  /* #BDD3CE */
-  --tw-herb: 112 140 105;     /* #708C69 */
-  --tw-marigold: 244 162 88;  /* #F4A258 */
+  --tw-midnight: 1 61 90;
+  --tw-lionsmane: 252 243 227;
+  --tw-celeste: 189 211 206;
+  --tw-herb: 112 140 105;
+  --tw-marigold: 244 162 88;
 }
 
-/* Make Leaflet popups use the same font as the app */
 .leaflet-popup,
 .leaflet-popup * {
     font-family: inherit;
 }
 
-Or explicitly match your app font
 .leaflet-popup-content-wrapper,
 .leaflet-popup-content {
     font-family: var(--app-font, Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif);

@@ -6,6 +6,8 @@ import { GoalRequest } from '../../shared/models/Profile/GoalRequest';
 import { GoalResponse } from '../../shared/models/Profile/GoalResponse';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ProfileStats } from '../../shared/models/Profile/ProfileStats';
+import { RecentActivity, RecentActivityResponse } from '../../shared/models/Profile/RecentActivity';
 import { UserProfile } from '../../shared/models/Profile/UserProfile';
 import { UserProfileRequest } from '../../shared/models/Profile/UserProfileRequest';
 import { UserProfileResponse } from '../../shared/models/Profile/UserProfileResponse';
@@ -19,6 +21,8 @@ export class ProfileService {
 
     private readonly _profileUrl = `${this._apiUrl}/profile/user-profile`;
     private readonly _goalsUrl = `${this._apiUrl}/profile/goals`;
+    private readonly _recentActivitiesUrl = `${this._apiUrl}/profile/recent-activities`;
+    private readonly _statsUrl = `${this._apiUrl}/profile/stats`;
 
     constructor(
         private http: HttpClient,
@@ -65,6 +69,34 @@ export class ProfileService {
         return this.http.delete<{ message: string; id: string }>(
             `${this._profileUrl}/${encodeURIComponent(id)}`
         );
+    }
+
+    // =========================
+    // ✅ STATS
+    // =========================
+
+    /**
+     * GET /stats?userId=...
+     * Fetch aggregated stats for the current user
+     */
+    getStatsByUserId(): Observable<ProfileStats> {
+        const userId = encodeURIComponent(this.authService.userId);
+        return this.http.get<ProfileStats>(`${this._statsUrl}?userId=${userId}`);
+    }
+
+    // =========================
+    // ✅ RECENT ACTIVITIES
+    // =========================
+
+    /**
+     * GET /recent-activities?userId=...&limit=...
+     * Returns merged chronological list of completed + planned activities
+     */
+    getRecentActivities(limit = 5): Observable<RecentActivity[]> {
+        const userId = encodeURIComponent(this.authService.userId);
+        return this.http
+            .get<RecentActivityResponse>(`${this._recentActivitiesUrl}?userId=${userId}&limit=${limit}`)
+            .pipe(map((res) => res.data));
     }
 
     // =========================

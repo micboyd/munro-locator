@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { OpenMeteoResponse, WeatherService } from '../../services/weather.service';
 
 
@@ -17,7 +17,10 @@ type CardModel = {
 	templateUrl: './weather.component.html',
 	standalone: false,
 })
-export class WeatherComponent implements OnInit {
+export class WeatherComponent implements OnInit, OnChanges {
+	@Input() lat!: number;
+	@Input() lon!: number;
+
 	loading = true;
 	error: string | null = null;
 
@@ -81,12 +84,29 @@ export class WeatherComponent implements OnInit {
 		return 'likely rain';
 	}
 
-	ngOnInit() {
-		this.weather.getForecast(56.8169321, -5.1135336).subscribe({
+	ngOnInit(): void {
+		this.fetchForecast();
+	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		if ((changes['lat'] || changes['lon']) && !changes['lat']?.firstChange) {
+			this.fetchForecast();
+		}
+	}
+
+	private fetchForecast(): void {
+		if (this.lat == null || this.lon == null) return;
+		this.loading = true;
+		this.error = null;
+		this.weather.getForecast(this.lat, this.lon).subscribe({
 			next: (data) => {
 				this.raw = data;
 				this.card = this.buildCardModel(data);
 				this.nextHours = this.buildNextHours(data, 8);
+				this.loading = false;
+			},
+			error: () => {
+				this.error = 'Unable to load forecast.';
 				this.loading = false;
 			}
 		});

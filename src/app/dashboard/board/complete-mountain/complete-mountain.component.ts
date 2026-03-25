@@ -96,9 +96,6 @@ export class CompleteMountainComponent implements OnInit, OnDestroy {
             summitPhotos: this.selectedFiles,
         };
 
-        console.log(this.form.value);
-        console.log('CompletedMountainRequest:', request);
-
         this.saving = true;
 
         const call$ = this.isNew
