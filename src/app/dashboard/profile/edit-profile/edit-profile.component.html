@@ -1,100 +1,100 @@
-<div class="space-y-6 pb-24">
+<div class="space-y-5 pb-24">
 
     <!-- Header -->
     <div class="flex items-center justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-neutral-900">
+            <h2 class="text-2xl font-bold text-neutral-950">
                 @if (isNew) { Set up your profile } @else { Edit profile }
             </h2>
-            <p class="mt-1.5 text-base text-neutral-500">
+            <p class="mt-1 text-sm text-neutral-400">
                 @if (isNew) { Welcome! Tell us a bit about yourself. } @else { Update how your profile appears. }
             </p>
         </div>
-        <span class="rounded-full bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-600">Public</span>
+        <span class="rounded-full bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-500">Public</span>
     </div>
 
     <!-- Form -->
-    <form class="space-y-5" [formGroup]="form" (ngSubmit)="saveProfile()">
+    <form class="space-y-4" [formGroup]="form" (ngSubmit)="saveProfile()">
 
         <!-- Profile image -->
-        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-                <div class="flex items-center gap-5">
-                    <div class="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-neutral-100 ring-1 ring-black/5">
+        <div class="rounded-2xl bg-white p-5 border border-neutral-100">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="h-16 w-16 shrink-0 overflow-hidden rounded-2xl bg-neutral-100 border border-neutral-200">
                         <img class="h-full w-full object-cover"
                             [src]="previewUrl || 'https://placehold.co/256x256?text=Photo'" alt="Profile photo" />
                     </div>
                     <div>
-                        <div class="text-base font-semibold text-neutral-900">Profile photo</div>
-                        <div class="mt-1 text-sm text-neutral-500">Square image recommended</div>
+                        <div class="text-sm font-semibold text-neutral-900">Profile photo</div>
+                        <div class="mt-0.5 text-xs text-neutral-400">Square image recommended</div>
                     </div>
                 </div>
-                <div class="flex flex-col gap-2 sm:items-end">
+                <div class="flex flex-col gap-1.5 sm:items-end">
                     <label for="profileImage"
-                        class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-neutral-900 px-5 py-3 text-base font-semibold text-white transition-colors duration-150 hover:bg-neutral-700">
-                        <i class="fa-solid fa-upload"></i>
+                        class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-neutral-950 px-4 py-2 text-sm font-semibold text-white transition-colors duration-150 hover:bg-neutral-800">
+                        <i class="fa-solid fa-upload text-xs"></i>
                         Upload
                     </label>
                     <input id="profileImage" type="file" accept="image/*" class="hidden" (change)="onFileSelected($event)" />
-                    <p class="text-sm text-neutral-400">JPG, PNG, WebP · Max 5MB</p>
+                    <p class="text-xs text-neutral-400">JPG, PNG, WebP · Max 5MB</p>
                 </div>
             </div>
         </div>
 
         <!-- Name -->
-        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div class="rounded-2xl bg-white p-5 border border-neutral-100">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                    <label for="firstName" class="text-xs font-semibold uppercase tracking-wide text-neutral-500">First name</label>
-                    <div class="relative mt-2.5">
+                    <label for="firstName" class="text-xs font-semibold uppercase tracking-wide text-neutral-400">First name</label>
+                    <div class="relative mt-2">
                         <span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
-                            <i class="fa-solid fa-user"></i>
+                            <i class="fa-solid fa-user text-sm"></i>
                         </span>
                         <input id="firstName" type="text" placeholder="Michael" formControlName="firstName"
-                            class="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-3 pl-11 pr-4 text-base font-semibold text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200" />
+                            class="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-4 text-sm font-semibold text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200" />
                     </div>
                 </div>
                 <div>
-                    <label for="lastName" class="text-xs font-semibold uppercase tracking-wide text-neutral-500">Last name</label>
-                    <div class="relative mt-2.5">
+                    <label for="lastName" class="text-xs font-semibold uppercase tracking-wide text-neutral-400">Last name</label>
+                    <div class="relative mt-2">
                         <span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
-                            <i class="fa-solid fa-id-card"></i>
+                            <i class="fa-solid fa-id-card text-sm"></i>
                         </span>
                         <input id="lastName" type="text" placeholder="Boyd" formControlName="lastName"
-                            class="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-3 pl-11 pr-4 text-base font-semibold text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200" />
+                            class="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-4 text-sm font-semibold text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200" />
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Bio -->
-        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
+        <div class="rounded-2xl bg-white p-5 border border-neutral-100">
             <div class="flex items-start justify-between gap-4">
-                <label for="bio" class="text-xs font-semibold uppercase tracking-wide text-neutral-500">Bio</label>
-                <span class="rounded-full bg-neutral-100 px-3 py-1.5 text-sm font-semibold text-neutral-500">Optional</span>
+                <label for="bio" class="text-xs font-semibold uppercase tracking-wide text-neutral-400">Bio</label>
+                <span class="rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold text-neutral-500">Optional</span>
             </div>
             <textarea id="bio" rows="4"
                 placeholder="Outdoors-first weekends. Prefer ridgelines, clear views, and early starts..."
                 formControlName="bio"
-                class="mt-4 w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 p-4 text-base text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200"></textarea>
+                class="mt-3 w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200"></textarea>
         </div>
 
         <!-- Footer -->
         <div class="flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center gap-2 text-base text-neutral-500">
+            <div class="flex items-center gap-2 text-xs text-neutral-400">
                 <i class="fa-solid fa-shield-halved text-neutral-300"></i>
                 Saves to your public profile
             </div>
-            <div class="flex gap-3">
+            <div class="flex w-full flex-col-reverse gap-2 sm:w-auto sm:flex-row">
                 @if (!isNew) {
                 <button type="button" (click)="cancelEdit()"
-                    class="rounded-full border border-neutral-200 bg-white px-6 py-3 text-base font-semibold text-neutral-700 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50">
+                    class="w-full rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm font-semibold text-neutral-700 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50 sm:w-auto">
                     Cancel
                 </button>
                 }
                 <button type="submit" [disabled]="form?.invalid"
-                    class="rounded-full bg-neutral-900 px-6 py-3 text-base font-semibold text-white transition-colors duration-150 hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-50">
-                    <span class="inline-flex items-center gap-2">
+                    class="w-full rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto">
+                    <span class="inline-flex items-center justify-center gap-2">
                         <i class="fa-solid fa-floppy-disk"></i>
                         @if (isNew) { Create profile } @else { Save changes }
                     </span>

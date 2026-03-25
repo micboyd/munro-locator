@@ -21,17 +21,17 @@
         </app-mountain-controls>
 
         @if (!mountainsCollection || mountainsCollection.length === 0) {
-        <div class="rounded-2xl bg-white px-8 py-16 text-center shadow-sm ring-1 ring-black/5">
+        <div class="rounded-2xl bg-white px-6 py-12 text-center border border-neutral-100 sm:px-8 sm:py-16">
             <div class="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-neutral-100 text-neutral-400 text-2xl">
                 <i class="fa-solid fa-mountain"></i>
             </div>
-            <p class="text-lg font-semibold text-neutral-900">No results found</p>
-            <p class="mt-2 text-base text-neutral-500">Try a different search term or category.</p>
+            <p class="text-base font-semibold text-neutral-900">No results found</p>
+            <p class="mt-1.5 text-sm text-neutral-400">Try a different search term or category.</p>
         </div>
         } @else {
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
             @for (item of mountainsCollection; track item._id) {
-            <article class="group flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5">
+            <article class="group flex flex-col bg-white rounded-2xl overflow-hidden border border-neutral-100 transition-all duration-300 hover:border-neutral-200 hover:shadow-md hover:-translate-y-0.5">
 
                 <!-- Image -->
                 <div class="relative aspect-[7/5] overflow-hidden bg-neutral-100">
@@ -39,60 +39,68 @@
                         class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]" />
 
                     @if (item.status === 'completed' || completedMountainIds.has(item._id)) {
-                    <span class="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-[#708C69] px-3 py-1.5 text-sm font-semibold text-white shadow-sm">
-                        <i class="fa-solid fa-check text-xs"></i> Completed
+                    <span class="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-[#708C69] px-3 py-1.5 text-xs font-semibold text-white">
+                        <i class="fa-solid fa-check"></i> Completed
                     </span>
                     } @else if (item.status === 'planned' || addedMountainIds.has(item._id)) {
-                    <span class="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-[#F4A258] px-3 py-1.5 text-sm font-semibold text-white shadow-sm">
-                        <i class="fa-solid fa-calendar-days text-xs"></i> Planned
+                    <span class="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-[#F4A258] px-3 py-1.5 text-xs font-semibold text-white">
+                        <i class="fa-solid fa-calendar-days"></i> Planned
                     </span>
                     }
                 </div>
 
                 <!-- Content -->
-                <div class="flex flex-1 flex-col gap-4 p-6">
+                <div class="flex flex-1 flex-col gap-3 p-5">
 
                     <!-- Categories -->
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-1.5">
                         @for (category of item.category; track category) {
-                        <span class="rounded-full bg-neutral-100 px-3 py-1 text-sm font-medium text-neutral-500">{{ category }}</span>
+                        <span class="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-500">{{ category }}</span>
                         }
                     </div>
 
                     <!-- Title + Height -->
                     <div class="flex items-start justify-between gap-3">
-                        <h2 class="text-lg font-bold text-neutral-900 leading-snug">{{ item.name }}</h2>
-                        <span class="shrink-0 rounded-full bg-brand/10 px-3 py-1 text-sm font-semibold text-brand">{{ item.height }}m</span>
+                        <h2 class="text-base font-bold text-neutral-900 leading-snug">{{ item.name }}</h2>
+                        <span class="shrink-0 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-semibold text-neutral-600">{{ item.height }}m</span>
                     </div>
 
                     <!-- Actions -->
-                    <div class="mt-auto flex gap-3 pt-1">
+                    <div class="mt-auto flex flex-col gap-2 pt-1">
+                        <!-- Primary: add to board -->
                         <button
                             (click)="selectedMountain(item)"
                             [disabled]="item.status === 'completed' || completedMountainIds.has(item._id) || item.status === 'planned' || addedMountainIds.has(item._id)"
                             [class]="(item.status === 'completed' || completedMountainIds.has(item._id))
-                                ? 'flex-1 rounded-full bg-[#708C69] py-3 text-base font-semibold text-white cursor-default transition-colors duration-150 inline-flex items-center justify-center gap-2'
+                                ? 'w-full rounded-full bg-[#708C69] py-2.5 text-sm font-semibold text-white cursor-default inline-flex items-center justify-center gap-2'
                                 : (item.status === 'planned' || addedMountainIds.has(item._id))
-                                    ? 'flex-1 rounded-full bg-[#F4A258] py-3 text-base font-semibold text-white cursor-default transition-colors duration-150 inline-flex items-center justify-center gap-2'
-                                    : 'flex-1 rounded-full bg-brand py-3 text-base font-semibold text-white transition-colors duration-150 hover:bg-[#012d42] inline-flex items-center justify-center gap-2'">
+                                    ? 'w-full rounded-full bg-[#F4A258] py-2.5 text-sm font-semibold text-white cursor-default inline-flex items-center justify-center gap-2'
+                                    : 'w-full rounded-full bg-neutral-950 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-neutral-800 inline-flex items-center justify-center gap-2'">
                             @if (item.status === 'completed' || completedMountainIds.has(item._id)) {
-                                <i class="fa-solid fa-check text-sm"></i> Completed
+                                <i class="fa-solid fa-check text-xs"></i> Completed
                             } @else if (item.status === 'planned' || addedMountainIds.has(item._id)) {
-                                <i class="fa-solid fa-calendar-days text-sm"></i> Planned
+                                <i class="fa-solid fa-calendar-days text-xs"></i> Planned
                             } @else {
                                 Add to board
                             }
                         </button>
 
-                        <button (click)="openMap(item)"
-                            class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-400 transition-colors duration-150 hover:border-brand/30 hover:bg-brand/5 hover:text-brand">
-                            <i class="fa-solid fa-location-dot"></i>
-                        </button>
-
-                        <button (click)="driveTimeMountain = item"
-                            class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-400 transition-colors duration-150 hover:border-brand/30 hover:bg-brand/5 hover:text-brand">
-                            <i class="fa-solid fa-car"></i>
-                        </button>
+                        <!-- Secondary row: view details + icon buttons -->
+                        <div class="flex items-center gap-2">
+                            <button (click)="detailMountain = item"
+                                class="flex-1 rounded-full border border-neutral-200 bg-white py-2 text-sm font-semibold text-neutral-700 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50 inline-flex items-center justify-center gap-1.5">
+                                <i class="fa-solid fa-circle-info text-neutral-400 text-xs"></i>
+                                View details
+                            </button>
+                            <button (click)="openMap(item)"
+                                class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-400 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700">
+                                <i class="fa-solid fa-location-dot text-xs"></i>
+                            </button>
+                            <button (click)="driveTimeMountain = item"
+                                class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-400 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50 hover:text-neutral-700">
+                                <i class="fa-solid fa-car text-xs"></i>
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -109,9 +117,19 @@
 </app-container>
 
 @if (mapOpen) {
-<app-map (viewMountain)="selectedMountain($event)" [mountains]="mapMountainsCollection" [loading]="mapMountainsLoading" (close)="closeMap()"></app-map>
+<app-map (viewMountain)="viewMountainDetails($event)" [mountains]="mapMountainsCollection" [loading]="mapMountainsLoading" (close)="closeMap()"></app-map>
 }
 
 @if (driveTimeMountain) {
 <app-drive-time [mountain]="driveTimeMountain" (close)="driveTimeMountain = null"></app-drive-time>
+}
+
+@if (detailMountain) {
+<app-mountain-details
+    [mountain]="detailMountain"
+    [isAdded]="detailMountain.status === 'planned' || addedMountainIds.has(detailMountain._id)"
+    [isCompleted]="detailMountain.status === 'completed' || completedMountainIds.has(detailMountain._id)"
+    (close)="detailMountain = null"
+    (added)="addedMountainIds.add($event._id)">
+</app-mountain-details>
 }

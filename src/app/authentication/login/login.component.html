@@ -1,66 +1,64 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
 	<!-- Email -->
-	<div class="space-y-2">
-		<label class="text-sm font-semibold text-zinc-800">Email</label>
+	<div class="space-y-1.5">
+		<label class="text-xs font-semibold uppercase tracking-wide text-neutral-400">Email</label>
 		<div class="relative">
-			<span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-zinc-400">
-				<i class="fa-solid fa-envelope"></i>
+			<span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
+				<i class="fa-solid fa-envelope text-sm"></i>
 			</span>
-			<input class="w-full rounded-2xl border bg-white py-3 pl-11 pr-4 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition
-               focus:border-zinc-950 focus:ring-2 focus:ring-zinc-950/10"
-				[ngClass]="isInvalid('username') ? 'border-red-500 ring-2 ring-red-500/10' : 'border-zinc-200'"
+			<input class="w-full rounded-xl border bg-neutral-50 py-2.5 pl-11 pr-4 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition-all duration-150 focus:bg-white focus:ring-2"
+				[ngClass]="isInvalid('username') ? 'border-red-400 focus:border-red-400 focus:ring-red-400/10' : 'border-neutral-200 focus:border-neutral-400 focus:ring-neutral-200'"
 				placeholder="you@example.com" formControlName="username" type="email" />
 		</div>
 		@if (isInvalid('username')) {
-		<p class="text-sm text-red-600">Please enter a valid email address.</p>
+		<p class="text-xs text-red-500">Please enter a valid email address.</p>
 		}
 	</div>
 
 	<!-- Password -->
-	<div class="space-y-2">
-		<label class="text-sm font-semibold text-zinc-800">Password</label>
+	<div class="space-y-1.5">
+		<label class="text-xs font-semibold uppercase tracking-wide text-neutral-400">Password</label>
 		<div class="relative">
-			<span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-zinc-400">
-				<i class="fa-solid fa-lock"></i>
+			<span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
+				<i class="fa-solid fa-lock text-sm"></i>
 			</span>
-			<input class="w-full rounded-2xl border bg-white py-3 pl-11 pr-4 text-sm text-zinc-900 placeholder-zinc-400 outline-none transition
-               focus:border-zinc-950 focus:ring-2 focus:ring-zinc-950/10"
-				[ngClass]="isInvalid('password') ? 'border-red-500 ring-2 ring-red-500/10' : 'border-zinc-200'"
+			<input class="w-full rounded-xl border bg-neutral-50 py-2.5 pl-11 pr-4 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition-all duration-150 focus:bg-white focus:ring-2"
+				[ngClass]="isInvalid('password') ? 'border-red-400 focus:border-red-400 focus:ring-red-400/10' : 'border-neutral-200 focus:border-neutral-400 focus:ring-neutral-200'"
 				placeholder="••••••••" formControlName="password" type="password" />
 		</div>
 		@if (isInvalid('password')) {
-		<p class="text-sm text-red-600">Password is required.</p>
+		<p class="text-xs text-red-500">Password is required.</p>
 		}
 	</div>
 
 	<!-- Login error -->
 	@if (loginErrorMessage) {
-	<div class="rounded-2xl bg-red-50 p-4 text-sm font-semibold text-red-700">
+	<div class="rounded-xl bg-red-50 border border-red-100 p-3.5 text-xs font-semibold text-red-600">
 		{{ loginErrorMessage }}
 	</div>
 	}
 
 	<!-- Actions -->
 	<div class="flex items-center justify-between">
-		<label class="inline-flex items-center gap-2 text-sm font-semibold text-zinc-600">
-			<input type="checkbox" class="h-4 w-4 rounded border-zinc-300 text-zinc-950 focus:ring-zinc-950/10" />
+		<label class="inline-flex items-center gap-2 text-xs font-semibold text-neutral-500">
+			<input type="checkbox" class="h-4 w-4 rounded border-neutral-300 text-neutral-950 focus:ring-neutral-200" />
 			Remember me
 		</label>
 
-		<a href="#" class="text-sm font-semibold text-zinc-600 hover:text-zinc-950 hover:underline">
+		<a href="#" class="text-xs font-semibold text-neutral-500 hover:text-neutral-900 hover:underline">
 			Forgot password?
 		</a>
 	</div>
 
 	<!-- Submit -->
-	<button type="submit" [disabled]="!canSubmit" [ngClass]="{ 'opacity-50 cursor-not-allowed': !canSubmit }" class="w-full rounded-3xl bg-zinc-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-zinc-900
-           flex items-center justify-center">
+	<button type="submit" [disabled]="!canSubmit" [ngClass]="{ 'opacity-50 cursor-not-allowed': !canSubmit }"
+		class="w-full rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-neutral-800 flex items-center justify-center">
 		@if (loginLoading) {
 		<app-loading-indicator [spinner]="true"></app-loading-indicator>
 		} @else {
 		<span class="inline-flex items-center gap-2">
-			<i class="fa-solid fa-arrow-right"></i>
 			Sign in
+			<i class="fa-solid fa-arrow-right text-xs"></i>
 		</span>
 		}
 	</button>

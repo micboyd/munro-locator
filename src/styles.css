@@ -1,8 +1,12 @@
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/600.css';
+@import '@fontsource/dm-sans/700.css';
 @import 'tailwindcss';
 
 body {
-    font-family: 'basic-sans', sans-serif;
-    background-color: #F7F8FA;
+    font-family: 'DM Sans', 'basic-sans', sans-serif;
+    background-color: #FFFFFF;
     color: #111827;
 }
 
@@ -11,11 +15,12 @@ body {
   --color-brand: #013D5A;
   --color-herb: #708C69;
   --color-marigold: #F4A258;
+  --color-ink: #0A0A0A;
 }
 
 .nav-link-active {
-    color: #013D5A;
-    border-color: #013D5A;
+    background-color: #0A0A0A;
+    color: #FFFFFF;
 }
 
 :root {

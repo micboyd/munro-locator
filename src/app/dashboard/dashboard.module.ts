@@ -11,6 +11,7 @@ import { ProfileService } from './profile/profile.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { LibraryComponent } from './library/library.component';
+import { MountainDetailsComponent } from './library/mountain-details/mountain-details.component';
 
 @NgModule({
 	declarations: [
@@ -20,7 +21,8 @@ import { LibraryComponent } from './library/library.component';
 		EditProfileComponent,
         BoardComponent,
         CompleteMountainComponent,
-		LibraryComponent
+		LibraryComponent,
+		MountainDetailsComponent,
     ],
 	imports: [CommonModule, ReactiveFormsModule, AppRoutingModule, SharedModule],
 	exports: [DashboardComponent],

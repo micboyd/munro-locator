@@ -20,6 +20,7 @@ type CardModel = {
 export class WeatherComponent implements OnInit, OnChanges {
 	@Input() lat!: number;
 	@Input() lon!: number;
+	@Input() mountainName: string = '';
 
 	loading = true;
 	error: string | null = null;

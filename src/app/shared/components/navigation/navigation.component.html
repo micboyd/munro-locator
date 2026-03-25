@@ -1,39 +1,39 @@
-<div class="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur-sm">
-    <div class="mx-auto max-w-7xl px-6 sm:px-8">
-        <nav class="flex h-20 items-center justify-between">
+<div class="sticky top-0 z-40 border-b border-neutral-100 bg-white/98 backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 sm:px-8">
+        <nav class="flex h-14 items-center justify-between sm:h-16">
 
             <!-- Brand -->
             <a routerLink="/dashboard/board"
-                class="flex items-center gap-3 shrink-0">
-                <span class="grid h-10 w-10 place-items-center rounded-xl bg-[#013D5A] text-white">
+                class="flex items-center gap-2.5 shrink-0">
+                <span class="grid h-8 w-8 place-items-center rounded-lg bg-neutral-950 text-white text-sm">
                     <i class="fa-solid fa-mountain-sun"></i>
                 </span>
-                <span class="hidden text-base font-bold tracking-tight text-neutral-900 sm:block">Munro Manager</span>
+                <span class="hidden text-sm font-bold tracking-tight text-neutral-900 sm:block">Munro Manager</span>
             </a>
 
             <!-- Desktop nav links -->
-            <div class="hidden items-center md:flex">
+            <div class="hidden items-center gap-1 md:flex">
                 <a routerLink="/dashboard/board" routerLinkActive="nav-link-active"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    class="border-b-2 border-transparent px-6 pt-1 pb-[calc(0.375rem+2px)] text-base font-medium text-neutral-500 transition-colors duration-150 hover:text-neutral-900">
+                    class="rounded-full px-4 py-2 text-sm font-semibold text-neutral-500 transition-all duration-150 hover:bg-neutral-100 hover:text-neutral-900">
                     Board
                 </a>
                 <a routerLink="/dashboard/library" routerLinkActive="nav-link-active"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    class="border-b-2 border-transparent px-6 pt-1 pb-[calc(0.375rem+2px)] text-base font-medium text-neutral-500 transition-colors duration-150 hover:text-neutral-900">
+                    class="rounded-full px-4 py-2 text-sm font-semibold text-neutral-500 transition-all duration-150 hover:bg-neutral-100 hover:text-neutral-900">
                     Library
                 </a>
             </div>
 
             <!-- Right: Profile + Mobile toggle -->
-            <div class="flex items-center gap-3 shrink-0">
+            <div class="flex items-center gap-2 shrink-0">
                 @if (!profileLoading && profile) {
                 <a routerLink="/dashboard/profile"
-                    class="flex items-center gap-3 rounded-full border border-neutral-200 bg-white px-3 py-2 transition-all duration-200 hover:border-neutral-300 hover:shadow-sm"
+                    class="flex items-center gap-2.5 rounded-full border border-neutral-200 bg-white px-3 py-1.5 transition-all duration-200 hover:border-neutral-300 hover:shadow-sm"
                     aria-label="Open profile">
                     <img [src]="profile.profileImage" alt="Profile"
-                        class="h-8 w-8 rounded-full object-cover" />
-                    <span class="hidden pr-1 md:block text-base font-semibold text-neutral-800">{{ profile.firstName }}</span>
+                        class="h-7 w-7 rounded-full object-cover" />
+                    <span class="hidden pr-1 md:block text-sm font-semibold text-neutral-800">{{ profile.firstName }}</span>
                 </a>
                 }
 
@@ -50,24 +50,24 @@
     <!-- Mobile menu -->
     @if (mobileOpen) {
     <div class="border-t border-neutral-100 bg-white md:hidden">
-        <div class="mx-auto max-w-7xl px-6 py-4 sm:px-8">
-            <div class="flex flex-col gap-1">
-                <a routerLink="/dashboard/board" routerLinkActive="bg-neutral-100 text-neutral-900 font-semibold"
+        <div class="mx-auto max-w-7xl px-4 py-3 sm:px-6">
+            <div class="flex flex-col gap-0.5">
+                <a routerLink="/dashboard/board" routerLinkActive="!bg-neutral-950 !text-white font-semibold"
                     [routerLinkActiveOptions]="{ exact: true }"
                     (click)="closeMobile()"
-                    class="rounded-xl px-4 py-3.5 text-base font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-50 hover:text-neutral-900">
+                    class="rounded-xl px-4 py-3.5 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900">
                     Board
                 </a>
-                <a routerLink="/dashboard/library" routerLinkActive="bg-neutral-100 text-neutral-900 font-semibold"
+                <a routerLink="/dashboard/library" routerLinkActive="!bg-neutral-950 !text-white font-semibold"
                     [routerLinkActiveOptions]="{ exact: true }"
                     (click)="closeMobile()"
-                    class="rounded-xl px-4 py-3.5 text-base font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-50 hover:text-neutral-900">
+                    class="rounded-xl px-4 py-3.5 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900">
                     Library
                 </a>
-                <a routerLink="/dashboard/profile" routerLinkActive="bg-neutral-100 text-neutral-900 font-semibold"
+                <a routerLink="/dashboard/profile" routerLinkActive="!bg-neutral-950 !text-white font-semibold"
                     [routerLinkActiveOptions]="{ exact: true }"
                     (click)="closeMobile()"
-                    class="rounded-xl px-4 py-3.5 text-base font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-50 hover:text-neutral-900">
+                    class="rounded-xl px-4 py-3.5 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900">
                     Profile
                 </a>
             </div>
@@ -75,9 +75,9 @@
             @if (!profileLoading && profile) {
             <div class="mt-3 flex items-center gap-3 rounded-2xl bg-neutral-50 p-4">
                 <img [src]="profile.profileImage" alt="Profile"
-                    class="h-10 w-10 rounded-full object-cover shrink-0" />
+                    class="h-9 w-9 rounded-full object-cover shrink-0" />
                 <div class="min-w-0">
-                    <div class="truncate text-base font-semibold text-neutral-900">{{ profile.firstName }} {{ profile.lastName }}</div>
+                    <div class="truncate text-sm font-semibold text-neutral-900">{{ profile.firstName }} {{ profile.lastName }}</div>
                 </div>
             </div>
             }

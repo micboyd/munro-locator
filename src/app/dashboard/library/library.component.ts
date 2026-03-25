@@ -22,6 +22,7 @@ export class LibraryComponent implements OnInit {
 
     mapOpen = false;
     driveTimeMountain: Mountain | null = null;
+    detailMountain: Mountain | null = null;
     addedMountainIds = new Set<string>();
     completedMountainIds = new Set<string>();
 
@@ -202,6 +203,11 @@ export class LibraryComponent implements OnInit {
 
     closeMap(): void {
         this.mapOpen = false;
+    }
+
+    viewMountainDetails(mountain: Mountain): void {
+        this.mapOpen = false;
+        this.detailMountain = mountain;
     }
 
     addPlannedMountain(mountain: Mountain) {

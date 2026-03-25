@@ -1,25 +1,22 @@
 <section class="bg-zinc-950 text-white">
-	<div class="mx-auto max-w-7xl px-5 py-10 sm:px-8">
-		<div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start">
-			<!-- Header -->
-			<div class="lg:col-span-5">
-				<div class="flex items-center gap-3">
-					<span class="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 text-white">
-						<i class="fa-solid fa-cloud-sun"></i>
-					</span>
-					<div class="min-w-0">
-						<div class="text-xl font-semibold tracking-tight">Weather</div>
-						<p class="mt-1 text-base text-white/70">
-							Live weather forecast for <span class="font-semibold text-white">location name</span>.
-						</p>
-					</div>
-				</div>
+	<div class="mx-auto max-w-7xl px-4 py-8 sm:px-8 sm:py-10">
+		<!-- Header -->
+		<div class="flex items-center gap-3 mb-6">
+			<span class="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 text-white">
+				<i class="fa-solid fa-cloud-sun"></i>
+			</span>
+			<div class="min-w-0">
+				<div class="text-xl font-semibold tracking-tight">Weather</div>
+				<p class="mt-1 text-base text-white/70">
+					Live weather forecast for <span class="font-semibold text-white">{{ mountainName || 'this location' }}</span>.
+				</p>
 			</div>
+		</div>
 
-			@if (card) {
+		@if (card) {
 			<!-- Card -->
-			<div class="lg:col-span-7">
-				<div class="relative overflow-hidden rounded-[28px] bg-white/5 p-6">
+			<div>
+				<div class="relative overflow-hidden rounded-[28px] bg-white/5 p-4 sm:p-6">
 					<!-- soft blobs (keep, but aligned to system) -->
 					<div
 						class="pointer-events-none absolute -top-24 -right-20 h-64 w-64 rounded-full bg-sky-500/20 blur-3xl">
@@ -53,7 +50,7 @@
 
 					<!-- Stats -->
 					<div class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-						<div class="rounded-3xl bg-white/5 p-5">
+						<div class="rounded-3xl bg-white/5 p-4 sm:p-5">
 							<div class="flex items-center justify-between">
 								<div class="text-sm font-semibold text-white/70">Wind</div>
 								<span class="grid h-10 w-10 place-items-center rounded-2xl bg-white/10 text-white">
@@ -128,7 +125,7 @@
 
 					@if (showDetails) {
 					<!-- Details -->
-					<div class="mt-6 rounded-3xl bg-white/5 p-5">
+					<div class="mt-6 rounded-3xl bg-white/5 p-4 sm:p-5">
 						<div class="flex items-center justify-between gap-4">
 							<div class="flex items-center gap-3">
 								<span class="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 text-white">
@@ -136,7 +133,7 @@
 								</span>
 								<div>
 									<div class="text-base font-semibold text-white">Next hours</div>
-									<div class="mt-1 text-sm text-white/70">Edinburgh</div>
+									<div class="mt-1 text-sm text-white/70">{{ mountainName || 'this location' }}</div>
 								</div>
 							</div>
 
@@ -181,7 +178,6 @@
 					}
 				</div>
 			</div>
-			}
-		</div>
+		}
 	</div>
 </section>

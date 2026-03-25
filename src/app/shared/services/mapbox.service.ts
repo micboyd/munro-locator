@@ -63,4 +63,18 @@ export class MapboxService {
         const miles = meters / 1609.344;
         return `${Math.round(miles)} miles`;
     }
+
+    getElevationTransect(lat: number, lon: number, numPoints = 25): Observable<number[]> {
+        const spread = 0.06; // ~±3.3 km on each side
+        const lats = Array.from({ length: numPoints }, (_, i) =>
+            (lat + ((i / (numPoints - 1)) - 0.5) * spread).toFixed(6)
+        );
+        const lons = Array.from({ length: numPoints }, () => lon.toFixed(6));
+
+        return this.http
+            .get<{ elevation: number[] }>(
+                `https://api.open-meteo.com/v1/elevation?latitude=${lats.join(',')}&longitude=${lons.join(',')}`
+            )
+            .pipe(map(res => res.elevation));
+    }
 }
