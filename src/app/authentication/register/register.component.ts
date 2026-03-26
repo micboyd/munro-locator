@@ -18,8 +18,7 @@ export class RegisterComponent {
     @Output() switchToLogin = new EventEmitter<void>();
 
     form = new FormGroup({
-        username: new FormControl('', [Validators.required, Validators.minLength(3)]),
-        email: new FormControl('', [Validators.required, Validators.email]),
+        username: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', [Validators.required, Validators.minLength(8)]),
         confirmPassword: new FormControl('', [Validators.required]),
     }, { validators: passwordsMatch });
@@ -48,8 +47,8 @@ export class RegisterComponent {
         this.loading = true;
         this.error = '';
 
-        const { username, email, password } = this.form.value;
-        this.authService.register({ username, email, password }).subscribe({
+        const { username, password } = this.form.value;
+        this.authService.register({ username, password }).subscribe({
             next: () => {
                 this.success = true;
                 this.loading = false;

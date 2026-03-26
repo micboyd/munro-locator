@@ -6,7 +6,7 @@
             <i class="fa-solid fa-envelope text-lg"></i>
         </div>
         <p class="text-sm font-semibold text-neutral-900">Check your inbox</p>
-        <p class="mt-1.5 text-sm text-neutral-400">We've sent a confirmation link to <span class="font-semibold text-neutral-600">{{ form.value.email }}</span>. Click it to activate your account.</p>
+        <p class="mt-1.5 text-sm text-neutral-400">We've sent a confirmation link to <span class="font-semibold text-neutral-600">{{ form.value.username }}</span>. Click it to activate your account.</p>
     </div>
     <button type="button" (click)="switchToLogin.emit()"
         class="w-full rounded-full bg-neutral-950 px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-neutral-800">
@@ -19,22 +19,6 @@
 <!-- Register form -->
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
 
-    <!-- Username -->
-    <div class="space-y-1.5">
-        <label class="text-xs font-semibold uppercase tracking-wide text-neutral-400">Username</label>
-        <div class="relative">
-            <span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
-                <i class="fa-solid fa-user text-sm"></i>
-            </span>
-            <input formControlName="username" type="text" placeholder="yourname"
-                class="w-full rounded-xl border bg-neutral-50 py-2.5 pl-11 pr-4 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition-all duration-150 focus:bg-white focus:ring-2"
-                [ngClass]="isInvalid('username') ? 'border-red-400 focus:border-red-400 focus:ring-red-400/10' : 'border-neutral-200 focus:border-neutral-400 focus:ring-neutral-200'" />
-        </div>
-        @if (isInvalid('username')) {
-        <p class="text-xs text-red-500">Username must be at least 3 characters.</p>
-        }
-    </div>
-
     <!-- Email -->
     <div class="space-y-1.5">
         <label class="text-xs font-semibold uppercase tracking-wide text-neutral-400">Email</label>
@@ -42,11 +26,11 @@
             <span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
                 <i class="fa-solid fa-envelope text-sm"></i>
             </span>
-            <input formControlName="email" type="email" placeholder="you@example.com"
+            <input formControlName="username" type="email" placeholder="you@example.com"
                 class="w-full rounded-xl border bg-neutral-50 py-2.5 pl-11 pr-4 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition-all duration-150 focus:bg-white focus:ring-2"
-                [ngClass]="isInvalid('email') ? 'border-red-400 focus:border-red-400 focus:ring-red-400/10' : 'border-neutral-200 focus:border-neutral-400 focus:ring-neutral-200'" />
+                [ngClass]="isInvalid('username') ? 'border-red-400 focus:border-red-400 focus:ring-red-400/10' : 'border-neutral-200 focus:border-neutral-400 focus:ring-neutral-200'" />
         </div>
-        @if (isInvalid('email')) {
+        @if (isInvalid('username')) {
         <p class="text-xs text-red-500">Please enter a valid email address.</p>
         }
     </div>
