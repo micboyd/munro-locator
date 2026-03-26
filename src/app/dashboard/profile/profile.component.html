@@ -21,7 +21,7 @@
     </div>
     } @else if (editMode) {
     <app-edit-profile [selectedUserProfile]="selectedUserProfile" (saved)="getUserProfile()"
-        (closeEditMode)="closeEditMode()">
+        (closeEditMode)="closeEditMode()" (logout)="logout()">
     </app-edit-profile>
     } @else {
 
@@ -50,11 +50,18 @@
                         }
                     </div>
 
-                    <button (click)="enableEditMode()" type="button"
-                        class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-700 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50 sm:w-auto sm:py-2">
-                        <i class="fa-solid fa-pen text-xs text-neutral-400"></i>
-                        Edit profile
-                    </button>
+                    <div class="flex w-full items-center gap-2 sm:w-auto">
+                        <button (click)="enableEditMode()" type="button"
+                            class="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-700 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50 sm:flex-none sm:py-2">
+                            <i class="fa-solid fa-pen text-xs text-neutral-400"></i>
+                            Edit profile
+                        </button>
+                        <button (click)="logout()" type="button"
+                            class="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-700 transition-colors duration-150 hover:border-red-100 hover:border-red-200 hover:text-red-600 sm:flex-none sm:py-2">
+                            <i class="fa-solid fa-right-from-bracket text-xs"></i>
+                            Log out
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

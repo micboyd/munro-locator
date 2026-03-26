@@ -10,7 +10,17 @@
                 @if (isNew) { Welcome! Tell us a bit about yourself. } @else { Update how your profile appears. }
             </p>
         </div>
-        <span class="rounded-full bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-500">Public</span>
+        <div class="flex items-center gap-2">
+            @if (isNew) {
+            <button type="button" (click)="logout.emit()"
+                class="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3 py-1.5 text-xs font-semibold text-neutral-500 transition-colors duration-150 hover:border-red-100 hover:text-red-500">
+                <i class="fa-solid fa-right-from-bracket text-[11px]"></i>
+                Log out
+            </button>
+            } @else {
+            <span class="rounded-full bg-neutral-100 px-3 py-1.5 text-xs font-semibold text-neutral-500">Public</span>
+            }
+        </div>
     </div>
 
     <!-- Form -->
@@ -45,24 +55,32 @@
         <div class="rounded-2xl bg-white p-5 border border-neutral-100">
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                    <label for="firstName" class="text-xs font-semibold uppercase tracking-wide text-neutral-400">First name</label>
+                    <label for="firstName" class="text-xs font-semibold uppercase tracking-wide text-neutral-400">First name <span class="text-red-400">*</span></label>
                     <div class="relative mt-2">
                         <span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
                             <i class="fa-solid fa-user text-sm"></i>
                         </span>
-                        <input id="firstName" type="text" placeholder="Michael" formControlName="firstName"
-                            class="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-4 text-sm font-semibold text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200" />
+                        <input id="firstName" type="text" placeholder="First name" formControlName="firstName"
+                            class="w-full rounded-xl border bg-neutral-50 py-2.5 pl-10 pr-4 text-sm font-semibold text-neutral-900 outline-none transition-all duration-150 focus:bg-white focus:ring-2 focus:ring-neutral-200"
+                            [ngClass]="form.get('firstName')?.invalid && form.get('firstName')?.touched ? 'border-red-400 focus:border-red-400' : 'border-neutral-200 focus:border-neutral-400'" />
                     </div>
+                    @if (form.get('firstName')?.invalid && form.get('firstName')?.touched) {
+                    <p class="mt-1 text-xs text-red-500">First name is required.</p>
+                    }
                 </div>
                 <div>
-                    <label for="lastName" class="text-xs font-semibold uppercase tracking-wide text-neutral-400">Last name</label>
+                    <label for="lastName" class="text-xs font-semibold uppercase tracking-wide text-neutral-400">Last name <span class="text-red-400">*</span></label>
                     <div class="relative mt-2">
                         <span class="pointer-events-none absolute inset-y-0 left-4 grid place-items-center text-neutral-300">
                             <i class="fa-solid fa-id-card text-sm"></i>
                         </span>
-                        <input id="lastName" type="text" placeholder="Boyd" formControlName="lastName"
-                            class="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-4 text-sm font-semibold text-neutral-900 outline-none transition-all duration-150 focus:border-neutral-400 focus:bg-white focus:ring-2 focus:ring-neutral-200" />
+                        <input id="lastName" type="text" placeholder="Last name" formControlName="lastName"
+                            class="w-full rounded-xl border bg-neutral-50 py-2.5 pl-10 pr-4 text-sm font-semibold text-neutral-900 outline-none transition-all duration-150 focus:bg-white focus:ring-2 focus:ring-neutral-200"
+                            [ngClass]="form.get('lastName')?.invalid && form.get('lastName')?.touched ? 'border-red-400 focus:border-red-400' : 'border-neutral-200 focus:border-neutral-400'" />
                     </div>
+                    @if (form.get('lastName')?.invalid && form.get('lastName')?.touched) {
+                    <p class="mt-1 text-xs text-red-500">Last name is required.</p>
+                    }
                 </div>
             </div>
         </div>
@@ -92,11 +110,15 @@
                     Cancel
                 </button>
                 }
-                <button type="submit" [disabled]="form?.invalid"
+                <button type="submit" [disabled]="form?.invalid || saving"
                     class="w-full rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto">
                     <span class="inline-flex items-center justify-center gap-2">
+                        @if (saving) {
+                        <app-loading-indicator [spinner]="true"></app-loading-indicator>
+                        } @else {
                         <i class="fa-solid fa-floppy-disk"></i>
                         @if (isNew) { Create profile } @else { Save changes }
+                        }
                     </span>
                 </button>
             </div>

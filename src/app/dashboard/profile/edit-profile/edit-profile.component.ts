@@ -15,11 +15,13 @@ export class EditProfileComponent implements OnInit {
 
     @Output() closeEditMode = new EventEmitter<void>();
     @Output() saved = new EventEmitter<UserProfile>();
+    @Output() logout = new EventEmitter<void>();
 
     form!: FormGroup;
 
     selectedFile: File | null = null;
     previewUrl: string | null = null;
+    saving = false;
 
     constructor(
         private authService: AuthenticationService,
@@ -50,6 +52,11 @@ export class EditProfileComponent implements OnInit {
     }
 
     saveProfile(): void {
+        if (this.form.invalid) {
+            this.form.markAllAsTouched();
+            return;
+        }
+
         const fd = new FormData();
 
         fd.append('firstName', this.form.get('firstName')?.value ?? '');
@@ -60,17 +67,19 @@ export class EditProfileComponent implements OnInit {
             fd.append('profileImage', this.selectedFile);
         }
 
+        this.saving = true;
+
         if (this.selectedUserProfile.id) {
             this.profileService.updateProfileById(this.selectedUserProfile.id, fd).subscribe({
                 next: (p) => this.saved.emit(p),
-                error: () => {}
+                error: () => { this.saving = false; }
             });
         } else {
             fd.append('userId', this.authService.userId);
 
             this.profileService.createProfile(fd).subscribe({
                 next: (p) => this.saved.emit(p),
-                error: () => {}
+                error: () => { this.saving = false; }
             });
         }
     }

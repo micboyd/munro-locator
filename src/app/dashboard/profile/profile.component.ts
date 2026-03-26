@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AuthenticationService } from '../../shared/services/authentication.service';
 import { ProfileService } from './profile.service';
 import { ProfileStats } from '../../shared/models/Profile/ProfileStats';
 import { RecentActivity } from '../../shared/models/Profile/RecentActivity';
+import { Router } from '@angular/router';
 import { UserProfile } from '../../shared/models/Profile/UserProfile';
 
 @Component({
@@ -24,7 +26,11 @@ export class ProfileComponent implements OnInit {
         return this._selectedUserProfile;
     }
 
-    constructor(private profileService: ProfileService) {}
+    constructor(
+        private profileService: ProfileService,
+        private authService: AuthenticationService,
+        private router: Router,
+    ) {}
 
     ngOnInit(): void {
         this.getUserProfile();
@@ -34,6 +40,11 @@ export class ProfileComponent implements OnInit {
 
     enableEditMode() {
         this.editMode = true;
+    }
+
+    logout() {
+        this.authService.clearDetails();
+        this.router.navigate(['/auth']);
     }
 
     closeEditMode() {

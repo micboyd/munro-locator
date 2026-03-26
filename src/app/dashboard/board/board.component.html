@@ -1,5 +1,24 @@
 <app-container>
     <app-hero heroTitle="Your Board" heroSubtitle="Plan mountains and track every summit"></app-hero>
+
+    @if (hasProfile === false) {
+    <div class="mb-6 flex items-center justify-between gap-4 rounded-2xl border border-[#708C69]/20 bg-[#708C69]/5 px-5 py-4">
+        <div class="flex items-center gap-3">
+            <div class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#708C69]/10 text-[#708C69]">
+                <i class="fa-solid fa-circle-user text-base"></i>
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-neutral-900">Your profile isn't set up yet</p>
+                <p class="text-xs text-neutral-500">Add your name and photo so your stats and summits are personalised.</p>
+            </div>
+        </div>
+        <a routerLink="/dashboard/profile"
+            class="shrink-0 rounded-full bg-neutral-950 px-4 py-2 text-xs font-semibold text-white transition-colors duration-150 hover:bg-neutral-800">
+            Create profile
+        </a>
+    </div>
+    }
+
     <div class="pb-24">
 
         <app-tabs [tabs]="cateogries" [selectedTab]="activeTab" (activeTabChange)="changeTab($event)"></app-tabs>

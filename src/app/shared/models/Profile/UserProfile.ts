@@ -1,4 +1,4 @@
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { UserProfileResponse } from "./UserProfileResponse";
 
@@ -28,8 +28,8 @@ export class UserProfile {
     createForm(fb: FormBuilder): FormGroup {
         return fb.group({
             userId: [this.userId ?? ''],
-            firstName: [this.firstName ?? ''],
-            lastName: [this.lastName ?? ''],
+            firstName: [this.firstName ?? '', [Validators.required]],
+            lastName: [this.lastName ?? '', [Validators.required]],
             bio: [this.bio ?? ''],
             profileImage: [this.profileImage ?? ''],
         });

@@ -9,6 +9,7 @@ import { Mountain } from '../../shared/models/Mountains/Mountain';
 import { PlannedMountain } from '../../shared/models/Mountains/PlannedMountain';
 import { PlannedMountainsService } from '../../shared/services/planned-mountains.service';
 import { Pagination } from '../../shared/models/Shared/PaginatedCollection';
+import { ProfileService } from '../profile/profile.service';
 import { TripPlansService } from '../../shared/services/trip-plans.service';
 
 type SortOption = 'height_desc' | 'height_asc';
@@ -26,7 +27,10 @@ export class BoardComponent implements OnInit {
         public plannedMountainService: PlannedMountainsService,
         private completedMountainsService: CompletedMountainsService,
         private tripPlansService: TripPlansService,
+        private profileService: ProfileService,
     ) {}
+
+    hasProfile: boolean | null = null;
 
     private _plannedMountains: PlannedMountain[] = [];
     private _pagination: Pagination | null = null;
@@ -168,6 +172,10 @@ export class BoardComponent implements OnInit {
 
         this.reload$.next();
         this.loadTripNames();
+        this.profileService.getProfileByUserId().subscribe({
+            next: (p) => (this.hasProfile = !!p?.id),
+            error: () => (this.hasProfile = false),
+        });
     }
 
     private loadTripNames(): void {
