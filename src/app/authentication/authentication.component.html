@@ -64,12 +64,38 @@
                 <div class="space-y-8">
                     <!-- Heading -->
                     <div>
+                        @if (mode === 'login') {
                         <h2 class="text-3xl font-bold tracking-tight text-neutral-950">Welcome back</h2>
                         <p class="mt-2 text-sm text-neutral-400">Sign in to pick up where you left off.</p>
+                        } @else {
+                        <h2 class="text-3xl font-bold tracking-tight text-neutral-950">Create account</h2>
+                        <p class="mt-2 text-sm text-neutral-400">Start tracking your Munros today.</p>
+                        }
                     </div>
 
                     <!-- Form -->
+                    @if (mode === 'login') {
                     <app-login></app-login>
+                    } @else {
+                    <app-register (switchToLogin)="mode = 'login'"></app-register>
+                    }
+
+                    <!-- Toggle -->
+                    <p class="text-center text-sm text-neutral-400">
+                        @if (mode === 'login') {
+                        Don't have an account?
+                        <button type="button" (click)="mode = 'register'"
+                            class="font-semibold text-neutral-700 hover:text-neutral-950 hover:underline">
+                            Sign up
+                        </button>
+                        } @else {
+                        Already have an account?
+                        <button type="button" (click)="mode = 'login'"
+                            class="font-semibold text-neutral-700 hover:text-neutral-950 hover:underline">
+                            Sign in
+                        </button>
+                        }
+                    </p>
 
                     <!-- Footer -->
                     <p class="text-center text-xs text-neutral-400">

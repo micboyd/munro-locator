@@ -8,11 +8,13 @@ export class PlannedMountain {
     userId: string;
     mountain: Mountain;
     plannedDate: Date;
+    tripIds: string[];
 
     constructor(response: PlannedMountainResponse) {
         this._id = response._id;
         this.userId = response.userId;
         this.mountain = new Mountain(response.mountain);
         this.plannedDate = new Date(response.plannedDate);
+        this.tripIds = response.tripIds ?? [];
     }
 }

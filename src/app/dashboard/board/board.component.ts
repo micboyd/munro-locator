@@ -9,6 +9,7 @@ import { Mountain } from '../../shared/models/Mountains/Mountain';
 import { PlannedMountain } from '../../shared/models/Mountains/PlannedMountain';
 import { PlannedMountainsService } from '../../shared/services/planned-mountains.service';
 import { Pagination } from '../../shared/models/Shared/PaginatedCollection';
+import { TripPlansService } from '../../shared/services/trip-plans.service';
 
 type SortOption = 'height_desc' | 'height_asc';
 type CompletedSortOption = 'date_desc' | 'date_asc' | 'height_desc' | 'height_asc';
@@ -24,6 +25,7 @@ export class BoardComponent implements OnInit {
     constructor(
         public plannedMountainService: PlannedMountainsService,
         private completedMountainsService: CompletedMountainsService,
+        private tripPlansService: TripPlansService,
     ) {}
 
     private _plannedMountains: PlannedMountain[] = [];
@@ -35,6 +37,14 @@ export class BoardComponent implements OnInit {
     private _completedPagination: Pagination | null = null;
     private _completedLoading = false;
     private readonly completedReload$ = new Subject<void>();
+
+    tripNameMap = new Map<string, string>();
+
+    tripLabel(tripIds: string[]): string {
+        if (tripIds.length === 0) return '';
+        if (tripIds.length === 1) return this.tripNameMap.get(tripIds[0]) ?? 'a trip';
+        return `${tripIds.length} trips`;
+    }
 
     mapOpen = false;
     private _mapMountains: Mountain[] = [];
@@ -157,10 +167,25 @@ export class BoardComponent implements OnInit {
             });
 
         this.reload$.next();
+        this.loadTripNames();
+    }
+
+    private loadTripNames(): void {
+        this.tripPlansService.getAll().subscribe({
+            next: (trips) => {
+                this.tripNameMap = new Map(trips.map(t => [t._id, t.title]));
+            },
+            error: () => {},
+        });
     }
 
     changeTab(tab: string) {
         this.activeTab = tab;
+
+        if (tab === 'Planned') {
+            this.reload$.next();
+            this.loadTripNames();
+        }
 
         if (tab === 'Completed') {
             this.completedReload$.next();

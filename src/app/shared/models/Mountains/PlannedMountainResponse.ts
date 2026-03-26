@@ -5,4 +5,5 @@ export class PlannedMountainResponse {
     userId: string;
     mountain: Mountain;
     plannedDate: Date;
+    tripIds: string[];
 }

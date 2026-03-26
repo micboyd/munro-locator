@@ -7,7 +7,19 @@
     </div>
     } @else {
 
-    @if (editMode) {
+    @if (loadError) {
+    <div class="rounded-2xl border border-neutral-100 bg-white px-6 py-12 text-center sm:px-8 sm:py-16">
+        <div class="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-red-50 text-red-400 text-2xl">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <p class="text-base font-semibold text-neutral-900">Couldn't load your profile</p>
+        <p class="mt-1.5 text-sm text-neutral-400">There was a problem reaching the server. Please try again.</p>
+        <button type="button" (click)="getUserProfile()"
+            class="mt-6 inline-flex items-center gap-2 rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800">
+            <i class="fa-solid fa-rotate-right text-xs"></i> Retry
+        </button>
+    </div>
+    } @else if (editMode) {
     <app-edit-profile [selectedUserProfile]="selectedUserProfile" (saved)="getUserProfile()"
         (closeEditMode)="closeEditMode()">
     </app-edit-profile>

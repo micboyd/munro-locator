@@ -8,12 +8,13 @@ export interface RecentActivityMountain {
 
 export interface RecentActivity {
     _id: string;
-    type: 'completed' | 'planned';
+    type: 'completed' | 'planned' | 'trip_created';
     createdAt: string;
-    mountain: RecentActivityMountain;
+    mountain?: RecentActivityMountain;
     dateCompleted?: string;
     rating?: number;
     plannedDate?: string;
+    title?: string;
 }
 
 export interface RecentActivityResponse {

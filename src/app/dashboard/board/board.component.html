@@ -87,6 +87,15 @@
                             <span>Target: {{ pm.plannedDate | date:'MMM yyyy' }}</span>
                         </div>
 
+                        @if (pm.tripIds.length > 0) {
+                        <div>
+                            <span class="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-2.5 py-1 text-xs font-medium text-neutral-500 max-w-full">
+                                <i class="fa-solid fa-route text-[10px] shrink-0"></i>
+                                <span class="truncate">{{ tripLabel(pm.tripIds) }}</span>
+                            </span>
+                        </div>
+                        }
+
                         <!-- Actions -->
                         <div class="mt-auto flex gap-2 pt-1">
                             <button type="button"

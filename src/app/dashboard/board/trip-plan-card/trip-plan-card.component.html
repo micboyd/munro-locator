@@ -1,45 +1,76 @@
-<article class="group flex flex-col rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:border-neutral-300 hover:shadow-md hover:-translate-y-0.5">
+<article class="group relative flex flex-col overflow-hidden rounded-2xl border border-neutral-100 bg-white transition-all duration-300 hover:border-neutral-200 hover:shadow-md hover:-translate-y-0.5">
+
+    <!-- Visual header -->
+    <div class="relative aspect-[7/5] overflow-hidden bg-neutral-100">
+        @if (trip.mountains.length > 0) {
+        <div class="grid h-full"
+             [class.grid-cols-2]="trip.mountains.length === 2"
+             [class.grid-cols-3]="trip.mountains.length >= 3">
+            @for (m of trip.mountains | slice:0:3; track m._id) {
+            <img [src]="m.imageUrl" [alt]="m.name"
+                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+            }
+        </div>
+        } @else {
+        <div class="flex h-full items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-200">
+            <i class="fa-solid fa-route text-4xl text-neutral-300"></i>
+        </div>
+        }
+
+        <!-- Complete overlay tint -->
+        @if (trip.isComplete) {
+        <div class="absolute inset-0 bg-[#708C69]/20"></div>
+        <div class="absolute top-3 left-3">
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-[#708C69] px-3 py-1.5 text-xs font-semibold text-white">
+                <i class="fa-solid fa-check"></i> Complete
+            </span>
+        </div>
+        }
+
+        <!-- Extra mountains badge -->
+        @if (trip.mountains.length > 3) {
+        <div class="absolute bottom-3 right-3">
+            <span class="rounded-full bg-black/60 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">+{{ trip.mountains.length - 3 }} more</span>
+        </div>
+        }
+
+        <!-- Edit / delete -->
+        <div class="absolute top-3 right-3 flex items-center gap-1">
+            <button type="button" (click)="edit.emit(trip)"
+                class="grid h-8 w-8 place-items-center rounded-full bg-white/95 text-neutral-500 shadow-sm border border-neutral-200 transition hover:bg-white hover:text-neutral-700">
+                <i class="fa-solid fa-pen-to-square text-xs"></i>
+            </button>
+            <button type="button" (click)="delete.emit(trip._id)"
+                class="grid h-8 w-8 place-items-center rounded-full bg-white/95 text-neutral-500 shadow-sm border border-neutral-200 transition hover:border-red-200 hover:bg-white hover:text-red-500">
+                <i class="fa-solid fa-trash text-xs"></i>
+            </button>
+        </div>
+    </div>
 
     <!-- Body -->
-    <div class="flex flex-1 flex-col gap-4 p-5">
+    <div class="flex flex-1 flex-col gap-3 p-5">
 
-        <!-- Title row + actions -->
-        <div class="flex items-start justify-between gap-3">
-            <div class="min-w-0">
-                <h2 class="text-base font-bold leading-snug text-neutral-900 truncate">{{ trip.title }}</h2>
-                @if (trip.description) {
-                <p class="mt-1 text-sm text-neutral-400 line-clamp-2 leading-relaxed">{{ trip.description }}</p>
-                }
-            </div>
-            <div class="flex shrink-0 items-center gap-0.5">
-                <button type="button" (click)="edit.emit(trip)"
-                    class="grid h-8 w-8 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700">
-                    <i class="fa-solid fa-pen-to-square text-xs"></i>
-                </button>
-                <button type="button" (click)="delete.emit(trip._id)"
-                    class="grid h-8 w-8 place-items-center rounded-full text-neutral-400 transition hover:bg-red-50 hover:text-red-500">
-                    <i class="fa-solid fa-trash text-xs"></i>
-                </button>
-            </div>
+        <!-- Title + description -->
+        <div class="min-w-0">
+            <h2 class="text-base font-bold leading-snug text-neutral-900 truncate">{{ trip.title }}</h2>
+            @if (trip.description) {
+            <p class="mt-1 text-sm text-neutral-400 line-clamp-2 leading-relaxed">{{ trip.description }}</p>
+            }
         </div>
 
         <!-- Date range -->
-        <div class="flex items-center gap-2 text-xs text-neutral-400">
-            <i class="fa-regular fa-calendar shrink-0"></i>
+        <div class="flex items-center gap-2 text-sm text-neutral-400">
+            <i class="fa-regular fa-calendar text-xs shrink-0"></i>
             <span>{{ dateRange }}</span>
         </div>
 
         <!-- Progress -->
-        <div class="space-y-2">
+        <div class="mt-auto space-y-2">
             <div class="flex items-center justify-between">
                 <span class="text-xs text-neutral-400">
                     {{ trip.completedCount }} of {{ trip.mountains.length }} summited
                 </span>
-                @if (trip.isComplete) {
-                <span class="inline-flex items-center gap-1 rounded-full bg-[#708C69]/10 px-2.5 py-1 text-xs font-semibold text-[#708C69]">
-                    <i class="fa-solid fa-check text-[9px]"></i> Complete
-                </span>
-                } @else if (trip.mountains.length > 0) {
+                @if (trip.mountains.length > 0 && !trip.isComplete) {
                 <span class="text-xs font-semibold tabular-nums text-neutral-500">
                     {{ ((trip.completedCount / trip.mountains.length) * 100) | number:'1.0-0' }}%
                 </span>

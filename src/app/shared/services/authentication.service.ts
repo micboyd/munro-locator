@@ -37,6 +37,14 @@ export class AuthenticationService {
 		return this.http.post<AuthResponse>(`${this._apiUrl}/login`, payload);
 	}
 
+	register(payload: { username: string; email: string; password: string }): Observable<{ message: string }> {
+		return this.http.post<{ message: string }>(`${this._apiUrl}/register`, payload);
+	}
+
+	confirmEmail(token: string): Observable<{ message: string }> {
+		return this.http.get<{ message: string }>(`${this._apiUrl}/confirm/${encodeURIComponent(token)}`);
+	}
+
 	clearDetails() {
 		localStorage.clear();
 	}

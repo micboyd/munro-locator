@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
 
     editMode: boolean = false;
     loading: boolean = true;
+    loadError: boolean = false;
     recentActivities: RecentActivity[] = [];
     stats: ProfileStats | null = null;
 
@@ -41,6 +42,7 @@ export class ProfileComponent implements OnInit {
 
     getUserProfile() {
         this.loading = true;
+        this.loadError = false;
         this.profileService.getProfileByUserId().subscribe({
             next: (response) => {
                 this._selectedUserProfile = response;
@@ -51,6 +53,8 @@ export class ProfileComponent implements OnInit {
                 if (error.status === 404) {
                     this._selectedUserProfile = new UserProfile();
                     this.editMode = true;
+                } else {
+                    this.loadError = true;
                 }
                 this.loading = false;
             }
@@ -82,16 +86,20 @@ export class ProfileComponent implements OnInit {
     }
 
     getActivityIcon(type: string): string {
-        return type === 'completed' ? 'fa-circle-check' : 'fa-calendar-day';
+        if (type === 'completed') return 'fa-circle-check';
+        if (type === 'trip_created') return 'fa-route';
+        return 'fa-calendar-day';
     }
 
     getActivityLabel(activity: RecentActivity): string {
+        if (activity.type === 'trip_created') return `Created: ${activity.title ?? 'Trip'}`;
         const prefix = activity.type === 'completed' ? 'Completed' : 'Planned';
-        return `${prefix}: ${activity.mountain.name}`;
+        return `${prefix}: ${activity.mountain?.name}`;
     }
 
     getActivitySubtitle(activity: RecentActivity): string {
-        const region = activity.mountain.region ?? '';
+        if (activity.type === 'trip_created') return this.formatRelativeDate(activity.createdAt);
+        const region = activity.mountain?.region ?? '';
         if (activity.type === 'completed') {
             return region ? `${region} • ${this.formatRelativeDate(activity.createdAt)}` : this.formatRelativeDate(activity.createdAt);
         }
@@ -100,9 +108,8 @@ export class ProfileComponent implements OnInit {
     }
 
     getActivityBadge(activity: RecentActivity): string {
-        if (activity.type === 'completed') {
-            return activity.rating != null ? activity.rating.toString() : '-';
-        }
+        if (activity.type === 'completed') return activity.rating != null ? activity.rating.toString() : '-';
+        if (activity.type === 'trip_created') return 'Trip';
         return activity.plannedDate ? this.getDayAbbrev(activity.plannedDate) : '-';
     }
 
