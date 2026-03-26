@@ -52,6 +52,7 @@ export class GoalsComponent implements OnInit {
                 this.loading = false;
             },
             error: () => {
+                this.goals = [];
                 this.loading = false;
             }
         });

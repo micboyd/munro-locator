@@ -1,0 +1,64 @@
+<section>
+    <!-- Controls row -->
+    <div class="mb-6 flex items-center justify-between gap-4">
+        <div>
+            <span class="text-sm font-semibold text-neutral-500">
+                {{ trips.length }} {{ trips.length === 1 ? 'trip' : 'trips' }}
+            </span>
+        </div>
+        <button type="button" (click)="openCreate()"
+            class="inline-flex items-center gap-2 rounded-full bg-neutral-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800">
+            <i class="fa-solid fa-plus text-xs"></i> New trip
+        </button>
+    </div>
+
+    <!-- Loading -->
+    @if (loading) {
+    <app-loading-indicator></app-loading-indicator>
+
+    <!-- Empty state -->
+    } @else if (trips.length === 0) {
+    <div class="rounded-2xl border border-neutral-100 bg-white px-6 py-12 text-center sm:px-8 sm:py-16">
+        <div class="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-neutral-100 text-neutral-400 text-2xl">
+            <i class="fa-solid fa-route"></i>
+        </div>
+        <p class="text-base font-semibold text-neutral-900">No trips yet</p>
+        <p class="mt-1.5 text-sm text-neutral-400">Create a trip to group mountains into a named plan.</p>
+        <button type="button" (click)="openCreate()"
+            class="mt-6 inline-flex items-center gap-2 rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800">
+            <i class="fa-solid fa-plus text-xs"></i> Create your first trip
+        </button>
+    </div>
+
+    <!-- Trip cards -->
+    } @else {
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        @for (trip of trips; track trip._id) {
+        <app-trip-plan-card
+            [trip]="trip"
+            (view)="openDetail($event)"
+            (edit)="openEdit($event)"
+            (delete)="deleteTrip($event)">
+        </app-trip-plan-card>
+        }
+    </div>
+    }
+</section>
+
+<!-- Create / Edit form -->
+@if (showForm) {
+<app-trip-plan-form
+    [editingTrip]="editingTrip"
+    (saved)="onFormSaved($event)"
+    (cancel)="onFormCancel()">
+</app-trip-plan-form>
+}
+
+<!-- Trip detail -->
+@if (viewingTrip) {
+<app-trip-plan-detail
+    [trip]="viewingTrip"
+    (close)="onDetailClose()"
+    (updated)="onDetailUpdated($event)">
+</app-trip-plan-detail>
+}

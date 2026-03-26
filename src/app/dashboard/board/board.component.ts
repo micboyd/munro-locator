@@ -90,7 +90,7 @@ export class BoardComponent implements OnInit {
     }
 
     get cateogries() {
-        return ['Planned', 'Completed'];
+        return ['Planned', 'Completed', 'Trips'];
     }
 
     get sortOptions() {

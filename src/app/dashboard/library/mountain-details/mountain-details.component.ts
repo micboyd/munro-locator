@@ -45,6 +45,8 @@ export class MountainDetailsComponent implements OnInit, AfterViewInit, OnDestro
     ) {}
 
     ngOnInit(): void {
+        document.body.style.overflow = 'hidden';
+
         if (!this.mountain?.latitude || !this.mountain?.longitude) {
             this.driveState = 'unavailable';
             return;
@@ -102,6 +104,7 @@ export class MountainDetailsComponent implements OnInit, AfterViewInit, OnDestro
     }
 
     ngOnDestroy(): void {
+        document.body.style.overflow = '';
         this.marker?.remove();
         this.map?.remove();
         this.map = undefined;

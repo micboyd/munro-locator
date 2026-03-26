@@ -50,7 +50,15 @@ export class WeatherComponent implements OnInit, OnChanges {
 
 	private dayNameFromISO(dayISO: string): string {
 		const dt = new Date(dayISO + 'T00:00:00');
-		return dt.toLocaleDateString(undefined, { weekday: 'long' });
+		const weekday = dt.toLocaleDateString('en-GB', { weekday: 'long' });
+		const day = dt.getDate();
+		const month = dt.toLocaleDateString('en-GB', { month: 'long' });
+		const year = dt.getFullYear();
+		const suffix = day === 1 || day === 21 || day === 31 ? 'st'
+			: day === 2 || day === 22 ? 'nd'
+			: day === 3 || day === 23 ? 'rd'
+			: 'th';
+		return `${weekday}, ${day}${suffix} of ${month} ${year}`;
 	}
 
 	private hhmm(iso: string): string {
