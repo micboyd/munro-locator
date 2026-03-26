@@ -39,6 +39,7 @@ export class BoardComponent implements OnInit {
     mapOpen = false;
     private _mapMountains: Mountain[] = [];
     private _mapMountainsLoading = false;
+    detailMountainFromMap: Mountain | null = null;
 
     completingMountain: PlannedMountain | null = null;
     viewingMountain: CompletedMountain | null = null;
@@ -112,7 +113,10 @@ export class BoardComponent implements OnInit {
     ngOnInit(): void {
         this.reload$
             .pipe(
-                tap(() => (this._loading = true)),
+                tap(() => {
+                    this._loading = true;
+                    this._pagination = null;
+                }),
                 distinctUntilChanged(() => false),
                 switchMap(() =>
                     this.plannedMountainService.getPlannedMountainsForCurrentUserPaged(
@@ -122,7 +126,7 @@ export class BoardComponent implements OnInit {
                         this.query.search
                     ).pipe(
                         finalize(() => (this._loading = false)),
-                        catchError(() => of({ data: [], pagination: this._pagination }))
+                        catchError(() => of({ data: [], pagination: null }))
                     )
                 )
             )
@@ -229,6 +233,11 @@ export class BoardComponent implements OnInit {
 
     closeMap(): void {
         this.mapOpen = false;
+    }
+
+    openMountainFromMap(mountain: Mountain): void {
+        this.mapOpen = false;
+        this.detailMountainFromMap = mountain;
     }
 
     startMountain(pm: PlannedMountain): void {

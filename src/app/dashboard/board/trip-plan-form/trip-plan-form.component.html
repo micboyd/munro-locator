@@ -1,68 +1,71 @@
-<!-- Full-screen overlay -->
-<div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-    <div class="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl sm:p-8">
+<div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-4">
+    <div class="w-full max-w-lg rounded-3xl bg-white shadow-2xl">
 
-        <h2 class="text-lg font-bold text-neutral-950">
-            {{ editingTrip ? 'Edit trip' : 'New trip' }}
-        </h2>
-        <p class="mt-1 text-sm text-neutral-400">Give your trip a name and optionally some dates.</p>
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-neutral-100 px-6 py-5">
+            <div>
+                <h2 class="text-base font-bold text-neutral-950">{{ editingTrip ? 'Edit trip' : 'New trip' }}</h2>
+                <p class="mt-0.5 text-sm text-neutral-400">{{ editingTrip ? 'Update the details below.' : 'Give your trip a name and optionally some dates.' }}</p>
+            </div>
+            <button type="button" (click)="cancel.emit()"
+                class="grid h-8 w-8 place-items-center rounded-full text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
 
-        <form [formGroup]="form" (ngSubmit)="save()" class="mt-6 space-y-4">
+        <form [formGroup]="form" (ngSubmit)="save()" class="px-6 py-5 space-y-4">
 
             <!-- Title -->
             <div>
-                <label class="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-1.5">
+                <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
                     Trip name <span class="text-red-400">*</span>
                 </label>
                 <input formControlName="title" type="text" placeholder="e.g. Katy & Michael's Summer Trip"
-                    class="w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition focus:border-neutral-400 focus:bg-white" />
+                    class="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition focus:border-neutral-400 focus:bg-white" />
             </div>
 
             <!-- Description -->
             <div>
-                <label class="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-1.5">
-                    Description
+                <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                    Description <span class="text-neutral-300 font-normal normal-case tracking-normal">— optional</span>
                 </label>
-                <textarea formControlName="description" rows="2" placeholder="Optional notes about this trip…"
-                    class="w-full resize-none rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition focus:border-neutral-400 focus:bg-white"></textarea>
+                <textarea formControlName="description" rows="2" placeholder="Any notes about this trip…"
+                    class="w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 outline-none transition focus:border-neutral-400 focus:bg-white"></textarea>
             </div>
 
             <!-- Dates -->
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-1.5">
-                        Start date
-                    </label>
+                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-neutral-500">Start date</label>
                     <input formControlName="startDate" type="date"
-                        class="w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 outline-none transition focus:border-neutral-400 focus:bg-white" />
+                        class="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-neutral-400 focus:bg-white" />
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-1.5">
-                        End date
-                    </label>
+                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-neutral-500">End date</label>
                     <input formControlName="endDate" type="date"
-                        class="w-full rounded-2xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 outline-none transition focus:border-neutral-400 focus:bg-white" />
+                        class="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-neutral-400 focus:bg-white" />
                 </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="flex gap-3 pt-2">
-                <button type="button" (click)="cancel.emit()"
-                    class="flex-1 rounded-full border border-neutral-200 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50">
-                    Cancel
-                </button>
-                <button type="submit" [disabled]="form.invalid || saving"
-                    class="flex-1 rounded-full bg-neutral-950 py-3 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed">
-                    @if (saving) {
-                        <span class="inline-flex items-center gap-2 justify-center">
-                            <i class="fa-solid fa-circle-notch animate-spin text-xs"></i> Saving…
-                        </span>
-                    } @else {
-                        {{ editingTrip ? 'Save changes' : 'Create trip' }}
-                    }
-                </button>
             </div>
 
         </form>
+
+        <!-- Footer actions -->
+        <div class="flex gap-3 border-t border-neutral-100 px-6 py-4">
+            <button type="button" (click)="cancel.emit()"
+                class="flex-1 rounded-full border border-neutral-200 py-2.5 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50">
+                Cancel
+            </button>
+            <button type="submit" (click)="save()" [disabled]="form.invalid || saving"
+                class="flex-1 rounded-full bg-neutral-950 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed">
+                @if (saving) {
+                    <span class="inline-flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-notch animate-spin text-xs"></i> Saving…
+                    </span>
+                } @else {
+                    {{ editingTrip ? 'Save changes' : 'Create trip' }}
+                }
+            </button>
+        </div>
+
     </div>
 </div>

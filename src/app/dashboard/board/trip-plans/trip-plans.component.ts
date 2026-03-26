@@ -70,6 +70,7 @@ export class TripPlansComponent implements OnInit {
     onDetailUpdated(trip: TripPlan): void {
         const idx = this.trips.findIndex(t => t._id === trip._id);
         if (idx !== -1) this.trips[idx] = trip;
+        if (this.viewingTrip?._id === trip._id) this.viewingTrip = trip;
     }
 
     deleteTrip(id: string): void {

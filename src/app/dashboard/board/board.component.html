@@ -239,7 +239,22 @@
 </app-container>
 
 @if (mapOpen) {
-<app-map (viewMountain)="closeMap()" [mountains]="mapMountainsCollection" [loading]="mapMountainsLoading" (close)="closeMap()"></app-map>
+<app-map
+    [mountains]="mapMountainsCollection"
+    [loading]="mapMountainsLoading"
+    (viewMountain)="openMountainFromMap($event)"
+    (close)="closeMap()">
+</app-map>
+}
+
+@if (detailMountainFromMap) {
+<app-mountain-details
+    [mountain]="detailMountainFromMap"
+    [isAdded]="detailMountainFromMap.status === 'planned'"
+    [isCompleted]="detailMountainFromMap.status === 'completed'"
+    (close)="detailMountainFromMap = null"
+    (added)="detailMountainFromMap = null">
+</app-mountain-details>
 }
 
 @if (completingMountain) {

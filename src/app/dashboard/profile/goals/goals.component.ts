@@ -100,7 +100,11 @@ export class GoalsComponent implements OnInit {
     }
 
     deleteGoal(id: string): void {
-        this.profileService.deleteGoalById(id).subscribe(() => this.loadGoals());
+        this.goals = this.goals.filter(g => g.id !== id);
+        this.profileService.deleteGoalById(id).subscribe({
+            next: () => this.loadGoals(),
+            error: () => this.loadGoals(),
+        });
     }
 
     cancel(): void {

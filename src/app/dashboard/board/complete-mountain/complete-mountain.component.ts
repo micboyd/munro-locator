@@ -16,6 +16,7 @@ import { ToastService } from '../../../shared/services/toast.service';
 })
 export class CompleteMountainComponent implements OnInit, OnDestroy {
     @Input() plannedMountain?: PlannedMountain;
+    @Input() mountainDirect?: Mountain;
     @Input() existingRecord?: CompletedMountain;
     @Input() readonly = false;
 
@@ -33,7 +34,7 @@ export class CompleteMountainComponent implements OnInit, OnDestroy {
     }
 
     get mountain(): Mountain | undefined {
-        return this.plannedMountain?.mountain ?? this.existingRecord?.mountain;
+        return this.plannedMountain?.mountain ?? this.mountainDirect ?? this.existingRecord?.mountain;
     }
 
     get existingPhotoUrls(): string[] {
@@ -89,7 +90,7 @@ export class CompleteMountainComponent implements OnInit, OnDestroy {
         if (this.form.invalid || this.saving || this.readonly) return;
 
         const request: CompletedMountainRequest = {
-            mountainId: this.plannedMountain?.mountain._id ?? this.existingRecord?.mountainId,
+            mountainId: this.plannedMountain?.mountain._id ?? this.mountainDirect?._id ?? this.existingRecord?.mountainId,
             dateCompleted: new Date(this.form.value.dateCompleted),
             notes: this.form.value.notes ?? '',
             rating: this.rating,

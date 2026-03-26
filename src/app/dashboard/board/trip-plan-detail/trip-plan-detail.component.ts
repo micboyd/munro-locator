@@ -22,6 +22,11 @@ export class TripPlanDetailComponent implements OnInit, OnDestroy {
     searching = false;
     addingId: string | null = null;
     removingId: string | null = null;
+    completingMountain: Mountain | null = null;
+
+    showMapPicker = false;
+    mapMountains: Mountain[] = [];
+    mapLoading = false;
 
     constructor(
         private tripPlansService: TripPlansService,
@@ -72,6 +77,7 @@ export class TripPlanDetailComponent implements OnInit, OnDestroy {
             next: (updated) => {
                 this.trip = updated;
                 this.searchResults = this.searchResults.filter(m => m._id !== mountain._id);
+                this.mapMountains = this.mapMountains.filter(m => m._id !== mountain._id);
                 this.addingId = null;
                 this.updated.emit(updated);
             },
@@ -91,8 +97,41 @@ export class TripPlanDetailComponent implements OnInit, OnDestroy {
         });
     }
 
+    completeMountain(mountain: Mountain): void {
+        this.completingMountain = mountain;
+    }
+
+    onCompleteSaved(): void {
+        this.completingMountain = null;
+        // Reload the trip so status updates are reflected
+        this.tripPlansService.getById(this.trip._id).subscribe({
+            next: (updated) => {
+                this.trip = updated;
+                this.updated.emit(updated);
+            },
+        });
+    }
+
     clearSearch(): void {
         this.searchTerm = '';
         this.searchResults = [];
+    }
+
+    openMapPicker(): void {
+        this.showMapPicker = true;
+        this.mapLoading = true;
+        const inTrip = new Set(this.trip.mountains.map(m => m._id));
+        const params = new HttpParams().set('all', 'true');
+        this.libraryService.getAll(params).subscribe({
+            next: (res) => {
+                this.mapMountains = res.data.filter(m => !inTrip.has(m._id));
+                this.mapLoading = false;
+            },
+            error: () => { this.mapLoading = false; },
+        });
+    }
+
+    onMapMountainSelected(mountain: Mountain): void {
+        this.addMountain(mountain);
     }
 }
