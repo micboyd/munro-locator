@@ -11,6 +11,7 @@ import { FullscreenLoaderComponent } from './components/fullscreen-loader/fullsc
 import { HeroComponent } from './components/hero/hero.component';
 import { LoadingIndicatorComponent } from './components/loading-indicator/loading-indicator.component';
 import { DriveTimeComponent } from './components/drive-time/drive-time.component';
+import { NaismithComponent } from './components/naismith/naismith.component';
 import { MapComponent } from './components/map/map.component';
 import { MountainControlsComponent } from './components/mountain-controls/mountain-controls.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -38,7 +39,8 @@ import { WeatherComponent } from './components/weather/weather.component';
 		MapComponent,
         MountainControlsComponent,
         DriveTimeComponent,
-        DialogComponent
+        DialogComponent,
+        NaismithComponent
 	],
 	imports: [FontAwesomeModule, CommonModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
 	exports: [
@@ -57,7 +59,8 @@ import { WeatherComponent } from './components/weather/weather.component';
 		MapComponent,
         MountainControlsComponent,
         DriveTimeComponent,
-        DialogComponent
+        DialogComponent,
+        NaismithComponent
 	],
 })
 export class SharedModule {}

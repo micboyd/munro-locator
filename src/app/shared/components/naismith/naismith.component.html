@@ -1,0 +1,110 @@
+<!-- Backdrop -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+    (click)="close.emit()">
+
+    <!-- Card -->
+    <div class="relative w-full max-w-sm bg-white rounded-2xl shadow-2xl p-6"
+        (click)="$event.stopPropagation()">
+
+        <!-- Close button -->
+        <button (click)="close.emit()"
+            class="absolute top-4 right-4 w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 flex items-center justify-center transition-colors">
+            <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+
+        <!-- Header -->
+        <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-full bg-neutral-900 flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-stopwatch text-white text-sm"></i>
+            </div>
+            <div>
+                <p class="text-xs font-medium text-neutral-500 uppercase tracking-wide">Walk time estimate</p>
+                <p class="text-base font-semibold text-neutral-900 leading-snug">{{ mountain.name }}</p>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        @if (state === 'loading') {
+        <div class="flex items-center justify-center gap-3 py-6 text-neutral-500">
+            <app-loading-indicator></app-loading-indicator>
+            <span class="text-sm">Getting your location…</span>
+        </div>
+        }
+
+        <!-- Success -->
+        @if (state === 'success' && result) {
+
+        <!-- Distance slider -->
+        <div class="mb-5">
+            <div class="flex items-center justify-between mb-2">
+                <label class="text-xs font-medium text-neutral-500 uppercase tracking-wide">Walk distance</label>
+                <span class="text-sm font-semibold text-neutral-900">{{ distanceKm }} km</span>
+            </div>
+            <input type="range" min="1" max="30" step="1"
+                [(ngModel)]="distanceKm"
+                (ngModelChange)="recalculate()"
+                class="w-full accent-neutral-900" />
+            <div class="flex justify-between text-xs text-neutral-400 mt-1">
+                <span>1 km</span><span>30 km</span>
+            </div>
+        </div>
+
+        <!-- Elevation info -->
+        <div class="rounded-xl bg-neutral-50 px-4 py-3 mb-5 flex items-center justify-between text-xs text-neutral-500">
+            <div>
+                <span>Your elevation</span><br>
+                <span class="text-base font-semibold text-neutral-800">{{ userElevation }}m</span>
+            </div>
+            <i class="fa-solid fa-arrow-right text-neutral-300"></i>
+            <div class="text-center">
+                <span>Summit</span><br>
+                <span class="text-base font-semibold text-neutral-800">{{ mountain.height }}m</span>
+            </div>
+            <i class="fa-solid fa-arrow-right text-neutral-300"></i>
+            <div class="text-right">
+                <span>Ascent</span><br>
+                <span class="text-base font-semibold text-[#708C69]">+{{ ascent }}m</span>
+            </div>
+        </div>
+
+        <!-- Total time -->
+        <div class="text-center py-3">
+            <p class="text-4xl font-bold text-neutral-900 tabular-nums">{{ result.label }}</p>
+            <p class="text-xs text-neutral-500 mt-2 uppercase tracking-wide">Estimated walk time</p>
+        </div>
+
+        <!-- Breakdown -->
+        <div class="flex items-center justify-center gap-6 pt-4 border-t border-neutral-100 mt-4">
+            <div class="text-center">
+                <p class="text-lg font-semibold text-neutral-700 tabular-nums">{{ formatHours(result.walkingHours) }}</p>
+                <p class="text-xs text-neutral-400 uppercase tracking-wide mt-0.5">Distance</p>
+            </div>
+            <div class="text-neutral-300 text-sm">+</div>
+            <div class="text-center">
+                <p class="text-lg font-semibold text-neutral-700 tabular-nums">{{ formatHours(result.climbingHours) }}</p>
+                <p class="text-xs text-neutral-400 uppercase tracking-wide mt-0.5">Ascent</p>
+            </div>
+        </div>
+
+        <p class="text-center text-xs text-neutral-400 mt-4">Based on Naismith's Rule · Adjust distance to match your planned route</p>
+        }
+
+        <!-- Location denied -->
+        @if (state === 'location-denied') {
+        <div class="text-center py-6">
+            <i class="fa-solid fa-location-crosshairs text-2xl text-neutral-400 mb-3"></i>
+            <p class="text-sm font-medium text-neutral-800">Location access required</p>
+            <p class="text-xs text-neutral-500 mt-1">Allow location access in your browser settings and try again.</p>
+        </div>
+        }
+
+        <!-- Error -->
+        @if (state === 'error') {
+        <div class="text-center py-6">
+            <i class="fa-solid fa-triangle-exclamation text-2xl text-neutral-400 mb-3"></i>
+            <p class="text-sm font-medium text-neutral-800">{{ errorMessage }}</p>
+        </div>
+        }
+
+    </div>
+</div>

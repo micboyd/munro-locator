@@ -22,6 +22,7 @@ export class LibraryComponent implements OnInit {
 
     mapOpen = false;
     driveTimeMountain: Mountain | null = null;
+    naismithMountain: Mountain | null = null;
     detailMountain: Mountain | null = null;
     addedMountainIds = new Set<string>();
     completedMountainIds = new Set<string>();
