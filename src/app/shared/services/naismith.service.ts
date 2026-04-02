@@ -20,15 +20,17 @@ export class NaismithService {
     getUserElevation(): Observable<number> {
         return from(this.getCurrentPosition()).pipe(
             switchMap(pos => {
-                const lat = pos.coords.latitude.toFixed(6);
-                const lng = pos.coords.longitude.toFixed(6);
-                return this.http
-                    .get<{ elevation: number[] }>(
-                        `https://api.open-meteo.com/v1/elevation?latitude=${lat}&longitude=${lng}`
-                    )
-                    .pipe(map(res => res.elevation[0]));
+                return this.getTrailheadElevation(pos.coords.latitude, pos.coords.longitude);
             })
         );
+    }
+
+    getTrailheadElevation(lat: number, lng: number): Observable<number> {
+        return this.http
+            .get<{ elevation: number[] }>(
+                `https://api.open-meteo.com/v1/elevation?latitude=${lat.toFixed(6)}&longitude=${lng.toFixed(6)}`
+            )
+            .pipe(map(res => res.elevation[0]));
     }
 
     calculate(distanceKm: number, ascentM: number, userElevationM = 0): NaismithResult {

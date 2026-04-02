@@ -10,4 +10,6 @@ export class MountainResponse {
     region: string;
     imageUrl: string;
     status: string;
+    trailheadLatitude?: number;
+    trailheadLongitude?: number;
 }

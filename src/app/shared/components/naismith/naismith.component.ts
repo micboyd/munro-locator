@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { Mountain } from '../../models/Mountains/Mountain';
 import { NaismithResult, NaismithService } from '../../services/naismith.service';
+import { MapboxService } from '../../services/mapbox.service';
 
-type State = 'loading' | 'success' | 'location-denied' | 'error';
+type State = 'loading' | 'success' | 'no-trailhead' | 'location-denied' | 'error';
 
 @Component({
     selector: 'app-naismith',
@@ -15,26 +17,43 @@ export class NaismithComponent implements OnInit {
 
     state: State = 'loading';
     userElevation = 0;
-    distanceKm = 10;
+    distanceKm = 0;
     result: NaismithResult | null = null;
     errorMessage = '';
 
-    constructor(private naismithService: NaismithService) {}
+    constructor(
+        private naismithService: NaismithService,
+        private mapboxService: MapboxService,
+    ) {}
 
     ngOnInit(): void {
-        this.naismithService.getUserElevation().subscribe({
-            next: (elevation) => {
+        if (!this.mountain.trailheadLatitude || !this.mountain.trailheadLongitude) {
+            this.state = 'no-trailhead';
+            return;
+        }
+
+        const trailhead = {
+            latitude: this.mountain.trailheadLatitude,
+            longitude: this.mountain.trailheadLongitude,
+        };
+        const summit = {
+            latitude: this.mountain.latitude,
+            longitude: this.mountain.longitude,
+        };
+
+        forkJoin({
+            elevation: this.naismithService.getTrailheadElevation(trailhead.latitude, trailhead.longitude),
+            walk: this.mapboxService.getWalkDistance(trailhead, summit),
+        }).subscribe({
+            next: ({ elevation, walk }) => {
                 this.userElevation = Math.round(elevation);
+                this.distanceKm = Math.round((walk.distanceMeters / 1000) * 10) / 10;
                 this.state = 'success';
                 this.recalculate();
             },
-            error: (err: any) => {
-                if (err?.code === 1) {
-                    this.state = 'location-denied';
-                } else {
-                    this.errorMessage = 'Could not get your location.';
-                    this.state = 'error';
-                }
+            error: () => {
+                this.errorMessage = 'Could not calculate the walk distance.';
+                this.state = 'error';
             },
         });
     }

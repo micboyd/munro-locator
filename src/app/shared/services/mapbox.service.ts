@@ -1,8 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, from, switchMap } from 'rxjs';
+import { Observable, from, of, switchMap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+
+export interface Coords {
+    latitude: number;
+    longitude: number;
+}
 
 export interface DriveResult {
     durationSeconds: number;
@@ -16,29 +21,42 @@ export class MapboxService {
 
     constructor(private http: HttpClient) {}
 
-    getDriveTime(to: { latitude: number; longitude: number }): Observable<DriveResult> {
+    getDriveTime(to: Coords): Observable<DriveResult> {
+        return this.getDirections('driving', to);
+    }
+
+    getWalkDistance(from: Coords, to: Coords): Observable<DriveResult> {
+        return this.getDirectionsFromCoords('walking', from, to);
+    }
+
+    private getDirections(profile: 'driving' | 'walking', to: Coords): Observable<DriveResult> {
         return from(this.getCurrentPosition()).pipe(
             switchMap(pos => {
-                const origin = `${pos.coords.longitude},${pos.coords.latitude}`;
-                const dest   = `${to.longitude},${to.latitude}`;
-                const url    = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin};${dest}`
-                    + `?access_token=${environment.mapboxToken}&overview=false`;
-
-                return this.http
-                    .get<{ routes: { duration: number; distance: number }[] }>(url)
-                    .pipe(
-                        map(res => {
-                            const route = res.routes[0];
-                            return {
-                                durationSeconds: route.duration,
-                                distanceMeters:  route.distance,
-                                durationLabel:   this.formatDuration(route.duration),
-                                distanceLabel:   this.formatDistance(route.distance),
-                            };
-                        })
-                    );
+                const origin: Coords = { latitude: pos.coords.latitude, longitude: pos.coords.longitude };
+                return this.getDirectionsFromCoords(profile, origin, to);
             })
         );
+    }
+
+    private getDirectionsFromCoords(profile: 'driving' | 'walking', origin: Coords, dest: Coords): Observable<DriveResult> {
+        const originStr = `${origin.longitude},${origin.latitude}`;
+        const destStr   = `${dest.longitude},${dest.latitude}`;
+        const url       = `https://api.mapbox.com/directions/v5/mapbox/${profile}/${originStr};${destStr}`
+            + `?access_token=${environment.mapboxToken}&overview=false`;
+
+        return this.http
+            .get<{ routes: { duration: number; distance: number }[] }>(url)
+            .pipe(
+                map(res => {
+                    const route = res.routes[0];
+                    return {
+                        durationSeconds: route.duration,
+                        distanceMeters:  route.distance,
+                        durationLabel:   this.formatDuration(route.duration),
+                        distanceLabel:   this.formatDistance(route.distance),
+                    };
+                })
+            );
     }
 
     private getCurrentPosition(): Promise<GeolocationPosition> {

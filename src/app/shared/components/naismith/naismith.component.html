@@ -27,33 +27,18 @@
         @if (state === 'loading') {
         <div class="flex items-center justify-center gap-3 py-6 text-neutral-500">
             <app-loading-indicator></app-loading-indicator>
-            <span class="text-sm">Getting your location…</span>
+            <span class="text-sm">Calculating walk distance…</span>
         </div>
         }
 
         <!-- Success -->
         @if (state === 'success' && result) {
 
-        <!-- Distance slider -->
-        <div class="mb-5">
-            <div class="flex items-center justify-between mb-2">
-                <label class="text-xs font-medium text-neutral-500 uppercase tracking-wide">Walk distance</label>
-                <span class="text-sm font-semibold text-neutral-900">{{ distanceKm }} km</span>
-            </div>
-            <input type="range" min="1" max="30" step="1"
-                [(ngModel)]="distanceKm"
-                (ngModelChange)="recalculate()"
-                class="w-full accent-neutral-900" />
-            <div class="flex justify-between text-xs text-neutral-400 mt-1">
-                <span>1 km</span><span>30 km</span>
-            </div>
-        </div>
-
-        <!-- Elevation info -->
+        <!-- Walk distance -->
         <div class="rounded-xl bg-neutral-50 px-4 py-3 mb-5 flex items-center justify-between text-xs text-neutral-500">
             <div>
-                <span>Your elevation</span><br>
-                <span class="text-base font-semibold text-neutral-800">{{ userElevation }}m</span>
+                <span>Walk distance</span><br>
+                <span class="text-base font-semibold text-neutral-800">{{ distanceKm }} km</span>
             </div>
             <i class="fa-solid fa-arrow-right text-neutral-300"></i>
             <div class="text-center">
@@ -86,15 +71,15 @@
             </div>
         </div>
 
-        <p class="text-center text-xs text-neutral-400 mt-4">Based on Naismith's Rule · Adjust distance to match your planned route</p>
+        <p class="text-center text-xs text-neutral-400 mt-4">Based on Naismith's Rule · Walk distance via Mapbox</p>
         }
 
-        <!-- Location denied -->
-        @if (state === 'location-denied') {
+        <!-- No trailhead -->
+        @if (state === 'no-trailhead') {
         <div class="text-center py-6">
-            <i class="fa-solid fa-location-crosshairs text-2xl text-neutral-400 mb-3"></i>
-            <p class="text-sm font-medium text-neutral-800">Location access required</p>
-            <p class="text-xs text-neutral-500 mt-1">Allow location access in your browser settings and try again.</p>
+            <i class="fa-solid fa-map-pin text-2xl text-neutral-400 mb-3"></i>
+            <p class="text-sm font-medium text-neutral-800">No trailhead set</p>
+            <p class="text-xs text-neutral-500 mt-1">A trailhead location is needed to calculate the walk distance for this mountain.</p>
         </div>
         }
 
