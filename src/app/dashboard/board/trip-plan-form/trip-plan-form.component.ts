@@ -26,8 +26,10 @@ export class TripPlanFormComponent implements OnInit {
         this.form = this.fb.group({
             title: [this.editingTrip?.title ?? '', [Validators.required, Validators.maxLength(80)]],
             description: [this.editingTrip?.description ?? ''],
-            startDate: [this.editingTrip?.startDate ? this.toInputDate(this.editingTrip.startDate) : ''],
-            endDate: [this.editingTrip?.endDate ? this.toInputDate(this.editingTrip.endDate) : ''],
+            dateRange: [{
+                start: this.editingTrip?.startDate ? this.toInputDate(this.editingTrip.startDate) : '',
+                end:   this.editingTrip?.endDate   ? this.toInputDate(this.editingTrip.endDate)   : '',
+            }],
         });
     }
 
@@ -36,11 +38,12 @@ export class TripPlanFormComponent implements OnInit {
         this.saving = true;
 
         const v = this.form.value;
+        const range = v.dateRange ?? {};
         const request: TripPlanRequest = {
             title: v.title.trim(),
             description: v.description?.trim() || null,
-            startDate: v.startDate || null,
-            endDate: v.endDate || null,
+            startDate: range.start || null,
+            endDate:   range.end   || null,
         };
 
         const op = this.editingTrip

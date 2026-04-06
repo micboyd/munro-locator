@@ -2,6 +2,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from "../app-routing.module";
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
+import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { CommonModule } from '@angular/common';
 import { ContainerComponent } from './components/container/container.component';
@@ -26,6 +27,7 @@ import { WeatherComponent } from './components/weather/weather.component';
 	declarations: [
 		ToastComponent,
 		CheckboxComponent,
+		DatePickerComponent,
 		TabsComponent,
 		LoadingIndicatorComponent,
 		RatingComponent,
@@ -46,6 +48,7 @@ import { WeatherComponent } from './components/weather/weather.component';
 	exports: [
 		ToastComponent,
 		CheckboxComponent,
+		DatePickerComponent,
 		TabsComponent,
 		LoadingIndicatorComponent,
 		RatingComponent,

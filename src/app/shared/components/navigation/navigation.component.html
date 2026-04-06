@@ -23,6 +23,16 @@
                     class="rounded-full px-4 py-2 text-sm font-semibold text-neutral-500 transition-all duration-150 hover:bg-neutral-100 hover:text-neutral-900">
                     Library
                 </a>
+                <a routerLink="/dashboard/calendar" routerLinkActive="nav-link-active"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    class="rounded-full px-4 py-2 text-sm font-semibold text-neutral-500 transition-all duration-150 hover:bg-neutral-100 hover:text-neutral-900">
+                    Calendar
+                </a>
+                <a routerLink="/dashboard/weather" routerLinkActive="nav-link-active"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    class="rounded-full px-4 py-2 text-sm font-semibold text-neutral-500 transition-all duration-150 hover:bg-neutral-100 hover:text-neutral-900">
+                    Weather
+                </a>
             </div>
 
             <!-- Right: Profile + Mobile toggle -->
@@ -70,6 +80,18 @@
                     (click)="closeMobile()"
                     class="rounded-xl px-4 py-3.5 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900">
                     Library
+                </a>
+                <a routerLink="/dashboard/calendar" routerLinkActive="!bg-neutral-950 !text-white font-semibold"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    (click)="closeMobile()"
+                    class="rounded-xl px-4 py-3.5 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900">
+                    Calendar
+                </a>
+                <a routerLink="/dashboard/weather" routerLinkActive="!bg-neutral-950 !text-white font-semibold"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    (click)="closeMobile()"
+                    class="rounded-xl px-4 py-3.5 text-sm font-medium text-neutral-600 transition-colors duration-150 hover:bg-neutral-100 hover:text-neutral-900">
+                    Weather
                 </a>
                 <a routerLink="/dashboard/profile" routerLinkActive="!bg-neutral-950 !text-white font-semibold"
                     [routerLinkActiveOptions]="{ exact: true }"

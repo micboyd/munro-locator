@@ -34,17 +34,15 @@
             </div>
 
             <!-- Dates -->
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-neutral-500">Start date</label>
-                    <input formControlName="startDate" type="date"
-                        class="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-neutral-400 focus:bg-white" />
-                </div>
-                <div>
-                    <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-neutral-500">End date</label>
-                    <input formControlName="endDate" type="date"
-                        class="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-neutral-400 focus:bg-white" />
-                </div>
+            <div>
+                <label class="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-neutral-500">
+                    Trip dates <span class="font-normal normal-case tracking-normal text-neutral-300">— optional</span>
+                </label>
+                <app-date-picker
+                    [mode]="'range'"
+                    formControlName="dateRange"
+                    placeholder="Select trip dates">
+                </app-date-picker>
             </div>
 
         </form>

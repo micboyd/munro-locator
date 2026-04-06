@@ -1,0 +1,75 @@
+@if (loading) {
+<!-- Skeleton -->
+<div class="mb-6 overflow-hidden rounded-2xl border border-neutral-100 bg-white">
+    <div class="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
+        <div class="h-4 w-36 animate-pulse rounded-full bg-neutral-100"></div>
+        <div class="h-4 w-20 animate-pulse rounded-full bg-neutral-100"></div>
+    </div>
+    <div class="grid grid-cols-2 gap-px bg-neutral-100 sm:grid-cols-3 lg:grid-cols-4">
+        @for (i of [1,2,3,4]; track i) {
+        <div class="bg-white p-4 space-y-3">
+            <div class="h-3 w-24 animate-pulse rounded-full bg-neutral-100"></div>
+            <div class="h-1.5 w-full animate-pulse rounded-full bg-neutral-100"></div>
+            <div class="h-3 w-16 animate-pulse rounded-full bg-neutral-100"></div>
+        </div>
+        }
+    </div>
+</div>
+
+} @else if (stats.length > 0) {
+
+<div class="mb-6 overflow-hidden rounded-2xl border border-neutral-100 bg-white">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-neutral-100 px-5 py-4">
+        <div class="flex items-center gap-2.5">
+            <div class="grid h-7 w-7 place-items-center rounded-lg bg-neutral-950 text-white">
+                <i class="fa-solid fa-mountain-sun text-xs"></i>
+            </div>
+            <span class="text-sm font-bold text-neutral-900">Category Progress</span>
+        </div>
+        <span class="text-xs font-medium text-neutral-400">
+            {{ completedCount }} of {{ stats.length }} complete
+        </span>
+    </div>
+
+    <!-- Category grid -->
+    <div class="grid grid-cols-2 gap-px bg-neutral-100 sm:grid-cols-3 lg:grid-cols-4">
+        @for (stat of stats; track stat.name) {
+        <div class="group relative flex flex-col gap-3 bg-white p-4 transition-colors duration-150 hover:bg-neutral-50/60">
+
+            <!-- Category name + badge -->
+            <div class="flex items-start justify-between gap-2">
+                <span class="text-sm font-semibold leading-tight text-neutral-800">{{ stat.name }}</span>
+                @if (stat.isComplete) {
+                <span class="inline-flex shrink-0 items-center gap-1 rounded-full bg-[#708C69]/10 px-2 py-0.5 text-[10px] font-semibold text-[#708C69]">
+                    <i class="fa-solid fa-check text-[8px]"></i> Done
+                </span>
+                }
+            </div>
+
+            <!-- Progress bar -->
+            <div class="space-y-1.5">
+                <div class="h-1.5 w-full overflow-hidden rounded-full bg-neutral-100">
+                    <div class="h-full rounded-full transition-all duration-700 ease-out"
+                        [class]="stat.isComplete ? 'bg-[#708C69]' : 'bg-neutral-950'"
+                        [style.width.%]="stat.percentage">
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-xs text-neutral-400">
+                        <span class="font-semibold text-neutral-700">{{ stat.completed }}</span>
+                        / {{ stat.total }}
+                    </span>
+                    <span [class]="'text-xs font-semibold ' + (stat.isComplete ? 'text-[#708C69]' : 'text-neutral-500')">
+                        {{ stat.percentage }}%
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        }
+    </div>
+
+</div>
+}

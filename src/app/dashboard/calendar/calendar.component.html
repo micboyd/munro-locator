@@ -1,0 +1,194 @@
+<app-container>
+    <app-hero heroTitle="Calendar" heroSubtitle="Your planned and completed summits at a glance"></app-hero>
+
+    <div class="pb-24">
+
+        <!-- Month header -->
+        <div class="mb-5 flex items-center justify-between gap-4">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-4">
+                <h2 class="text-lg font-bold text-neutral-900">{{ monthLabel }}</h2>
+                <div class="flex flex-wrap items-center gap-3 text-xs text-neutral-400">
+                    @if (totalTripsThisMonth > 0) {
+                    <span class="flex items-center gap-1.5">
+                        <span class="h-2 w-2 rounded-full bg-[#4A7FC1]"></span>
+                        {{ totalTripsThisMonth }} trip{{ totalTripsThisMonth !== 1 ? 's' : '' }}
+                    </span>
+                    }
+                    @if (totalPlannedThisMonth > 0) {
+                    <span class="flex items-center gap-1.5">
+                        <span class="h-2 w-2 rounded-full bg-[#F4A258]"></span>
+                        {{ totalPlannedThisMonth }} planned
+                    </span>
+                    }
+                    @if (totalCompletedThisMonth > 0) {
+                    <span class="flex items-center gap-1.5">
+                        <span class="h-2 w-2 rounded-full bg-[#708C69]"></span>
+                        {{ totalCompletedThisMonth }} summited
+                    </span>
+                    }
+                </div>
+            </div>
+
+            <div class="flex shrink-0 items-center gap-2">
+                <button (click)="goToToday()"
+                    class="hidden rounded-full border border-neutral-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-neutral-600 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50 sm:block">
+                    Today
+                </button>
+                <button (click)="prevMonth()"
+                    class="grid h-8 w-8 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-500 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50">
+                    <i class="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button (click)="nextMonth()"
+                    class="grid h-8 w-8 place-items-center rounded-full border border-neutral-200 bg-white text-neutral-500 transition-colors duration-150 hover:border-neutral-300 hover:bg-neutral-50">
+                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile agenda (small screens only) -->
+        <div class="sm:hidden overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-sm divide-y divide-neutral-100">
+            @for (day of mobileDays; track day.date) {
+            <div class="flex gap-3 px-4 py-3">
+
+                <!-- Date column -->
+                <div class="w-9 shrink-0 text-center">
+                    <div class="text-[10px] font-semibold uppercase tracking-wide text-neutral-400">
+                        {{ day.date | date:'EEE' }}
+                    </div>
+                    <div [class]="day.isToday
+                        ? 'mx-auto mt-0.5 grid h-8 w-8 place-items-center rounded-full bg-neutral-950 text-sm font-bold text-white'
+                        : 'mt-0.5 text-center text-lg font-bold ' + (day.isCurrentMonth ? 'text-neutral-800' : 'text-neutral-300')">
+                        {{ day.date.getDate() }}
+                    </div>
+                </div>
+
+                <!-- Events column -->
+                <div class="flex flex-1 flex-col justify-center gap-1.5 py-0.5">
+                    @for (trip of tripsForDay(day); track trip._id) {
+                    <div class="flex items-center gap-1.5 rounded-lg bg-[#4A7FC1]/10 px-2.5 py-1.5">
+                        <i class="fa-solid fa-route shrink-0 text-xs text-[#4A7FC1]"></i>
+                        <span class="truncate text-xs font-semibold text-[#4A7FC1]">{{ trip.title }}</span>
+                    </div>
+                    }
+                    @for (event of visibleEvents(day); track event.id) {
+                        @if (event.type === 'planned') {
+                        <div class="flex items-center gap-1.5 rounded-lg bg-[#F4A258]/10 px-2.5 py-1.5">
+                            <i class="fa-solid fa-calendar shrink-0 text-xs text-[#F4A258]"></i>
+                            <span class="truncate text-xs font-semibold text-[#c07a33]">{{ event.name }}</span>
+                        </div>
+                        } @else {
+                        <div class="flex items-center gap-1.5 rounded-lg bg-[#708C69]/10 px-2.5 py-1.5">
+                            <i class="fa-solid fa-check shrink-0 text-xs text-[#708C69]"></i>
+                            <span class="truncate text-xs font-semibold text-[#4e6347]">{{ event.name }}</span>
+                        </div>
+                        }
+                    }
+                    @if (tripsForDay(day).length === 0 && day.planned.length === 0 && day.completed.length === 0) {
+                    <span class="text-xs text-neutral-200">—</span>
+                    }
+                </div>
+
+            </div>
+            }
+        </div>
+
+        <!-- Grid calendar (sm+) -->
+        <div class="hidden sm:block overflow-hidden rounded-2xl border border-neutral-100 bg-white shadow-sm">
+
+            <!-- Day-of-week headers -->
+            <div class="grid grid-cols-7 border-b border-neutral-100 bg-neutral-50/60">
+                @for (day of weekDays; track day; let i = $index) {
+                <div [class]="'py-3 text-center text-[10px] font-semibold uppercase tracking-widest '
+                    + (i >= 5 ? 'text-neutral-300' : 'text-neutral-400')">
+                    <span class="hidden sm:inline">{{ day }}</span>
+                    <span class="sm:hidden">{{ day[0] }}</span>
+                </div>
+                }
+            </div>
+
+            <!-- Week rows -->
+            @for (week of weekRows; track week.days[0].date; let wLast = $last) {
+            <div [class]="'border-neutral-100 ' + (wLast ? '' : 'border-b')">
+
+                <!-- Trip banner (only rendered when trips exist this week) -->
+                @if (week.tripRowCount > 0) {
+                <div class="grid grid-cols-7 border-b border-neutral-50 bg-white py-1"
+                    [style]="'grid-auto-rows: 22px; min-height: ' + tripBannerHeight(week)">
+                    @for (seg of week.tripSegments; track seg.trip._id + seg.rowIndex) {
+                    <div [ngStyle]="tripSegmentStyle(seg)" [class]="tripBarClass(seg)">
+                        @if (seg.isStart) {
+                        <span class="truncate pl-2 text-[10px] font-semibold leading-none">
+                            <i class="fa-solid fa-route mr-1 text-[8px] opacity-80"></i>{{ seg.trip.title }}
+                        </span>
+                        }
+                    </div>
+                    }
+                </div>
+                }
+
+                <!-- Day cells -->
+                <div class="grid grid-cols-7 divide-x divide-neutral-100">
+                    @for (day of week.days; track day.date; let dLast = $last) {
+                    <div [class]="'flex min-h-[80px] flex-col gap-1 p-1.5 sm:min-h-[100px] sm:p-2.5 '
+                        + (day.isCurrentMonth ? 'bg-white' : 'bg-neutral-50/50')">
+
+                        <!-- Day number -->
+                        <div class="flex justify-end">
+                            <span [class]="day.isToday
+                                ? 'grid h-6 w-6 place-items-center rounded-full bg-neutral-950 text-xs font-bold text-white'
+                                : day.isCurrentMonth
+                                    ? 'flex h-6 w-6 items-center justify-center text-xs font-semibold text-neutral-700'
+                                    : 'flex h-6 w-6 items-center justify-center text-xs font-medium text-neutral-300'">
+                                {{ day.date.getDate() }}
+                            </span>
+                        </div>
+
+                        <!-- Events -->
+                        <div class="flex flex-col gap-0.5">
+                            @for (event of visibleEvents(day); track event.id) {
+                                @if (event.type === 'planned') {
+                                <div class="flex items-center gap-1 truncate rounded-md bg-[#F4A258]/10 px-1.5 py-0.5 leading-tight">
+                                    <i class="fa-solid fa-calendar shrink-0 text-[#F4A258]" style="font-size: 7px"></i>
+                                    <span class="truncate text-[10px] font-semibold text-[#c07a33]">{{ event.name }}</span>
+                                </div>
+                                } @else {
+                                <div class="flex items-center gap-1 truncate rounded-md bg-[#708C69]/10 px-1.5 py-0.5 leading-tight">
+                                    <i class="fa-solid fa-check shrink-0 text-[#708C69]" style="font-size: 7px"></i>
+                                    <span class="truncate text-[10px] font-semibold text-[#4e6347]">{{ event.name }}</span>
+                                </div>
+                                }
+                            }
+                            @if (overflowCount(day) > 0) {
+                            <span class="px-1.5 text-[10px] font-medium text-neutral-400">
+                                +{{ overflowCount(day) }} more
+                            </span>
+                            }
+                        </div>
+
+                    </div>
+                    }
+                </div>
+
+            </div>
+            }
+
+        </div>
+
+        <!-- Legend -->
+        <div class="mt-4 flex items-center gap-5 text-xs text-neutral-500">
+            <div class="flex items-center gap-2">
+                <span class="h-2.5 w-2.5 rounded-sm bg-[#4A7FC1]/25 ring-1 ring-[#4A7FC1]/40"></span>
+                Trip
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="h-2.5 w-2.5 rounded-sm bg-[#F4A258]/25 ring-1 ring-[#F4A258]/40"></span>
+                Planned
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="h-2.5 w-2.5 rounded-sm bg-[#708C69]/25 ring-1 ring-[#708C69]/40"></span>
+                Summited
+            </div>
+        </div>
+
+    </div>
+</app-container>

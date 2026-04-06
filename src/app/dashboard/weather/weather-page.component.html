@@ -1,0 +1,146 @@
+<app-container>
+    <app-hero heroTitle="Weather" heroSubtitle="Check forecasts for your planned summits"></app-hero>
+
+    @if (loading) {
+    <!-- Skeleton -->
+    <div class="flex gap-6">
+        <div class="hidden w-72 shrink-0 space-y-2 lg:block">
+            @for (i of [1,2,3,4,5]; track i) {
+            <div class="animate-pulse rounded-2xl border border-neutral-100 bg-white p-4 space-y-2.5">
+                <div class="h-3.5 w-32 rounded-full bg-neutral-100"></div>
+                <div class="h-3 w-20 rounded-full bg-neutral-100"></div>
+            </div>
+            }
+        </div>
+        <div class="flex-1 animate-pulse rounded-2xl bg-zinc-900 h-96"></div>
+    </div>
+
+    } @else if (mountains.length === 0) {
+
+    <!-- Empty state -->
+    <div class="rounded-2xl border border-neutral-100 bg-white px-6 py-16 text-center sm:px-8 sm:py-20">
+        <div class="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-neutral-100 text-neutral-400 text-2xl">
+            <i class="fa-solid fa-cloud-sun"></i>
+        </div>
+        <p class="text-base font-semibold text-neutral-900">No planned mountains</p>
+        <p class="mt-1.5 text-sm text-neutral-400">Add some mountains to your board to check their forecasts here.</p>
+        <a routerLink="/dashboard/library"
+            class="mt-6 inline-flex items-center gap-2 rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-150 hover:bg-neutral-800">
+            <i class="fa-solid fa-book-open text-xs"></i> Browse Library
+        </a>
+    </div>
+
+    } @else {
+
+    <div class="flex flex-col gap-5 pb-24 lg:flex-row lg:items-start">
+
+        <!-- ── Sidebar ───────────────────────────────────────────────── -->
+        <div class="w-full shrink-0 lg:w-72">
+
+            <!-- Search -->
+            <div class="mb-3 flex items-center gap-2.5 rounded-2xl border border-neutral-200 bg-white px-4 py-3">
+                <i class="fa-solid fa-magnifying-glass text-xs text-neutral-400 shrink-0"></i>
+                <input
+                    [(ngModel)]="search"
+                    type="text"
+                    placeholder="Search mountains…"
+                    class="flex-1 bg-transparent text-sm text-neutral-900 placeholder-neutral-400 outline-none" />
+                @if (search) {
+                <button (click)="search = ''" class="text-neutral-300 transition-colors hover:text-neutral-500">
+                    <i class="fa-solid fa-xmark text-xs"></i>
+                </button>
+                }
+            </div>
+
+            <!-- Mountain list -->
+            <div class="space-y-1.5 overflow-y-auto lg:max-h-[calc(100vh-14rem)]">
+                @for (pm of filteredMountains; track pm._id) {
+                <button type="button"
+                    (click)="select(pm)"
+                    [ngClass]="isSelected(pm)
+                        ? 'border-neutral-950 bg-neutral-950'
+                        : 'border-neutral-100 bg-white hover:border-neutral-200 hover:bg-neutral-50'"
+                    class="group w-full rounded-2xl border p-4 text-left transition-all duration-150">
+
+                    <!-- Mountain name + height -->
+                    <div class="flex items-start justify-between gap-2">
+                        <span [ngClass]="isSelected(pm) ? 'text-white' : 'text-neutral-900'"
+                            class="text-sm font-semibold leading-snug">
+                            {{ pm.mountain.name }}
+                        </span>
+                        <span [ngClass]="isSelected(pm) ? 'bg-neutral-800 text-neutral-300' : 'bg-neutral-100 text-neutral-500'"
+                            class="shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold">
+                            {{ pm.mountain.height }}m
+                        </span>
+                    </div>
+
+                    <!-- Date + region -->
+                    <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <span [ngClass]="isSelected(pm) ? 'text-neutral-400' : 'text-neutral-400'"
+                            class="flex items-center gap-1.5 text-xs">
+                            <i class="fa-regular fa-calendar text-[10px]"></i>
+                            {{ plannedDateLabel(pm.plannedDate) }}
+                        </span>
+                        @if (pm.mountain.region) {
+                        <span [ngClass]="isSelected(pm) ? 'text-neutral-400' : 'text-neutral-400'"
+                            class="flex items-center gap-1.5 text-xs">
+                            <i class="fa-solid fa-location-dot text-[10px]"></i>
+                            {{ pm.mountain.region }}
+                        </span>
+                        }
+                    </div>
+
+                    <!-- Categories -->
+                    @if (pm.mountain.category && pm.mountain.category.length > 0) {
+                    <div class="mt-2.5 flex flex-wrap gap-1">
+                        @for (cat of pm.mountain.category; track cat) {
+                        <span [ngClass]="isSelected(pm) ? 'bg-neutral-800 text-neutral-400' : 'bg-neutral-100 text-neutral-500'"
+                            class="rounded-full px-2 py-0.5 text-[10px] font-medium">
+                            {{ cat }}
+                        </span>
+                        }
+                    </div>
+                    }
+                </button>
+                }
+
+                @if (filteredMountains.length === 0) {
+                <div class="rounded-2xl border border-neutral-100 bg-white px-4 py-8 text-center">
+                    <p class="text-sm text-neutral-400">No mountains match "{{ search }}"</p>
+                </div>
+                }
+            </div>
+        </div>
+
+        <!-- ── Weather panel ─────────────────────────────────────────── -->
+        <div class="flex-1 min-w-0">
+
+            @if (selected) {
+            <!-- Mountain header card -->
+            <div class="mb-4 flex items-center gap-4 rounded-2xl border border-neutral-100 bg-white px-5 py-4">
+                <div class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-neutral-950 text-white">
+                    <i class="fa-solid fa-mountain-sun text-sm"></i>
+                </div>
+                <div class="min-w-0">
+                    <h2 class="truncate text-base font-bold text-neutral-900">{{ selected.mountain.name }}</h2>
+                    <p class="text-xs text-neutral-400">
+                        {{ selected.mountain.height }}m
+                        @if (selected.mountain.region) { · {{ selected.mountain.region }} }
+                        · Planned {{ plannedDateLabel(selected.plannedDate) }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Weather component -->
+            <app-weather
+                [lat]="selected.mountain.latitude"
+                [lon]="selected.mountain.longitude"
+                [mountainName]="selected.mountain.name">
+            </app-weather>
+            }
+        </div>
+
+    </div>
+    }
+
+</app-container>

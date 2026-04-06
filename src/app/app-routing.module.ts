@@ -5,7 +5,9 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { BoardComponent } from './dashboard/board/board.component';
 import { ConfirmComponent } from './authentication/confirm/confirm.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CalendarComponent } from './dashboard/calendar/calendar.component';
 import { LibraryComponent } from './dashboard/library/library.component';
+import { WeatherPageComponent } from './dashboard/weather/weather-page.component';
 import { NgModule } from '@angular/core';
 import { ProfileComponent } from './dashboard/profile/profile.component';
 
@@ -31,6 +33,16 @@ const routes: Routes = [
             {
                 path: 'library',
                 component: LibraryComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'calendar',
+                component: CalendarComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'weather',
+                component: WeatherPageComponent,
                 canActivate: [AuthGuard],
             }
         ],
